@@ -133,7 +133,8 @@ export function ProjectShowcase() {
             </button>
           ))}
         </div>
-        <div className="aj-project-grid" aria-live="polite" aria-relevant="additions removals">
+        <p className="aj-project-filter-summary" role="status">{visible.length} {visible.length === 1 ? "project" : "projects"} shown · {activeFilter}</p>
+        <div className="aj-project-grid">
           {visible.map((project, index) => (
             <article className={"aj-project-card aj-project-card-" + project.visual} key={project.id}>
               <ProjectArtwork visual={project.visual} />

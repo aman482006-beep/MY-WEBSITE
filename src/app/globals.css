@@ -832,3 +832,12 @@ a[href]:active, button:active { opacity: .82; }
 @media (prefers-reduced-motion: reduce) {
   .aj-project-filter, .aj-project-card, .aj-project-actions a span { transition: none; }
 }
+
+.aj-project-filter-summary { margin: -5px 0 11px; color: var(--aj-muted); font-size: 12px; line-height: 1.4; }
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  .aj-project-card:hover { translate: 0 -3px; }
+  .aj-project-card:focus-within { translate: 0 -2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-project-card { translate: none; }
+}
