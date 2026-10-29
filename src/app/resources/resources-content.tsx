@@ -14,6 +14,10 @@ const resourceAreas = [
     title: "CFA study systems",
     description: "Revision trackers, formula references and ways to organise a demanding study plan.",
     tags: ["Revision", "Fixed income", "FSA"],
+    link: {
+      label: "CFA Level 1 resources",
+      href: "https://drive.google.com/drive/mobile/folders/1BWsJY1_X_vU9EwE9qf1B7m5UIudjbCRC?usp=sharing&fbclid=PAT01DUAVQU9dleHRuA2FlbQIxMABwZG9mAnNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABp2JIt92T1C2-fXnLY4pJGotKTQHAqmH3NCvv33vTYyMiMUVn5R7TDYE_OKEn_aem_EYcuqGs8_SWhNv-vwqKxQQ",
+    },
   },
   {
     number: "03",
@@ -31,7 +35,7 @@ export function ResourcesContent() {
     const request = requestText.trim();
     if (!request) return;
     const subject = encodeURIComponent("Resource request - Aman Jain portfolio");
-    const body = encodeURIComponent(`Hi Aman,\n\nI'd like to request a resource about:\n${request}\n\nThanks.`);
+    const body = encodeURIComponent(`Hi Aman,\\n\\nI'd like to request a resource about:\\n${request}\\n\\nThanks.`);
     window.location.href = `mailto:jain.aman3789@gmail.com?subject=${subject}&body=${body}`;
   }
 
@@ -56,6 +60,16 @@ export function ResourcesContent() {
               <div className="aj-resource-tags">
                 {area.tags.map((tag) => <span key={tag}>{tag}</span>)}
               </div>
+              {"link" in area && area.link ? (
+                <a
+                  className="aj-button aj-button-primary"
+                  href={area.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {area.link.label} <span aria-hidden="true">↗</span>
+                </a>
+              ) : null}
             </article>
           ))}
         </section>
