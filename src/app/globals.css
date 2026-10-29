@@ -745,6 +745,18 @@ a[href]:active, button:active { opacity: .82; }
 .aj-project-actions .aj-project-demo { color: #8D3419; }
 .aj-project-disclaimer { margin: 13px 0 0; color: var(--aj-muted); font-size: 14px; line-height: 1.5; }
 
+.aj-art-fokus { display: grid; place-items: center; min-height: 290px; padding: 22px; background: radial-gradient(circle at 80% 18%, rgba(244,92,42,.15), transparent 34%), linear-gradient(145deg, #F8F1E7, #E8EFE8); }
+.aj-fokus-window { width: min(100%, 420px); min-height: 245px; padding: 15px; border: 1px solid rgba(32,35,43,.12); border-radius: 16px; background: rgba(255,252,247,.9); box-shadow: 0 14px 36px rgba(32,35,43,.09); }
+.aj-fokus-window-top, .aj-fokus-window-bottom { display: flex; justify-content: space-between; gap: 10px; color: var(--aj-muted); font-size: 10px; font-weight: 800; letter-spacing: .1em; }
+.aj-fokus-window-top span:first-child { color: var(--aj-ink); font-size: 12px; }
+.aj-fokus-orbit { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 128px; height: 128px; margin: 17px auto 13px; border: 2px solid rgba(244,92,42,.6); border-radius: 50%; box-shadow: inset 0 0 0 8px rgba(244,92,42,.06), 0 0 0 8px rgba(244,92,42,.07); }
+.aj-fokus-orbit span { font-family: var(--font-display); font-size: 33px; line-height: 1.2; }
+.aj-fokus-orbit small { margin-top: 4px; color: var(--aj-muted); font-size: 7px; font-weight: 800; letter-spacing: .08em; }
+.aj-fokus-scene { display: flex; align-items: end; justify-content: center; gap: 9px; height: 22px; margin-bottom: 13px; }
+.aj-fokus-scene i { display: block; width: 8px; height: 13px; border-radius: 8px 8px 2px 2px; background: #A7B8A0; }
+.aj-fokus-scene i:nth-child(2), .aj-fokus-scene i:nth-child(4) { height: 20px; background: #D9A58A; }
+.aj-fokus-scene i:nth-child(3) { height: 16px; background: #8DA6B8; }
+.aj-fokus-window-bottom { padding-top: 11px; border-top: 1px solid var(--aj-line); letter-spacing: 0; font-weight: 600; }
 .aj-project-art { position: relative; flex: 0 0 auto; min-width: 0; height: 228px; overflow: hidden; border-bottom: 1px solid var(--aj-line); }
 .aj-art-windowbar { height: 35px; display: flex; align-items: center; gap: 5px; padding: 0 13px; background: #292B32; color: #F8F4EE; border-bottom: 1px solid rgba(255,255,255,.1); }
 .aj-art-windowbar > span { display: block; width: 6px; height: 6px; border-radius: 50%; background: #D1BBA9; }

@@ -88,10 +88,10 @@ async function runViewport(viewport) {
     );
     assert(!projectOverflow, "Projects page has horizontal overflow at " + viewport.width + "px");
 
-    const financeFilter = page.getByRole("button", { name: "Finance & data" });
-    await financeFilter.tap();
-    await page.getByRole("status").filter({ hasText: "1 project shown" }).waitFor();
-    assert(await financeFilter.getAttribute("aria-pressed") === "true", "Project filter tap did not update its active state");
+    await page.getByRole("heading", { name: "Fokus" }).waitFor();
+    assert(await page.getByRole("link", { name: /View on GitHub/i }).isVisible(), "Fokus GitHub link is missing");
+    assert(await page.getByRole("link", { name: /Get Fokus/i }).isVisible(), "Fokus product link is missing");
+    assert(await page.locator(".aj-project-card").count() === 1, "Projects section should contain only Fokus");
 
     await page.locator(".aj-menu-toggle").tap();
     await page.waitForFunction(
