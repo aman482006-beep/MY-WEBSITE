@@ -21,11 +21,14 @@ async function runViewport(viewport) {
 
   try {
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
+    await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => undefined);
     await page.waitForFunction(
       () => document.documentElement.classList.contains("aj-motion-enabled"),
       null,
       { timeout: 15000 },
     );
+    // Allow independent client components to finish hydration before simulating a real tap.
+    await page.waitForTimeout(400);
 
     const homeOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
@@ -34,13 +37,35 @@ async function runViewport(viewport) {
 
     const menuButton = page.locator(".aj-menu-toggle");
     assert(await menuButton.isVisible(), "Mobile menu button is not visible");
+    await menuButton.evaluate((element) => {
+      const button = element as HTMLButtonElement & { dataset: DOMStringMap };
+      for (const eventName of ["pointerdown", "touchend", "click"]) {
+        button.addEventListener(eventName, () => {
+          const key = "test" + eventName;
+          button.dataset[key] = String(Number(button.dataset[key] || "0") + 1);
+        }, true);
+      }
+    });
     await menuButton.tap();
-    await page.waitForFunction(
-      () => document.querySelector("#primary-navigation")?.classList.contains("is-open"),
-      null,
-      { timeout: 5000 },
-    );
-    assert(await page.locator("#primary-navigation").isVisible(), "Mobile navigation did not open");
+    await page.waitForTimeout(250);
+    const menuEvidence = await page.evaluate(() => {
+      const button = document.querySelector<HTMLButtonElement>(".aj-menu-toggle");
+      const navigation = document.querySelector<HTMLElement>("#primary-navigation");
+      const rect = button?.getBoundingClientRect();
+      const hitTarget = rect ? document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2) : null;
+      return {
+        expanded: button?.getAttribute("aria-expanded"),
+        navClass: navigation?.className,
+        navVisibility: navigation ? getComputedStyle(navigation).visibility : null,
+        pointerdown: button?.dataset.testpointerdown || "0",
+        touchend: button?.dataset.testtouchend || "0",
+        click: button?.dataset.testclick || "0",
+        hitTarget: hitTarget instanceof HTMLElement ? hitTarget.outerHTML.slice(0, 180) : String(hitTarget),
+      };
+    });
+    process.stdout.write("MENU DIAGNOSTIC " + viewport.width + "px " + JSON.stringify(menuEvidence) + "\\n");
+    assert(menuEvidence.expanded === "true" && menuEvidence.navClass?.includes("is-open"),
+      "Mobile navigation did not open: " + JSON.stringify(menuEvidence));
 
     await page.locator('#primary-navigation a[data-nav-href="/projects"]').tap();
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
