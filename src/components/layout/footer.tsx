@@ -18,7 +18,7 @@ export function Footer() {
           <span className="aj-brand-name">AMAN JAIN</span>
         </Link>
         <nav aria-label="Footer navigation" className="aj-footer-nav">
-          <Link href="/">Home</Link><Link href="/projects">Projects</Link><Link href="/work">Fokus</Link><Link href="/creator">Creator</Link><Link href="/recruiters">Recruiters</Link><Link href="/resources">Resources</Link><Link href="/contact">Contact</Link>
+          <Link href="/">Home</Link><Link href="/projects">Projects</Link><Link href="/creator">Creator</Link><Link href="/recruiters">Recruiters</Link><Link href="/resources">Resources</Link><Link href="/contact">Contact</Link>
         </nav>
         <div className="aj-footer-socials">
           {socials.map((social) => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} title={social.label}><SocialIcon name={social.icon} /></a>)}

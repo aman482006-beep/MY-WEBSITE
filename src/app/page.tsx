@@ -16,27 +16,27 @@ const pillars = [
     title: "Finance",
     icon: "finance",
     tone: "peach",
-    description: "Markets, valuation, financial analysis and the business stories behind the numbers.",
+    description: "Markets, money psychology and business stories—without the lecture-hall energy.",
     href: "/projects",
-    action: "Explore finance work",
+    action: "Go down the rabbit hole",
   },
   {
     number: "02",
     title: "Build",
     icon: "build",
     tone: "blue",
-    description: "AI experiments, financial-data tools, dashboards and useful software.",
+    description: "AI experiments, useful tools and dashboards built one curious what-if at a time.",
     href: "/projects",
-    action: "Explore projects",
+    action: "See the side quests",
   },
   {
     number: "03",
     title: "Create",
     icon: "create",
     tone: "green",
-    description: "Finance explainers, educational videos and resources shared as I learn.",
+    description: "Nerdy topics turned into videos that feel like a conversation, not a 90-slide lecture.",
     href: "/creator",
-    action: "Watch my content",
+    action: "Watch the chaos",
   },
 ] as const;
 
@@ -70,15 +70,15 @@ export default function Home() {
       <section className="aj-hero">
         <div className="aj-container aj-hero-grid">
           <div className="aj-hero-copy">
-            <p className="aj-eyebrow"><span /> FINANCE × TECHNOLOGY × COMMUNICATION</p>
-            <h1>I study finance.<br /><em>I build</em> with technology.<br />I create to make ideas useful.</h1>
+            <p className="aj-eyebrow"><span /> FINANCE RABBIT HOLES × AI SIDE QUESTS × A LITTLE TADKA</p>
+            <h1>Curious about<br /><em>too many things.</em><br />Making them less boring.</h1>
             <p className="aj-lede">
-              I&apos;m Aman Jain, a BBA student exploring finance, useful technology and educational content. I turn what I learn into projects I can test, improve and share.
+              I&apos;m Aman Jain. I chase interesting questions across finance, AI and the internet, then turn the best bits into videos, experiments and useful things. No guru act. Just curiosity and a suspicious number of open tabs.
             </p>
-            <div className="aj-hero-meta" aria-label="A few quick facts">
-              <span>BBA · CHRIST University</span>
-              <span>CFA Level II candidate</span>
-              <span>Bengaluru, India</span>
+            <div className="aj-hero-meta" aria-label="Things I get curious about">
+              <span>Finance rabbit holes</span>
+              <span>AI experiments</span>
+              <span>Explanations with tadka</span>
             </div>
             <div className="aj-hero-actions">
               <Link href="/projects" className="aj-button aj-button-primary">Explore projects <span aria-hidden="true">→</span></Link>
@@ -103,7 +103,7 @@ export default function Home() {
             <div className="aj-photo-frame">
               <Image src="https://amanmalu.me/_next/image?url=%2Fprofile-2.png&w=828&q=75" alt="Portrait of Aman Jain" fill preload sizes="(max-width: 900px) 78vw, 440px" className="aj-profile-image" />
             </div>
-            <div className="aj-photo-caption"><strong>BBA</strong><span>Finance &amp; Marketing Analytics</span><span>CHRIST University</span><span>Bengaluru, India</span></div>
+            <div className="aj-photo-caption"><strong>CURRENTLY</strong><span>Following the curiosity</span><span>Building as I go</span><span>Tabs: too many</span></div>
             <span className="aj-spark aj-spark-one" aria-hidden="true">〰</span>
             <span className="aj-spark aj-spark-two" aria-hidden="true">✳</span>
           </div>
@@ -141,18 +141,72 @@ export default function Home() {
 
       <LatestVideos />
 
-      <section className="aj-section aj-recruiters-section aj-home-background-section" id="background">
+      <section className="aj-section aj-home-story aj-note-wall-section" id="what-you-get">
         <div className="aj-container">
-          <div className="aj-home-background-heading">
-            <div><p className="aj-eyebrow aj-eyebrow-accent">A LITTLE CONTEXT</p><h2>Background, at a glance.</h2></div>
-            <Link href="/recruiters" className="aj-text-link">Explore full background <span aria-hidden="true">→</span></Link>
+          <div className="aj-home-story-heading">
+            <p className="aj-eyebrow aj-eyebrow-accent">THE CONTENT VIBE</p>
+            <h2>Big-brain topics.<br /><em>Small-talk energy.</em></h2>
+            <p>Think finance and AI rabbit holes, explained like we&apos;re chatting—not sitting through a lecture with 47 slides.</p>
           </div>
-          <div className="aj-recruiter-facts">
-            <article><span className="aj-fact-icon" aria-hidden="true">⌂</span><h3>Education</h3><p>BBA — Finance &amp; Marketing Analytics</p><small>CHRIST University · 2024–2027</small></article>
-            <article><span className="aj-fact-icon" aria-hidden="true">▣</span><h3>Experience</h3><p>Finance internships</p><small>Nuvama Wealth · DAGAS</small></article>
-            <article><span className="aj-fact-icon" aria-hidden="true">▤</span><h3>CFA Program</h3><p>Level II candidate</p><small>Professional development</small></article>
-            <article><span className="aj-fact-icon" aria-hidden="true">✳</span><h3>What I explore</h3><p>Finance, technology &amp; content</p><small>Analysis · Building · Explaining</small></article>
+          <div className="aj-sticky-note-wall" aria-label="What you can expect here">
+            <article className="aj-sticky-note aj-sticky-note-peach">
+              <span className="aj-sticky-note-label">01 / THE TADKA</span>
+              <h3>Nerdy knowledge.<br />With tadka.</h3>
+              <p>Finance, markets and business rabbit holes—without the textbook coma.</p>
+              <span className="aj-sticky-note-scribble">spreadsheet, but spicy ↗</span>
+            </article>
+            <article className="aj-sticky-note aj-sticky-note-blue">
+              <span className="aj-sticky-note-label">02 / THE SIDE QUEST</span>
+              <h3>AI experiments.<br />Less hype, more “try it”.</h3>
+              <p>Useful tools, honest tests and figuring out what the tech can actually do.</p>
+              <span className="aj-sticky-note-scribble">open another tab, obviously ↗</span>
+            </article>
+            <article className="aj-sticky-note aj-sticky-note-green">
+              <span className="aj-sticky-note-label">03 / THE TAKEAWAY</span>
+              <h3>Learn it.<br />Build it. Share it.</h3>
+              <p>Videos, little projects and resources born from whatever I was obsessing over this week.</p>
+              <span className="aj-sticky-note-scribble">may contain side quests ↗</span>
+            </article>
           </div>
+        </div>
+      </section>
+
+      <section className="aj-section aj-home-story aj-no-plan-section" id="the-journey">
+        <div className="aj-container aj-no-plan-grid">
+          <div className="aj-no-plan-intro">
+            <p className="aj-eyebrow aj-eyebrow-accent">THE ONGOING PLOT</p>
+            <h2>Live the journey of a man with <em>no master plan.</em></h2>
+            <p>I&apos;m not following a 47-step life blueprint. I&apos;m following interesting questions, taking side quests, and seeing what turns into something worth sharing.</p>
+            <div className="aj-plan-doodle" aria-label="Master plan: loading">
+              <span>MASTER PLAN</span>
+              <strong>loading…</strong>
+              <i aria-hidden="true">↻</i>
+            </div>
+          </div>
+          <div className="aj-story-path" aria-label="How a side quest usually goes">
+            <article className="aj-story-step">
+              <span className="aj-story-step-number">01</span>
+              <div><h3>Spot something interesting.</h3><p>“I&apos;ll just look this up quickly.” Famous last words.</p></div>
+              <span className="aj-story-step-mark" aria-hidden="true">↘</span>
+            </article>
+            <article className="aj-story-step">
+              <span className="aj-story-step-number">02</span>
+              <div><h3>Fall down the rabbit hole.</h3><p>Finance becomes AI. AI becomes a tool. The tool somehow becomes a video.</p></div>
+              <span className="aj-story-step-mark" aria-hidden="true">⌘</span>
+            </article>
+            <article className="aj-story-step">
+              <span className="aj-story-step-number">03</span>
+              <div><h3>Make something out of it.</h3><p>The useful bits, the failed experiments and the occasional idea that actually works.</p></div>
+              <span className="aj-story-step-mark" aria-hidden="true">✳</span>
+            </article>
+          </div>
+          <aside className="aj-story-end-note">
+            <span className="aj-sticky-note-label">IMPORTANT COMMUNITY UPDATE</span>
+            <h3>The fan club has room for at least one more.</h3>
+            <p>If you&apos;re here, hi. I&apos;m genuinely excited to meet people who watch, learn, build or just bring a good question. I&apos;ll try to act cool for the first seven seconds. No promises.</p>
+            <Link href="/contact" className="aj-button aj-button-primary">Say hi (I&apos;ll try to be normal) <span aria-hidden="true">↗</span></Link>
+            <span className="aj-story-end-doodle" aria-hidden="true">pls be normal</span>
+          </aside>
         </div>
       </section>
 

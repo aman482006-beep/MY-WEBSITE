@@ -37,16 +37,16 @@ export const metadata: Metadata = {
     default: "Aman Jain — Finance × Technology × Communication",
     template: "%s | Aman Jain",
   },
-  description: "I’m Aman Jain, a BBA student at CHRIST University exploring finance, technology and educational content. I’m building Fokus, a cross-platform Flutter productivity app with a Windows version on the Microsoft Store.",
+  description: "Aman Jain explores finance rabbit holes, AI experiments and educational content—nerdy ideas made useful, with a little tadka.",
   alternates: { canonical: "/" },
   twitter: {
     card: "summary_large_image",
     title: "Aman Jain — Finance × Technology × Communication",
-    description: "I study finance. I build with technology. I create to make ideas useful.",
+    description: "Finance rabbit holes, AI experiments and nerdy ideas made less boring—with a little tadka.",
   },
   openGraph: {
     title: "Aman Jain — Finance × Technology × Communication",
-    description: "I study finance. I build with technology. I create to make ideas useful. Featured project: Fokus, a cross-platform Flutter productivity app.",
+    description: "Finance rabbit holes, AI experiments and nerdy ideas made less boring—with a little tadka.",
     url: "https://amanmalu.me",
     siteName: "Aman Jain Portfolio",
     type: "website",
@@ -66,7 +66,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               "@type": "Person",
               name: "Aman Jain",
               url: "https://amanmalu.me",
-              jobTitle: "Finance student",
+              jobTitle: "Finance & technology creator",
               alumniOf: {
                 "@type": "CollegeOrUniversity",
                 name: "CHRIST (Deemed to be University)",
