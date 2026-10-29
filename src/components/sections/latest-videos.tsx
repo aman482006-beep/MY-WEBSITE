@@ -11,7 +11,7 @@ export async function LatestVideos() {
           <div>
             <p className="aj-eyebrow aj-eyebrow-accent">CREATOR</p>
             <h2>Latest on YouTube</h2>
-            <p className="aj-heading-subtitle">Long-form videos, fresh from my channel.</p>
+            <p className="aj-heading-subtitle">Latest long-form videos. Shorts are filtered out.</p>
           </div>
           <a className="aj-text-link" href="https://www.youtube.com/@AmanJain-4/videos" target="_blank" rel="noopener noreferrer">
             Watch all videos <span aria-hidden="true">→</span>

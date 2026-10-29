@@ -1,11 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { LatestVideos } from "@/components/sections/latest-videos";
-import { FinanceWorkSection } from "@/components/sections/finance-work";
-import { ProjectShowcase } from "@/components/sections/project-showcase";
 import { FOKUS } from "@/data/fokus";
-import { currentlyOpenTo } from "@/data/profile";
-import { ResumeDownload } from "@/components/sections/resume-download";
 import { SocialIcon, type SocialIconName } from "@/components/layout/social-icon";
 
 const socials: { label: string; href: string; icon: SocialIconName }[] = [
@@ -22,7 +18,7 @@ const pillars = [
     icon: "finance",
     tone: "peach",
     description: "Markets, valuation, financial analysis and the business stories behind the numbers.",
-    href: "/work#selected-finance-work",
+    href: "/projects",
     action: "Explore finance work",
   },
   {
@@ -31,8 +27,8 @@ const pillars = [
     icon: "build",
     tone: "blue",
     description: "AI experiments, financial-data tools, dashboards and useful software.",
-    href: "/work",
-    action: "See what I build",
+    href: "/projects",
+    action: "Explore projects",
   },
   {
     number: "03",
@@ -40,7 +36,7 @@ const pillars = [
     icon: "create",
     tone: "green",
     description: "Finance explainers, educational videos and resources shared as I learn.",
-    href: "#creator",
+    href: "/creator",
     action: "Watch my content",
   },
 ] as const;
@@ -86,8 +82,8 @@ export default function Home() {
               <span>Bengaluru, India</span>
             </div>
             <div className="aj-hero-actions">
-              <a className="aj-button aj-button-primary" href="#featured">Explore my work <span aria-hidden="true">→</span></a>
-              <a className="aj-button aj-button-outline" href="#creator">Explore my content</a>
+              <a className="aj-button aj-button-primary" href="/projects">Explore projects <span aria-hidden="true">→</span></a>
+              <a className="aj-button aj-button-outline" href="/creator">Explore my content</a>
             </div>
             <div className="aj-socials" aria-label="Social links">
               {socials.map((social) => (
@@ -144,7 +140,7 @@ export default function Home() {
         </div>
       </section>
 
-      <ProjectShowcase />
+      <LatestVideos />
 
       <section className="aj-section aj-featured-section" id="featured">
         <div className="aj-container">
@@ -186,27 +182,17 @@ export default function Home() {
       </section>
 
 
-      <FinanceWorkSection compact />
-
-      <div id="creator"><LatestVideos /></div>
-
-      <section className="aj-section aj-recruiters-section" id="recruiters">
-        <div className="aj-container aj-recruiters-grid">
-          <div className="aj-recruiter-intro">
-            <p className="aj-eyebrow aj-eyebrow-accent">RECRUITERS</p>
-            <h2>A quick overview.</h2>
-            <p>My education, internships, skills and career interests in one place.</p>
-            <p className="aj-currently-line"><strong>Currently:</strong> {currentlyOpenTo}</p>
-            <div className="aj-recruiter-actions">
-              <Link href="/recruiters" className="aj-button aj-button-primary">View full profile <span aria-hidden="true">→</span></Link>
-              <ResumeDownload compact />
-            </div>
+      <section className="aj-section aj-recruiters-section aj-home-background-section" id="background">
+        <div className="aj-container">
+          <div className="aj-home-background-heading">
+            <div><p className="aj-eyebrow aj-eyebrow-accent">A LITTLE CONTEXT</p><h2>Background, at a glance.</h2></div>
+            <Link href="/recruiters" className="aj-text-link">Explore full background <span aria-hidden="true">→</span></Link>
           </div>
           <div className="aj-recruiter-facts">
-            <article><span className="aj-fact-icon">⌂</span><h3>Education</h3><p>BBA — Finance &amp; Marketing Analytics<br />CHRIST University<br />(2024–2027)</p></article>
-            <article><span className="aj-fact-icon">▣</span><h3>Internships</h3><p>Nuvama Wealth<br />DAGAS<br />Finance internships</p></article>
-            <article><span className="aj-fact-icon">▤</span><h3>CFA</h3><p><strong>Level II</strong><br />Candidate</p></article>
-            <article><span className="aj-fact-icon">▥</span><h3>Skills</h3><p>Finance · Analysis<br />Python · Excel<br />Content · Video</p></article>
+            <article><span className="aj-fact-icon" aria-hidden="true">⌂</span><h3>Education</h3><p>BBA — Finance &amp; Marketing Analytics</p><small>CHRIST University · 2024–2027</small></article>
+            <article><span className="aj-fact-icon" aria-hidden="true">▣</span><h3>Experience</h3><p>Finance internships</p><small>Nuvama Wealth · DAGAS</small></article>
+            <article><span className="aj-fact-icon" aria-hidden="true">▤</span><h3>CFA Program</h3><p>Level II candidate</p><small>Professional development</small></article>
+            <article><span className="aj-fact-icon" aria-hidden="true">✳</span><h3>What I explore</h3><p>Finance, technology &amp; content</p><small>Analysis · Building · Explaining</small></article>
           </div>
         </div>
       </section>

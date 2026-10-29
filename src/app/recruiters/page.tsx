@@ -82,7 +82,7 @@ export default function RecruitersPage() {
         <section className="aj-case-section" aria-labelledby="recruiter-overview-heading">
           <div className="aj-case-section-heading">
             <p className="aj-eyebrow aj-eyebrow-accent">AT A GLANCE</p>
-            <h2 id="recruiter-overview-heading">A quick overview.</h2>
+            <h2 id="recruiter-overview-heading">The essentials, at a glance.</h2>
           </div>
           <div className="aj-recruiter-overview-grid">
             {overview.map((item) => (

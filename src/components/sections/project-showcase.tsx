@@ -115,13 +115,13 @@ export function ProjectShowcase() {
   );
 
   return (
-    <section className="aj-section aj-projects-section" id="selected-projects" aria-labelledby="selected-projects-heading">
+    <section className="aj-section aj-projects-section" id="projects" aria-labelledby="projects-heading">
       <div className="aj-container">
         <div className="aj-section-heading aj-projects-heading">
           <div>
-            <p className="aj-eyebrow aj-eyebrow-accent">SELECTED PROJECTS</p>
-            <h2 id="selected-projects-heading">Projects at the intersection<br className="aj-desktop-break" /> of finance and technology.</h2>
-            <p className="aj-heading-subtitle">A few things I’ve explored, built and learned from — with source code and live demos where available.</p>
+            <p className="aj-eyebrow aj-eyebrow-accent">PROJECTS</p>
+            <h2 id="projects-heading">Selected builds, experiments and tools.</h2>
+            <p className="aj-heading-subtitle">Source code, product concepts and live demos where available.</p>
           </div>
           <a className="aj-text-link" href="https://github.com/aman482006-beep" target="_blank" rel="noopener noreferrer">Browse all repositories <span aria-hidden="true">↗</span></a>
         </div>

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { FOKUS } from "@/data/fokus";
-import { FinanceWorkSection } from "@/components/sections/finance-work";
 
 export const metadata: Metadata = {
   title: "Fokus Case Study",
@@ -54,7 +53,7 @@ export default function WorkPage() {
           </div>
         </header>
 
-        <section className="aj-case-section" aria-labelledby="problem-heading">
+        <section className="aj-case-section aj-case-section-split" aria-labelledby="problem-heading">
           <div className="aj-case-section-heading">
             <p className="aj-eyebrow aj-eyebrow-accent">01 · THE PROBLEM</p>
             <h2 id="problem-heading">Make focused work easier to begin and sustain.</h2>
@@ -82,7 +81,7 @@ export default function WorkPage() {
         </section>
 
 
-        <section className="aj-case-section" aria-labelledby="role-heading">
+        <section className="aj-case-section aj-case-section-split" aria-labelledby="role-heading">
           <div className="aj-case-section-heading">
             <p className="aj-eyebrow aj-eyebrow-accent">03 · MY ROLE</p>
             <h2 id="role-heading">A personal project, documented honestly.</h2>
@@ -93,18 +92,20 @@ export default function WorkPage() {
           </div>
         </section>
 
-        <section className="aj-case-section" aria-labelledby="stack-heading">
+        <section className="aj-case-section aj-case-stack-section" aria-labelledby="stack-heading">
           <div className="aj-case-section-heading">
             <p className="aj-eyebrow aj-eyebrow-accent">04 · STACK</p>
             <h2 id="stack-heading">Tools and integrations.</h2>
           </div>
-          <div className="aj-work-tags aj-case-stack">
-            {stack.map((item) => <span key={item}>{item}</span>)}
+          <div className="aj-case-stack-content">
+            <div className="aj-work-tags aj-case-stack">
+              {stack.map((item) => <span key={item}>{item}</span>)}
+            </div>
+            <p className="aj-case-source-note">The stack is listed in the Fokus repository README; individual packages may differ by platform.</p>
           </div>
-          <p className="aj-case-source-note">The stack above is listed in the Fokus repository README; it is not a claim that each package is used by every platform build.</p>
         </section>
 
-        <section className="aj-case-section" aria-labelledby="screenshots-heading">
+        <section className="aj-case-section aj-case-gallery-section" aria-labelledby="screenshots-heading">
           <div className="aj-case-section-heading">
             <p className="aj-eyebrow aj-eyebrow-accent">05 · PRODUCT SURFACES</p>
             <h2 id="screenshots-heading">Screenshots from the running app.</h2>
@@ -131,7 +132,7 @@ export default function WorkPage() {
           <p className="aj-case-placeholder-copy">No verified app screenshot files were available in this repository at the time this page was rebuilt.</p>
         </section>
 
-        <section className="aj-case-section" aria-labelledby="learning-heading">
+        <section className="aj-case-section aj-case-learning-section" aria-labelledby="learning-heading">
           <div className="aj-case-section-heading">
             <p className="aj-eyebrow aj-eyebrow-accent">06 · LEARNING & NEXT STEPS</p>
             <h2 id="learning-heading">Document the decisions, not just the features.</h2>
@@ -147,8 +148,6 @@ export default function WorkPage() {
             </div>
           </div>
         </section>
-
-        <FinanceWorkSection insideContainer />
 
         <section className="aj-case-next">
           <div>
