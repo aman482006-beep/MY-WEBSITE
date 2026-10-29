@@ -38,7 +38,7 @@ async function runViewport(viewport) {
     const menuButton = page.locator(".aj-menu-toggle");
     assert(await menuButton.isVisible(), "Mobile menu button is not visible");
     await menuButton.evaluate((element) => {
-      const button = element as HTMLButtonElement & { dataset: DOMStringMap };
+      const button = element;
       for (const eventName of ["pointerdown", "touchend", "click"]) {
         button.addEventListener(eventName, () => {
           const key = "test" + eventName;
