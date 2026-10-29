@@ -82,8 +82,8 @@ export default function Home() {
               <span>Bengaluru, India</span>
             </div>
             <div className="aj-hero-actions">
-              <a className="aj-button aj-button-primary" href="/projects">Explore projects <span aria-hidden="true">→</span></a>
-              <a className="aj-button aj-button-outline" href="/creator">Explore my content</a>
+              <Link href="/projects" className="aj-button aj-button-primary">Explore projects <span aria-hidden="true">→</span></Link>
+              <Link href="/creator" className="aj-button aj-button-outline">Explore my content</Link>
             </div>
             <div className="aj-socials" aria-label="Social links">
               {socials.map((social) => (
