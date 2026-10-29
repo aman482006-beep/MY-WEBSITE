@@ -932,33 +932,3 @@ a[href]:active, button:active { opacity: .82; }
   .aj-home-background-section .aj-recruiter-facts article, .aj-recruiter-overview-card, .aj-work-page .aj-case-feature { transition: none; }
   .aj-home-background-section .aj-recruiter-facts article:hover, .aj-recruiter-overview-card:hover, .aj-work-page .aj-case-feature:hover { transform: none; }
 }
-
-
-/* Animated tab background for the desktop navigation. The warm neutral pill slides
-   between items, like a spring-driven segmented control, without adding a new runtime dependency. */
-.aj-nav-links { position: relative; isolation: isolate; }
-.aj-nav-animated-highlight {
-  position: absolute;
-  z-index: 0;
-  top: 4px;
-  left: 0;
-  height: 36px;
-  border-radius: 10px;
-  background: #F2ECE4;
-  box-shadow: inset 0 0 0 1px rgba(222, 211, 198, .3);
-  pointer-events: none;
-  will-change: width, transform, opacity;
-  transition:
-    transform 360ms cubic-bezier(.2, .85, .25, 1),
-    width 360ms cubic-bezier(.2, .85, .25, 1),
-    opacity 120ms ease;
-}
-.aj-nav-links > a:not(.aj-mobile-cta) { z-index: 1; }
-.aj-nav-links > a.is-active::after { content: none; }
-.aj-nav-links > a:focus-visible { border-radius: 10px; outline-offset: -2px; }
-@media (max-width: 980px) {
-  .aj-nav-animated-highlight { display: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .aj-nav-animated-highlight { transition: none; }
-}
