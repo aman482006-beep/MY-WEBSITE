@@ -39,6 +39,11 @@ jobs:
       - name: Check TypeScript
         run: npx tsc --noEmit
 
+      # GitHub Pages serves static files only. Keep route.ts in the repository for
+      # server deployments, but exclude it from this one static export build.
+      - name: Exclude request-time API from static Pages build
+        run: mv src/app/api/youtube/route.ts /tmp/youtube-route.ts
+
       - name: Build static site
         run: npm run build
         env:

@@ -36,14 +36,14 @@ npm run build
 
 ## Deploy to GitHub Pages
 
-This copy uses a Next.js static export. GitHub Pages cannot run a Next.js API route or a long-lived server, so `/api/youtube` is intentionally not included in this repository; the homepage and Creator page render the feed at build time instead.
+This repository retains the original `src/app/api/youtube/route.ts` endpoint and its one-hour revalidation / cache headers for a normal Next.js server deployment (for example, Vercel). GitHub Pages cannot run request-time API routes, so the Pages workflow moves that route out of the build workspace only while creating the static export. The route remains tracked in GitHub. The homepage and Creator page render the video feed at build time in the static Pages copy.
 
 1. Open the repository **Settings → Pages**.
 2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
 3. Push to `main`. The workflow installs dependencies, runs ESLint and TypeScript checks, exports `out/`, and publishes the result.
 4. The expected project-site URL is `https://aman482006-beep.github.io/MY-WEBSITE/`.
 
-The workflow passes the optional `YOUTUBE_API_KEY` repository secret to the build. Without it, the visitor-friendly “Visit the channel” fallback is shown. With it, the feed is fetched during deployment; it updates on the next successful rebuild rather than running a server-side hourly refresh. Do not commit API keys to source files.
+The workflow passes the optional `YOUTUBE_API_KEY` repository secret to the build. Without it, the visitor-friendly “Visit the channel” fallback is shown. With it, the feed is fetched during deployment; on GitHub Pages it updates on the next successful rebuild rather than running a server-side hourly refresh. On a normal Next.js server deployment the preserved `/api/youtube` endpoint runs at request time with the source's one-hour revalidation and cache headers. Do not commit API keys to source files.
 
 ## Items intentionally left as TODO(Aman)
 

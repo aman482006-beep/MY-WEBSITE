@@ -3,13 +3,17 @@ import type { NextConfig } from "next";
 const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
 
 const nextConfig: NextConfig = {
-  // GitHub Pages serves this repository from /MY-WEBSITE/, not from the domain root.
-  output: "export",
-  basePath: isGitHubPages ? "/MY-WEBSITE" : "",
-  trailingSlash: true,
-  // A static export has no Next image-optimization server; use the source image URL directly.
+  // Static export is enabled only for the GitHub Pages workflow. Other hosts retain
+  // the normal Next.js runtime, including the request-time YouTube API route.
+  ...(isGitHubPages
+    ? {
+        output: "export" as const,
+        basePath: "/MY-WEBSITE",
+        trailingSlash: true,
+      }
+    : {}),
   images: {
-    unoptimized: true,
+    ...(isGitHubPages ? { unoptimized: true } : {}),
     remotePatterns: [
       {
         protocol: "https",
