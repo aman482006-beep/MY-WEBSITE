@@ -24,7 +24,6 @@ export function Navbar() {
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const wasOpenRef = useRef(false);
-  const previousPathnameRef = useRef<string | null>(null);
 
   const moveHighlight = useCallback((target: HTMLAnchorElement | null) => {
     const menu = menuRef.current;
@@ -72,18 +71,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Ignore the first pathname observation (hydration can normalize a static
-  // basePath); close only after a real subsequent route change.
+  // Route links close the menu in their click handlers. Also close it when
+  // browser Back/Forward changes history while the menu is open.
   useEffect(() => {
-    if (previousPathnameRef.current === null) {
-      previousPathnameRef.current = pathname;
-      return;
-    }
-    if (previousPathnameRef.current !== pathname) {
-      previousPathnameRef.current = pathname;
-      closeMenu();
-    }
-  }, [pathname, closeMenu]);
+    const onPopState = () => closeMenu();
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [closeMenu]);
 
   useEffect(() => {
     document.body.classList.toggle("aj-menu-open", mobileMenuOpen);
