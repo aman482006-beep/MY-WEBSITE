@@ -17,14 +17,14 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [menuState, setMenuState] = useState({ open: false, pathname: "/" });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [highlight, setHighlight] = useState({ left: 0, width: 0, visible: false });
-  const mobileMenuOpen = menuState.open && menuState.pathname === pathname;
-  const closeMenu = useCallback(() => setMenuState((current) => ({ ...current, open: false })), []);
+  const closeMenu = useCallback(() => setMobileMenuOpen(false), []);
   const headerRef = useRef<HTMLElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const wasOpenRef = useRef(false);
+  const previousPathnameRef = useRef<string | null>(null);
 
   const moveHighlight = useCallback((target: HTMLAnchorElement | null) => {
     const menu = menuRef.current;
@@ -72,6 +72,18 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Ignore the first pathname observation (hydration can normalize a static
+  // basePath); close only after a real subsequent route change.
+  useEffect(() => {
+    if (previousPathnameRef.current === null) {
+      previousPathnameRef.current = pathname;
+      return;
+    }
+    if (previousPathnameRef.current !== pathname) {
+      previousPathnameRef.current = pathname;
+      closeMenu();
+    }
+  }, [pathname, closeMenu]);
 
   useEffect(() => {
     document.body.classList.toggle("aj-menu-open", mobileMenuOpen);
@@ -181,7 +193,7 @@ export function Navbar() {
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileMenuOpen}
           aria-controls="primary-navigation"
-          onClick={() => setMenuState({ open: !mobileMenuOpen, pathname })}
+          onClick={() => setMobileMenuOpen((open) => !open)}
         >
           <span /><span />
         </button>
