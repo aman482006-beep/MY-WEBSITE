@@ -18,12 +18,52 @@ export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuState, setMenuState] = useState({ open: false, pathname: "/" });
+  const [highlight, setHighlight] = useState({ left: 0, width: 0, visible: false });
   const mobileMenuOpen = menuState.open && menuState.pathname === pathname;
   const closeMenu = useCallback(() => setMenuState((current) => ({ ...current, open: false })), []);
   const headerRef = useRef<HTMLElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const wasOpenRef = useRef(false);
+
+  const moveHighlight = useCallback((target: HTMLAnchorElement | null) => {
+    const menu = menuRef.current;
+    if (!menu || !target || target.getBoundingClientRect().width === 0) {
+      setHighlight((current) => ({ ...current, visible: false }));
+      return;
+    }
+
+    const menuRect = menu.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    setHighlight({
+      left: targetRect.left - menuRect.left,
+      width: targetRect.width,
+      visible: true,
+    });
+  }, []);
+
+  const restoreActiveHighlight = useCallback(() => {
+    const menu = menuRef.current;
+    if (!menu) return;
+
+    const links = Array.from(menu.querySelectorAll<HTMLAnchorElement>("a[data-nav-href]"));
+    const active = links.find((link) => {
+      const href = link.dataset.navHref;
+      return href === pathname || (href !== "/" && Boolean(href) && pathname.startsWith(href + "/"));
+    }) ?? links[0] ?? null;
+
+    moveHighlight(active);
+  }, [pathname, moveHighlight]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(restoreActiveHighlight);
+    const onResize = () => restoreActiveHighlight();
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [restoreActiveHighlight]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -94,10 +134,41 @@ export function Navbar() {
           <span className="aj-brand-name">AMAN JAIN</span>
         </Link>
 
-        <div ref={menuRef} className={"aj-nav-links" + (mobileMenuOpen ? " is-open" : "")} id="primary-navigation">
+        <div
+          ref={menuRef}
+          className={"aj-nav-links" + (mobileMenuOpen ? " is-open" : "")}
+          id="primary-navigation"
+          onMouseLeave={restoreActiveHighlight}
+          onBlurCapture={(event) => {
+            if (event.relatedTarget instanceof Node && menuRef.current?.contains(event.relatedTarget)) return;
+            window.requestAnimationFrame(restoreActiveHighlight);
+          }}
+        >
+          <span
+            className="aj-nav-animated-highlight"
+            aria-hidden="true"
+            style={{
+              width: highlight.width,
+              transform: `translateX(${highlight.left}px)`,
+              opacity: highlight.visible ? 1 : 0,
+            }}
+          />
           {navLinks.map((link) => {
-            const active = pathname === link.href;
-            return <Link key={link.href} href={link.href} className={active ? "is-active" : ""} aria-current={active ? "page" : undefined} onClick={closeMenu}>{link.label}</Link>;
+            const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href + "/"));
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                data-nav-href={link.href}
+                className={active ? "is-active" : ""}
+                aria-current={active ? "page" : undefined}
+                onMouseEnter={(event) => moveHighlight(event.currentTarget)}
+                onFocus={(event) => moveHighlight(event.currentTarget)}
+                onClick={closeMenu}
+              >
+                {link.label}
+              </Link>
+            );
           })}
           <Link href="/contact" className="aj-mobile-cta" onClick={closeMenu}>Let&apos;s connect <span aria-hidden="true">↗</span></Link>
         </div>
