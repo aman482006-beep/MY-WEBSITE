@@ -961,3 +961,39 @@ a[href]:active, button:active { opacity: .82; }
 @media (prefers-reduced-motion: reduce) {
   .aj-nav-animated-highlight { transition: none; }
 }
+
+
+/* Touch-device reliability: native taps and scrolling should never depend on hover. */
+@media (hover: none), (pointer: coarse) {
+  a[href],
+  button,
+  input,
+  select,
+  textarea,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  .aj-nav-links {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .aj-nav-links a,
+  .aj-menu-toggle {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* The page transition is decorative only; it never intercepts a tap or focus. */
+@media (prefers-reduced-motion: no-preference) {
+  .aj-route-transition {
+    animation: aj-route-enter 280ms var(--aj-ease) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-route-transition {
+    animation: none;
+  }
+}
