@@ -71,6 +71,24 @@ Useful ideas: assess the site as both a visual experience and a functional inter
 
 Used here: explicit filter button states, focus styles inherited from the design system, responsive card grids and text labels that describe projects without depending on decorative graphics.
 
+
+### 8. Blanc Browser — cream editorial product page
+Reference: https://kage.design/designs/blanc-landing-page
+
+Useful ideas: large serif type against a cream surface, mono-style eyebrow labels, shared hairline dividers, and a small number of strong page rhythms rather than gradients and cards on every section.
+
+Used here: a restrained display/body/label type hierarchy, thin warm borders and quieter section transitions. The project tiles are the primary card-heavy area because project browsing is the task they support.
+
+### 9. W3C and Chrome — motion and accessibility guidance
+References:
+- https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions
+- https://www.w3.org/WAI/WCAG22/Techniques/css/C39
+- https://developer.chrome.com/docs/modern-web-guidance/guides/ui-behaviors/motion
+
+Useful ideas: remove non-essential movement when the user requests reduced motion, keep motion effects from competing with reading, and prefer transform/opacity-based motion over layout-triggering movement.
+
+Used here: project-card movement is a small transform-only hover enhancement with a reduced-motion override; the interactive project filter is a labelled button group with aria-pressed states and a status message. The original motion system remains governed by the site's reduced-motion rules.
+
 ## Implemented changes in this pass
 
 - Added a Selected Projects section to the homepage featuring four real repositories: Market Monitor, Agentic Finance Research Lab, Ideas to Execution and AirMath AI.
@@ -98,6 +116,7 @@ Used here: explicit filter button states, focus styles inherited from the design
 - npx tsc --noEmit passed on that commit.
 - npm run build completed successfully and generated static output for the six main page routes, metadata images, robots.txt and sitemap.xml.
 - GitHub Pages artifact upload completed successfully.
+- Manual contrast spot-check for the new project-card artwork found and corrected low-contrast small labels in the agent and venture illustrations; corrected foregrounds are now above 4.5:1 against their intended surfaces.
 
 ### Still pending
 - GitHub Pages deployment: GitHub returned HTTP 404 because Pages has not yet been enabled for this repository. Enable Pages in Settings → Pages and select GitHub Actions, then rerun the deployment.
