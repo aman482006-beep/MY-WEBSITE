@@ -905,7 +905,7 @@ a[href]:active, button:active { opacity: .82; }
 @media (min-width: 701px) and (max-width: 980px) {
   .aj-nav-cta { display: none; }
   .aj-menu-toggle { display: flex; }
-  .aj-nav-links { position: absolute; top: 71px; inset-inline: 20px; display: flex; flex-direction: column; align-items: stretch; gap: 2px; max-width: 760px; margin-inline: auto; padding: 10px 17px 18px; border: 1px solid var(--aj-line); border-radius: 0 0 16px 16px; background: rgba(255,252,247,.99); box-shadow: 0 12px 24px rgba(43,30,18,.07); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity .18s ease, transform .18s var(--aj-ease), visibility .18s; }
+  .aj-nav-links { position: absolute; z-index: 501; top: 71px; inset-inline: 20px; display: flex; flex-direction: column; align-items: stretch; gap: 2px; max-height: calc(100vh - 72px); max-height: calc(100dvh - 72px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; max-width: 760px; margin-inline: auto; padding: 10px 17px 18px; border: 1px solid var(--aj-line); border-radius: 0 0 16px 16px; background: rgba(255,252,247,.99); box-shadow: 0 12px 24px rgba(43,30,18,.07); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity .18s ease, transform .18s var(--aj-ease), visibility .18s; }
   .aj-nav-links.is-open { opacity: 1; visibility: visible; transform: translateY(0); }
   .aj-nav-links > a { justify-content: flex-start; padding-inline: 12px; }
   .aj-nav-links > .aj-mobile-cta { display: flex; margin-top: 7px; background: var(--aj-orange); border-color: var(--aj-orange); color: var(--aj-ink); }
@@ -938,8 +938,13 @@ a[href]:active, button:active { opacity: .82; }
 }
 
 
-/* Spring-like moving tab background, scoped to the main desktop navigation. */
-.aj-nav-links { position: relative; isolation: isolate; }
+/* Spring-like moving tab background, scoped to the main desktop navigation.
+   Keep positioning desktop-only: later global rules must not pull the mobile dropdown
+   back into the horizontal navbar row. */
+.aj-nav-links { isolation: isolate; }
+@media (min-width: 981px) {
+  .aj-nav-links { position: relative; }
+}
 .aj-nav-animated-highlight {
   position: absolute;
   z-index: 0;
