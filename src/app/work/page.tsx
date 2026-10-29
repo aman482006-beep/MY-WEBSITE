@@ -82,9 +82,31 @@ export default function WorkPage() {
         </section>
 
 
+        <section className="aj-case-section" aria-labelledby="role-heading">
+          <div className="aj-case-section-heading">
+            <p className="aj-eyebrow aj-eyebrow-accent">03 · MY ROLE</p>
+            <h2 id="role-heading">A personal project, documented honestly.</h2>
+          </div>
+          <div className="aj-case-copy">
+            <p>Fokus is documented in the source repository as a personal project. The available repository describes the product areas and technology stack, but it does not provide a verified, detailed breakdown of individual engineering contributions.</p>
+            <p className="aj-case-source-note">TODO(Aman): Add your specific responsibilities, key implementation decisions and any verified testing or release details before presenting this as a complete technical case study.</p>
+          </div>
+        </section>
+
+        <section className="aj-case-section" aria-labelledby="stack-heading">
+          <div className="aj-case-section-heading">
+            <p className="aj-eyebrow aj-eyebrow-accent">04 · STACK</p>
+            <h2 id="stack-heading">Tools and integrations.</h2>
+          </div>
+          <div className="aj-work-tags aj-case-stack">
+            {stack.map((item) => <span key={item}>{item}</span>)}
+          </div>
+          <p className="aj-case-source-note">The stack above is listed in the Fokus repository README; it is not a claim that each package is used by every platform build.</p>
+        </section>
+
         <section className="aj-case-section" aria-labelledby="screenshots-heading">
           <div className="aj-case-section-heading">
-            <p className="aj-eyebrow aj-eyebrow-accent">03 · PRODUCT SURFACES</p>
+            <p className="aj-eyebrow aj-eyebrow-accent">05 · PRODUCT SURFACES</p>
             <h2 id="screenshots-heading">Screenshots from the running app.</h2>
             <p>TODO(Aman): Add genuine captures from the current Fokus build. These clearly marked placeholders are not presented as real screenshots.</p>
           </div>
@@ -109,15 +131,21 @@ export default function WorkPage() {
           <p className="aj-case-placeholder-copy">No verified app screenshot files were available in this repository at the time this page was rebuilt.</p>
         </section>
 
-        <section className="aj-case-section" aria-labelledby="stack-heading">
+        <section className="aj-case-section" aria-labelledby="learning-heading">
           <div className="aj-case-section-heading">
-            <p className="aj-eyebrow aj-eyebrow-accent">04 · STACK</p>
-            <h2 id="stack-heading">Tools and integrations.</h2>
+            <p className="aj-eyebrow aj-eyebrow-accent">06 · LEARNING & NEXT STEPS</p>
+            <h2 id="learning-heading">Document the decisions, not just the features.</h2>
           </div>
-          <div className="aj-work-tags aj-case-stack">
-            {stack.map((item) => <span key={item}>{item}</span>)}
+          <div className="aj-case-split">
+            <div>
+              <h2>What I’m documenting next</h2>
+              <p className="aj-case-placeholder-copy">TODO(Aman): Add specific lessons learned from the product build, platform differences, architecture choices and user feedback. No unverified results or usage metrics are being claimed.</p>
+            </div>
+            <div>
+              <h2>Next steps</h2>
+              <p className="aj-case-copy">Add genuine screenshots from the current build, explain the most important implementation trade-offs, and link to the exact files or commits that support each technical claim.</p>
+            </div>
           </div>
-          <p className="aj-case-source-note">The stack above is listed in the Fokus repository README; it is not a claim that each package is used by every platform build.</p>
         </section>
 
         <FinanceWorkSection insideContainer />
