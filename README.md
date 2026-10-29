@@ -11,6 +11,10 @@ This repository is the GitHub Pages copy of [amanmalu.me](https://amanmalu.me), 
 - `/resources/` — Planned finance toolkits, CFA study systems, creator workflows and resource-request email draft.
 - `/contact/` — Accessible contact page with inquiry categories, email copy action and social links.
 
+## Design research & rationale
+
+The visual direction and implementation trade-offs are documented in [docs/design-rationale.md](docs/design-rationale.md), including the public design references reviewed, patterns adopted, choices deliberately avoided, and remaining verification items.
+
 ## Tech stack
 
 - Next.js 16 App Router, React 19, TypeScript
