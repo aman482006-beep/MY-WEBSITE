@@ -35,6 +35,18 @@ async function runViewport(viewport) {
     );
     assert(!homeOverflow, "Homepage has horizontal overflow at " + viewport.width + "px");
 
+    // Verify a primary homepage CTA with a real touch, independently of the menu.
+    await page.getByRole("link", { name: /Explore projects/i }).tap();
+    await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
+    await page.getByRole("heading", { name: "Selected builds, experiments and tools." }).waitFor();
+    await page.goto(base + "/", { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(
+      () => document.documentElement.classList.contains("aj-motion-enabled"),
+      null,
+      { timeout: 15000 },
+    );
+    await page.waitForTimeout(250);
+
     const menuButton = page.locator(".aj-menu-toggle");
     assert(await menuButton.isVisible(), "Mobile menu button is not visible");
     await menuButton.evaluate((element) => {
@@ -49,8 +61,8 @@ async function runViewport(viewport) {
     await menuButton.tap();
     await page.waitForTimeout(250);
     const menuEvidence = await page.evaluate(() => {
-      const button = document.querySelector<HTMLButtonElement>(".aj-menu-toggle");
-      const navigation = document.querySelector<HTMLElement>("#primary-navigation");
+      const button = document.querySelector(".aj-menu-toggle");
+      const navigation = document.querySelector("#primary-navigation");
       const rect = button?.getBoundingClientRect();
       const hitTarget = rect ? document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2) : null;
       return {
@@ -98,6 +110,10 @@ async function runViewport(viewport) {
 
     const draftLink = page.getByRole("link", { name: /Open email draft/i });
     assert((await draftLink.getAttribute("href") || "").startsWith("mailto:"), "Email draft button does not have a mailto destination");
+
+    const copyEmailButton = page.getByRole("button", { name: /Copy email address/i });
+    await copyEmailButton.tap();
+    await page.getByRole("button", { name: /Email copied|Copy failed/i }).waitFor();
 
     const contactOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
