@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { LatestVideos } from "@/components/sections/latest-videos";
-import { FOKUS } from "@/data/fokus";
 import { SocialIcon, type SocialIconName } from "@/components/layout/social-icon";
 
 const socials: { label: string; href: string; icon: SocialIconName }[] = [
@@ -141,46 +140,6 @@ export default function Home() {
       </section>
 
       <LatestVideos />
-
-      <section className="aj-section aj-featured-section" id="featured">
-        <div className="aj-container">
-          <div className="aj-section-heading aj-section-heading-inline">
-            <div><p className="aj-eyebrow aj-eyebrow-accent">FEATURED PROJECT</p><h2>Fokus <span>— Stay on Track, Together.</span></h2></div>
-            <Link className="aj-text-link" href="/work">View case study <span aria-hidden="true">→</span></Link>
-          </div>
-          <article className="aj-feature-card">
-            <div className="aj-focus-art" aria-label="Fokus app interface concept">
-              <div className="aj-focus-glow" />
-              <div className="aj-phone aj-phone-back">
-                <div className="aj-phone-notch" />
-                <span className="aj-phone-small">OVERVIEW</span><strong>Analytics</strong>
-                <div className="aj-chart-bars"><i /><i /><i /><i /><i /><i /><i /></div>
-                <span className="aj-mini-line" /><span className="aj-mini-line short" />
-              </div>
-              <div className="aj-phone aj-phone-front">
-                <div className="aj-phone-notch" />
-                <div className="aj-fokus-mark">◉</div>
-                <strong>Fokus</strong><span className="aj-phone-muted">Focus Together</span>
-                <div className="aj-phone-task"><i /> Deep Work <b>45m</b></div>
-                <div className="aj-phone-task"><i /> CFA Study <b>30m</b></div>
-                <div className="aj-phone-task"><i /> Reading <b>20m</b></div>
-                <div className="aj-phone-cta">Get started →</div>
-              </div>
-              <div className="aj-focus-note">Less noise.<br />More focus.</div>
-            </div>
-            <div className="aj-feature-content">
-              <div className="aj-app-kicker">PRODUCTIVITY <span>•</span> FLUTTER <span>•</span> WINDOWS STORE</div>
-              <h3>{FOKUS.name}</h3>
-              <p>A Flutter productivity app bringing focus sessions, ambient environments, reminders and progress tracking into one workspace.</p>
-              <div className="aj-feature-actions">
-                <a href={FOKUS.storeUrl} target="_blank" rel="noopener noreferrer" className="aj-button aj-button-primary">Get Fokus <span aria-hidden="true">↗</span></a>
-                <a href={FOKUS.sourceUrl} target="_blank" rel="noopener noreferrer" className="aj-button aj-button-outline"><span aria-hidden="true">⌘</span> View on GitHub</a>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
 
       <section className="aj-section aj-recruiters-section aj-home-background-section" id="background">
         <div className="aj-container">
