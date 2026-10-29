@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { LatestVideos } from "@/components/sections/latest-videos";
 import { FinanceWorkSection } from "@/components/sections/finance-work";
+import { ProjectShowcase } from "@/components/sections/project-showcase";
 import { FOKUS } from "@/data/fokus";
 import { currentlyOpenTo } from "@/data/profile";
 import { ResumeDownload } from "@/components/sections/resume-download";
@@ -142,6 +143,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ProjectShowcase />
 
       <section className="aj-section aj-featured-section" id="featured">
         <div className="aj-container">

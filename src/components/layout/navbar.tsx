@@ -9,6 +9,7 @@ const navLinks = [
   { label: "Work", href: "/work" },
   { label: "Creator", href: "/creator" },
   { label: "Recruiters", href: "/recruiters" },
+  { label: "Resources", href: "/resources" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -97,7 +98,6 @@ export function Navbar() {
             const active = pathname === link.href;
             return <Link key={link.href} href={link.href} className={active ? "is-active" : ""} aria-current={active ? "page" : undefined} onClick={closeMenu}>{link.label}</Link>;
           })}
-          <Link href="/resources" className="aj-mobile-resource" onClick={closeMenu}>Resources</Link>
           <Link href="/contact" className="aj-mobile-cta" onClick={closeMenu}>Let&apos;s connect <span aria-hidden="true">↗</span></Link>
         </div>
 
