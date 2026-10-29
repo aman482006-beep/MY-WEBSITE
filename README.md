@@ -1,34 +1,62 @@
 # Aman Jain — Portfolio
 
-A responsive static-site recreation of the live portfolio at https://amanmalu.me/, organised into six pages: Home, Work, Creator, Recruiters, Resources and Contact.
+This repository is the GitHub Pages copy of [amanmalu.me](https://amanmalu.me), built from the portfolio's actual Next.js source rather than a separate visual approximation.
 
-## Preview locally
+## Pages
 
-Open index.html in a browser. The site uses plain HTML, CSS and JavaScript; there is no package installation or build step.
+- `/` — Portrait-led introduction, Finance / Build / Create pillars, Fokus feature, finance-work section, creator preview, recruiter overview and contact.
+- `/work/` — Fokus case study, core feature list, technology stack, explicit screenshot placeholders and selected finance work.
+- `/creator/` — Creator pillars and YouTube feed / channel fallback.
+- `/recruiters/` — Education, internships, CFA candidate status, skills, selected qualifications and résumé action.
+- `/resources/` — Planned finance toolkits, CFA study systems, creator workflows and resource-request email draft.
+- `/contact/` — Accessible contact page with inquiry categories, email copy action and social links.
 
-## Deploy with GitHub Pages
+## Tech stack
 
-1. Open the repository settings on GitHub.
-2. Select Pages in the sidebar.
-3. Under Build and deployment, choose Deploy from a branch.
-4. Select the main branch and the root folder, then save.
-5. After GitHub finishes deploying, open the Pages URL shown in Settings → Pages.
+- Next.js 16 App Router, React 19, TypeScript
+- Tailwind CSS v4 and the shared `aj-` visual system
+- Newsreader, Manrope and Caveat via `next/font`
+- CSS motion and Lenis smooth scrolling, with reduced-motion support
+- Vercel Analytics / Speed Insights components (most useful when the site is hosted on Vercel)
 
-The project is structured for a project-site URL such as https://aman482006-beep.github.io/MY-WEBSITE/. Relative asset links are used so the same pages work under the repository path.
+## Run locally
 
-## Project structure
+```bash
+npm ci
+npm run dev
+```
 
-- index.html — home route
-- work/index.html — Fokus case study
-- creator/index.html — creator hub and content pillars
-- recruiters/index.html — education, experience, skills and coursework
-- resources/index.html — planned resource library
-- contact/index.html — contact options
-- assets/styles.css — shared design system and responsive layout
-- assets/app.js — page content, navigation and lightweight interactions
+Run checks and build:
 
-## Notes
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```
 
-- The portrait is served from the live portfolio domain. If that domain or asset changes, update the portrait URL in assets/app.js.
-- The résumé PDF is not included in this repository; the link opens an email request rather than pointing to a missing file.
-- Social and project links point to their corresponding external profiles or project pages.
+## Deploy to GitHub Pages
+
+This copy uses a Next.js static export. GitHub Pages cannot run a Next.js API route or a long-lived server, so `/api/youtube` is intentionally not included in this repository; the homepage and Creator page render the feed at build time instead.
+
+1. Open the repository **Settings → Pages**.
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+3. Push to `main`. The workflow installs dependencies, runs ESLint and TypeScript checks, exports `out/`, and publishes the result.
+4. The expected project-site URL is `https://aman482006-beep.github.io/MY-WEBSITE/`.
+
+The workflow passes the optional `YOUTUBE_API_KEY` repository secret to the build. Without it, the visitor-friendly “Visit the channel” fallback is shown. With it, the feed is fetched during deployment; it updates on the next successful rebuild rather than running a server-side hourly refresh. Do not commit API keys to source files.
+
+## Items intentionally left as TODO(Aman)
+
+- **Résumé PDF:** Add the current approved PDF to `public/Aman-Jain-Resume.pdf`; the button stays disabled until the file exists.
+- **Fokus screenshots:** Add 3–4 genuine screenshots from the actual app build. The current case-study slots are labeled placeholders, not fabricated app captures.
+- **Finance files:** Attach completed PDF / Excel assets and replace the `TODO(Aman)` takeaways in `src/data/finance-work.ts`. No research conclusions or performance metrics have been invented.
+- **Project deployment:** Set GitHub Pages source to GitHub Actions once in Settings, then confirm the first Actions run.
+
+## Contact
+
+- Website: [amanmalu.me](https://amanmalu.me)
+- Email: [jain.aman3789@gmail.com](mailto:jain.aman3789@gmail.com)
+- LinkedIn: [amanmalu](https://www.linkedin.com/in/amanmalu/)
+- GitHub: [aman482006-beep](https://github.com/aman482006-beep)
+- YouTube: [@AmanJain-4](https://www.youtube.com/@AmanJain-4)
+- Instagram: [@aman.ja1n](https://www.instagram.com/aman.ja1n/)

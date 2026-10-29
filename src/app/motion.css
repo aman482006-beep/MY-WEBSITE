@@ -1,0 +1,293 @@
+/* Motion layer: subtle, transform-only interaction that always has a static fallback. */
+@keyframes aj-route-enter {
+  from { opacity: .72; translate: 0 7px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes aj-view-old { to { opacity: 0; } }
+@keyframes aj-view-new { from { opacity: 0; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  html.aj-motion-enabled:not(.aj-view-transitions) .aj-route-transition {
+    animation: aj-route-enter 480ms var(--aj-ease) both;
+  }
+
+  html.aj-view-transitions::view-transition-old(root) {
+    animation: aj-view-old 180ms ease-in both;
+  }
+
+  html.aj-view-transitions::view-transition-new(root) {
+    animation: aj-view-new 380ms var(--aj-ease) both;
+  }
+}
+
+html.aj-motion-enabled [data-reveal] {
+  opacity: 0;
+  translate: 0 14px;
+  transition:
+    opacity 650ms var(--aj-ease),
+    translate 650ms var(--aj-ease);
+  transition-delay: var(--aj-reveal-delay, 0ms);
+}
+
+html.aj-motion-enabled [data-reveal][data-revealed="true"] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  .aj-button-primary {
+    will-change: translate;
+  }
+
+  html.aj-motion-enabled .aj-video-card {
+    transform-style: preserve-3d;
+    transition:
+      transform 220ms var(--aj-ease),
+      translate 220ms var(--aj-ease),
+      box-shadow 220ms ease;
+  }
+
+  html.aj-motion-enabled .aj-video-card:hover {
+    translate: 0 -3px;
+  }
+
+  .aj-focus-art[data-revealed="true"] .aj-phone-front {
+    animation: aj-phone-rise 700ms var(--aj-ease) 60ms both;
+  }
+
+  .aj-focus-art[data-revealed="true"] .aj-phone-back {
+    animation: aj-phone-rise 700ms var(--aj-ease) both;
+  }
+
+  .aj-focus-art[data-revealed="true"] .aj-chart-bars i {
+    transform-origin: center bottom;
+    animation: aj-bars-grow 600ms var(--aj-ease) both;
+  }
+
+  .aj-focus-art[data-revealed="true"] .aj-chart-bars i:nth-child(2) { animation-delay: 45ms; }
+  .aj-focus-art[data-revealed="true"] .aj-chart-bars i:nth-child(3) { animation-delay: 90ms; }
+  .aj-focus-art[data-revealed="true"] .aj-chart-bars i:nth-child(4) { animation-delay: 135ms; }
+  .aj-focus-art[data-revealed="true"] .aj-chart-bars i:nth-child(5) { animation-delay: 180ms; }
+  .aj-focus-art[data-revealed="true"] .aj-chart-bars i:nth-child(6) { animation-delay: 225ms; }
+  .aj-focus-art[data-revealed="true"] .aj-chart-bars i:nth-child(7) { animation-delay: 270ms; }
+
+  .aj-focus-art[data-revealed="true"] .aj-phone-task {
+    animation: aj-task-slide 520ms var(--aj-ease) both;
+  }
+  .aj-focus-art[data-revealed="true"] .aj-phone-task:nth-of-type(3) { animation-delay: 120ms; }
+  .aj-focus-art[data-revealed="true"] .aj-phone-task:nth-of-type(4) { animation-delay: 190ms; }
+  .aj-focus-art[data-revealed="true"] .aj-phone-task:nth-of-type(5) { animation-delay: 260ms; }
+}
+
+@keyframes aj-phone-rise {
+  from { translate: 0 12px; }
+  to { translate: 0 0; }
+}
+
+@keyframes aj-bars-grow {
+  from { transform: scaleY(.12); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes aj-task-slide {
+  from { opacity: .65; translate: 7px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+.aj-back-to-top {
+  position: fixed;
+  z-index: 400;
+  right: 22px;
+  bottom: 22px;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(244, 92, 42, .3);
+  border-radius: 50%;
+  color: var(--aj-ink);
+  background: var(--aj-card);
+  box-shadow: 0 5px 20px rgba(43, 31, 22, .12);
+  font-size: 23px;
+  line-height: 1;
+  opacity: 0;
+  translate: 0 9px;
+  pointer-events: none;
+  transition: opacity 220ms ease, translate 220ms var(--aj-ease), background 220ms ease;
+}
+
+.aj-back-to-top.is-visible {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+
+.aj-back-to-top:hover {
+  background: var(--aj-peach);
+}
+
+@media (max-width: 700px) {
+  .aj-back-to-top { right: 14px; bottom: 14px; width: 46px; height: 46px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aj-route-transition,
+  html.aj-view-transitions::view-transition-old(root),
+  html.aj-view-transitions::view-transition-new(root),
+  html.aj-motion-enabled [data-reveal],
+  .aj-focus-art[data-revealed="true"] .aj-phone-front,
+  .aj-focus-art[data-revealed="true"] .aj-phone-back,
+  .aj-focus-art[data-revealed="true"] .aj-chart-bars i,
+  .aj-focus-art[data-revealed="true"] .aj-phone-task,
+  .aj-focus-art[data-revealed="true"] .aj-phone-cta,
+  .aj-focus-art[data-revealed="true"] .aj-phone-task i::after {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    translate: none !important;
+  }
+
+  .aj-marquee { display: none; }
+  .aj-scroll-progress-fill { transition: none; }
+  .aj-pillar::after { display: none; }
+  .aj-pillar-svg path,
+  html.aj-motion-enabled .aj-pillar-svg path {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    --aj-icon-offset: 0;
+    transition: none;
+  }
+  .aj-focus-art .aj-chart-bars i { transform: none; }
+  .aj-focus-art .aj-phone-task i::after { opacity: 0; scale: 1; }
+  .aj-back-to-top { transition: none; }
+}
+
+
+/* The repeated label strip stays compact and still communicates without JS. */
+.aj-marquee {
+  overflow: hidden;
+  border-block: 1px solid var(--aj-line);
+  background: rgba(255, 255, 255, .42);
+  color: var(--aj-muted);
+}
+.aj-marquee-track {
+  display: flex;
+  width: max-content;
+  min-height: 36px;
+  align-items: center;
+  gap: 0;
+  padding-inline: 0;
+  white-space: nowrap;
+}
+.aj-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  margin-right: 28px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+.aj-marquee-item i { color: var(--aj-orange); font-style: normal; }
+
+@keyframes aj-marquee-scroll {
+  to { translate: -50% 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.aj-motion-enabled .aj-marquee-track {
+    animation: aj-marquee-scroll 38s linear infinite;
+  }
+}
+.aj-marquee:hover .aj-marquee-track { animation-play-state: paused; }
+
+@property --aj-icon-offset {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+.aj-pillar { position: relative; overflow: hidden; isolation: isolate; }
+.aj-pillar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    230px circle at var(--aj-pillar-x, 50%) var(--aj-pillar-y, 50%),
+    rgba(244, 92, 42, .10),
+    transparent 70%
+  );
+  transition: opacity 240ms ease;
+}
+.aj-pillar[data-pointer-active="true"]::after { opacity: 1; }
+.aj-pillar-icon, .aj-pillar-copy { position: relative; z-index: 1; }
+.aj-pillar-svg { display: block; width: 30px; height: 30px; overflow: visible; }
+html.aj-motion-enabled .aj-pillar-svg path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: var(--aj-icon-offset, 100);
+  --aj-icon-offset: 100;
+  transition: --aj-icon-offset 850ms var(--aj-ease);
+}
+html.aj-motion-enabled .aj-pillar[data-revealed="true"] .aj-pillar-svg path {
+  --aj-icon-offset: 0;
+}
+
+/* Reveal-only micro-interactions: no endless loops when the illustration is off-screen. */
+@keyframes aj-task-check {
+  from { opacity: 0; scale: .2; }
+  to { opacity: 1; scale: 1; }
+}
+.aj-phone-task i { position: relative; }
+.aj-phone-task i::after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 5px;
+  left: 2px;
+  top: 0;
+  border-right: 1px solid #8B5D48;
+  border-bottom: 1px solid #8B5D48;
+  rotate: 45deg;
+  scale: .2;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .aj-focus-art[data-revealed="true"] .aj-chart-bars i {
+    transform-origin: center bottom;
+    animation: aj-bars-grow 600ms var(--aj-ease) both;
+  }
+  .aj-focus-art[data-revealed="true"] .aj-phone-task i::after {
+    animation: aj-task-check 300ms var(--aj-ease) both;
+  }
+  .aj-focus-art[data-revealed="true"] .aj-phone-task:nth-of-type(3) i::after { animation-delay: 120ms; }
+  .aj-focus-art[data-revealed="true"] .aj-phone-task:nth-of-type(4) i::after { animation-delay: 190ms; }
+  .aj-focus-art[data-revealed="true"] .aj-phone-task:nth-of-type(5) i::after { animation-delay: 260ms; }
+}
+
+/* Native scroll-driven motion is an enhancement; the portrait remains visible without it. */
+@keyframes aj-hero-photo-scroll {
+  to { translate: 0 -40px; scale: .96; }
+}
+@keyframes aj-hero-note-fade {
+  to { opacity: .2; }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.aj-motion-enabled .aj-home .aj-photo-frame {
+      animation-name: aj-photo-float, aj-hero-photo-scroll;
+      animation-duration: 8s, 1s;
+      animation-timing-function: ease-in-out, linear;
+      animation-iteration-count: infinite, 1;
+      animation-direction: alternate, normal;
+      animation-fill-mode: none, both;
+      animation-timeline: auto, view();
+      animation-range: normal, exit 0% exit 100%;
+    }
+    html.aj-motion-enabled .aj-home .aj-note-left, html.aj-motion-enabled .aj-home .aj-note-right {
+      animation: aj-hero-note-fade 1s linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
