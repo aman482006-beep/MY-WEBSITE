@@ -36,7 +36,7 @@ async function runViewport(viewport) {
     assert(!homeOverflow, "Homepage has horizontal overflow at " + viewport.width + "px");
 
     // Verify a primary homepage CTA with a real touch, independently of the menu.
-    await page.getByRole("link", { name: /Explore projects/i }).tap();
+    await page.getByRole("link", { name: "Explore projects", exact: true }).tap();
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
     await page.getByRole("heading", { name: "Selected builds, experiments and tools." }).waitFor();
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
