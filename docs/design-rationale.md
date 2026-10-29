@@ -116,6 +116,8 @@ Used here: project-card movement is a small transform-only hover enhancement wit
 - npx tsc --noEmit passed on that commit.
 - npm run build completed successfully and generated static output for the six main page routes, metadata images, robots.txt and sitemap.xml.
 - GitHub Pages artifact upload completed successfully.
+- Parsed the generated static artifact: all six main route HTML files exist; each page has one H1, a unique title, description and canonical link.
+- Checked 346 internal route/asset references and 13 in-page fragment links in the generated artifact: zero missing local targets and zero broken fragments.
 - Manual contrast spot-check for the new project-card artwork found and corrected low-contrast small labels in the agent and venture illustrations; corrected foregrounds are now above 4.5:1 against their intended surfaces.
 
 ### Still pending

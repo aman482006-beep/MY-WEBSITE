@@ -49,6 +49,9 @@ jobs:
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
 
+      - name: Add nojekyll marker for Next.js asset paths
+        run: touch out/.nojekyll
+
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
