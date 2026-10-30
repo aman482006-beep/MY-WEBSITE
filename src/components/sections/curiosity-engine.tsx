@@ -332,6 +332,7 @@ export function CuriosityEngine() {
   const [notePositions, setNotePositions] = useState<Record<NoteId, Point>>(NOTE_LAYOUTS[0]);
   const [deskArrangement, setDeskArrangement] = useState(0);
   const [eggOpen, setEggOpen] = useState(false);
+  const [openedNote, setOpenedNote] = useState<NoteId | null>(null);
   const [timeText, setTimeText] = useState("--:--");
   const [dateText, setDateText] = useState("Your device's local time");
   const [greeting, setGreeting] = useState("Hello");
@@ -564,6 +565,16 @@ export function CuriosityEngine() {
     "Tiny reminder: unfinished experiments still count as experiments.",
     "Plot twist: the sticky notes are the project manager.",
   ];
+  const activeDeskNote = notes.find((note) => note.id === openedNote);
+
+  useEffect(() => {
+    if (!openedNote) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenedNote(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [openedNote]);
 
   return (
     <section className="ce-engine" id="curiosity-lab" aria-labelledby="ce-heading">
@@ -846,22 +857,52 @@ export function CuriosityEngine() {
                     >
                       <div className="ce-desk-note-top">
                         <span>{note.label}</span>
-                        <button
-                          type="button"
-                          className="ce-note-grip"
-                          aria-label={"Drag the note: " + note.title}
-                          data-cursor-label="MOVE"
-                          onPointerDown={(event) => startNoteDrag(note.id, event)}
-                          onPointerMove={moveNote}
-                          onPointerUp={endNoteDrag}
-                          onPointerCancel={endNoteDrag}
-                        >⠿</button>
+                        <div className="ce-note-actions">
+                          <button
+                            type="button"
+                            className="ce-note-open"
+                            aria-label={"Open note details: " + note.title}
+                            onClick={() => setOpenedNote(note.id)}
+                          >↗</button>
+                          <button
+                            type="button"
+                            className="ce-note-grip"
+                            aria-label={"Drag the note: " + note.title}
+                            data-cursor-label="MOVE"
+                            onPointerDown={(event) => startNoteDrag(note.id, event)}
+                            onPointerMove={moveNote}
+                            onPointerUp={endNoteDrag}
+                            onPointerCancel={endNoteDrag}
+                          >⠿</button>
+                        </div>
                       </div>
                       <h4>{note.title}</h4>
                       <p>{note.body}</p>
                       <span className="ce-desk-note-scribble" aria-hidden="true">↗</span>
                     </article>
                   ))}
+                  {activeDeskNote && (
+                    <div className="ce-note-window-layer">
+                      <button
+                        type="button"
+                        className="ce-note-window-backdrop"
+                        aria-label="Close note details"
+                        onClick={() => setOpenedNote(null)}
+                      />
+                      <section className={"ce-note-window ce-note-window-" + activeDeskNote.tone} role="dialog" aria-modal="true" aria-labelledby="ce-note-window-title">
+                        <div className="ce-note-window-header">
+                          <span>{activeDeskNote.label}</span>
+                          <button type="button" onClick={() => setOpenedNote(null)} aria-label="Close note details">×</button>
+                        </div>
+                        <h4 id="ce-note-window-title">{activeDeskNote.title}</h4>
+                        <p>{activeDeskNote.body}</p>
+                        <div className="ce-note-window-footer">
+                          <span>KEEP THIS THOUGHT CLOSE</span>
+                          <button type="button" onClick={() => setOpenedNote(null)}>Back to the desk <span aria-hidden="true">↗</span></button>
+                        </div>
+                      </section>
+                    </div>
+                  )}
                   <div className="ce-custom-cursor" ref={cursorRef} aria-hidden="true" />
                 </div>
                 <div className="ce-desk-footer">
