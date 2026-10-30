@@ -44,7 +44,7 @@ jobs:
             | gzip --decompress --stdout > /tmp/daily-newspaper-preview.html
           echo "5d5067a4453b725414a826b64ebdb04df34d49be8f3332c7eebd1497da30c12a  /tmp/daily-newspaper-preview.html" | sha256sum --check
           grep -qi '^<!doctype html>' /tmp/daily-newspaper-preview.html
-          grep -q 'Money, Markets &amp; Main Character Energy' /tmp/daily-newspaper-preview.html
+          grep -q 'Money, Markets & Main Character Energy' /tmp/daily-newspaper-preview.html
 
       - name: Run ESLint
         run: npm run lint
