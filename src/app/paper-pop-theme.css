@@ -443,3 +443,229 @@ body {
     transition: none !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Paper Pop — site-wide finishing pass
+   Bring the rest of the portfolio closer to the Curiosity Lab visual language.
+   -------------------------------------------------------------------------- */
+:root {
+  --aj-orange: var(--aj-pop-orange);
+  --aj-orange-dark: #C24C27;
+  --aj-peach: var(--aj-yellow);
+  --aj-blue: var(--aj-sky);
+  --aj-green: var(--aj-pink);
+  --aj-hard-shadow: 4px 4px 0 var(--aj-ink);
+}
+
+/* Hero details: keep the portrait editorial, but give its frame the same
+   physical, cut-paper quality as the interactive workspace. */
+.aj-hero {
+  background:
+    radial-gradient(circle at 78% 38%, rgba(169, 229, 243, .23), transparent 30%),
+    radial-gradient(circle at 13% 8%, rgba(247, 175, 198, .13), transparent 26%),
+    transparent;
+}
+.aj-photo-backdrop {
+  border: 1.5px solid var(--aj-ink);
+  border-radius: 18px;
+  background: var(--aj-yellow);
+  box-shadow: 4px 4px 0 var(--aj-ink);
+}
+.aj-photo-frame {
+  border: 2px solid var(--aj-ink);
+  border-radius: 12px;
+  box-shadow: 5px 5px 0 var(--aj-ink);
+}
+.aj-note {
+  border: 1.5px solid var(--aj-ink);
+  border-radius: 4px 8px 5px 7px;
+  box-shadow: 3px 3px 0 var(--aj-ink);
+  color: var(--aj-ink);
+}
+.aj-note-left { background: var(--aj-yellow); }
+.aj-note-right { background: var(--aj-pink); }
+
+/* Inner-page introductions become clear, paper-like panels rather than
+   floating headings on an otherwise unrelated background. */
+.aj-inner-heading {
+  padding: clamp(22px, 3.6vw, 40px);
+  border: 1.5px solid var(--aj-ink);
+  border-radius: 19px;
+  background: var(--aj-sky-soft);
+  box-shadow: var(--aj-hard-shadow);
+}
+.aj-inner-heading h1 {
+  font-family: var(--font-display);
+}
+.aj-inner-heading > p:not(.aj-eyebrow):not(.aj-currently-line) {
+  max-width: 760px;
+}
+.aj-inner-heading .aj-eyebrow,
+.aj-section-heading .aj-eyebrow,
+.aj-case-section-heading .aj-eyebrow {
+  color: #5D6068;
+}
+.aj-inner-heading .aj-eyebrow::first-letter,
+.aj-section-heading .aj-eyebrow::first-letter {
+  color: var(--aj-pop-orange);
+}
+
+/* Give the home-page feature and finance cards the same crisp edge and
+   deliberately-offset shadow used by the interest-map nodes. */
+.aj-feature-card,
+.aj-finance-work-card,
+.aj-finance-bridge-card {
+  border: 1.5px solid var(--aj-ink);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--aj-ink);
+}
+.aj-feature-card { background: var(--aj-card); }
+.aj-focus-art,
+.aj-art-fokus {
+  border: 1px solid rgba(32, 35, 43, .16);
+  background: var(--aj-sky-soft);
+}
+.aj-finance-work-card:nth-child(3n + 1) { background: #FFF8D9; }
+.aj-finance-work-card:nth-child(3n + 2) { background: #F0FAFC; }
+.aj-finance-work-card:nth-child(3n) { background: #FCECF1; }
+.aj-finance-bridge-card {
+  background: linear-gradient(110deg, #FFF3BD, #FFFEFB 68%);
+}
+
+/* Shared page cards and case-study surfaces. */
+.aj-case-feature,
+.aj-case-screenshot-placeholder,
+.aj-case-next,
+.aj-story-step,
+.aj-story-end-note,
+.aj-recruiter-overview-card,
+.aj-recruiter-skill-card,
+.aj-credential-item {
+  border: 1.5px solid var(--aj-ink);
+  border-radius: 15px;
+  background: var(--aj-card);
+  box-shadow: 3px 3px 0 var(--aj-ink);
+}
+.aj-case-feature:nth-child(3n + 1),
+.aj-story-step:nth-child(3n + 1) { background: #FFF8D9; }
+.aj-case-feature:nth-child(3n + 2),
+.aj-story-step:nth-child(3n + 2) { background: #F0FAFC; }
+.aj-case-feature:nth-child(3n),
+.aj-story-step:nth-child(3n) { background: #FCECF1; }
+
+.aj-project-filter,
+.aj-contact-category,
+.aj-resource-tags span,
+.aj-project-tags span,
+.aj-hero-meta span,
+.aj-work-hero-meta span {
+  border-color: rgba(32, 35, 43, .35);
+}
+.aj-project-filter.is-active {
+  border-color: var(--aj-ink);
+  color: var(--aj-ink);
+  background: var(--aj-yellow);
+  box-shadow: 2px 2px 0 var(--aj-ink);
+}
+.aj-contact-compose { background: #FFFEFB; }
+.aj-contact-direct { background: var(--aj-sky-soft); }
+.aj-contact-compose-preview { background: #F0FAFC; }
+.aj-contact-category.is-selected { background: var(--aj-yellow); }
+.aj-resource-request { background: #FFF3BD; }
+.aj-resource-request form button,
+.aj-contact-compose > .aj-button { margin-top: 6px; }
+
+/* More intentional focus and pressed states, including filter chips and
+   form controls. */
+.aj-project-filter:focus-visible,
+.aj-contact-category:focus-visible,
+.aj-resource-request textarea:focus-visible,
+.aj-contact-compose button:focus-visible {
+  outline: 3px solid rgba(169, 229, 243, .9);
+  outline-offset: 3px;
+  border-color: var(--aj-ink);
+}
+.aj-project-filter:hover,
+.aj-contact-category:hover {
+  border-color: var(--aj-ink);
+  box-shadow: 2px 2px 0 var(--aj-ink);
+  transform: translate(-1px, -1px);
+}
+.aj-finance-work-card,
+.aj-feature-card,
+.aj-project-card,
+.aj-creator-pillar,
+.aj-resource-card,
+.aj-contact-compose,
+.aj-contact-direct,
+.aj-recruiter-overview-card,
+.aj-recruiter-skill-card {
+  transition: transform 220ms var(--aj-ease), box-shadow 220ms ease, border-color 220ms ease;
+}
+.aj-finance-work-card:hover,
+.aj-feature-card:hover,
+.aj-project-card:hover,
+.aj-creator-pillar:hover,
+.aj-resource-card:hover,
+.aj-recruiter-skill-card:hover {
+  border-color: var(--aj-ink);
+  box-shadow: 5px 6px 0 var(--aj-ink);
+  transform: translate(-1px, -2px);
+}
+
+.aj-section-heading h2,
+.aj-case-section-heading h2,
+.aj-contact-intro h2,
+.aj-contact-compose h2,
+.aj-contact-direct h2,
+.aj-resource-request h2 {
+  font-family: var(--font-display);
+  letter-spacing: -.04em;
+}
+.aj-section-heading h2 em,
+.aj-case-section-heading h2 em { color: var(--aj-pop-orange); }
+
+@media (max-width: 700px) {
+  .aj-inner-heading {
+    padding: 20px 17px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 0 var(--aj-ink);
+  }
+  .aj-photo-frame { box-shadow: 3px 3px 0 var(--aj-ink); }
+  .aj-feature-card,
+  .aj-finance-work-card,
+  .aj-finance-bridge-card,
+  .aj-case-feature,
+  .aj-case-screenshot-placeholder,
+  .aj-case-next,
+  .aj-story-step,
+  .aj-story-end-note,
+  .aj-recruiter-overview-card,
+  .aj-recruiter-skill-card,
+  .aj-credential-item {
+    box-shadow: 3px 3px 0 var(--aj-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aj-finance-work-card,
+  .aj-feature-card,
+  .aj-project-card,
+  .aj-creator-pillar,
+  .aj-resource-card,
+  .aj-recruiter-skill-card,
+  .aj-project-filter,
+  .aj-contact-category {
+    transition: none !important;
+  }
+  .aj-finance-work-card:hover,
+  .aj-feature-card:hover,
+  .aj-project-card:hover,
+  .aj-creator-pillar:hover,
+  .aj-resource-card:hover,
+  .aj-recruiter-skill-card:hover,
+  .aj-project-filter:hover,
+  .aj-contact-category:hover {
+    transform: none;
+  }
+}
