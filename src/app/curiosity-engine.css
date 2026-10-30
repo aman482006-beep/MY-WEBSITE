@@ -725,6 +725,21 @@
 .ce-desk-note:hover { z-index: 5; box-shadow: 7px 8px 0 rgba(32,35,43,.92); }
 .ce-desk-note-top { display: flex; align-items: center; justify-content: space-between; gap: 7px; }
 .ce-desk-note-top > span { font-size: 8px; font-weight: 900; letter-spacing: .11em; }
+.ce-note-actions { display: inline-flex; align-items: center; gap: 5px; }
+.ce-note-open {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid rgba(32,35,43,.55);
+  border-radius: 7px;
+  color: var(--aj-ink);
+  background: rgba(255,255,255,.45);
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.ce-note-open:hover { background: #fff; }
 .ce-note-grip {
   display: grid;
   width: 32px;
@@ -755,6 +770,92 @@
   line-height: 1.55;
 }
 .ce-desk-note-scribble { position: absolute; right: 14px; bottom: 8px; color: #C34C27; font-size: 18px; }
+.ce-note-window-layer {
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+.ce-note-window-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(32,35,43,.28);
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+}
+.ce-note-window {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 440px);
+  padding: 20px;
+  border: 1.7px solid var(--aj-ink);
+  border-radius: 14px;
+  color: var(--aj-ink);
+  background: #FFE36E;
+  box-shadow: 7px 8px 0 var(--aj-ink);
+}
+.ce-note-window-blue { background: #A9E5F3; }
+.ce-note-window-pink { background: #F7AFC6; }
+.ce-note-window-header,
+.ce-note-window-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ce-note-window-header > span,
+.ce-note-window-footer > span {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .11em;
+}
+.ce-note-window-header > button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--aj-ink);
+  border-radius: 50%;
+  background: rgba(255,255,255,.5);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.ce-note-window h4 {
+  margin: 22px 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(31px, 5vw, 43px);
+  font-weight: 650;
+  letter-spacing: -.035em;
+  line-height: 1;
+}
+.ce-note-window > p {
+  margin: 0 0 24px;
+  color: #41454D;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.ce-note-window-footer {
+  padding-top: 13px;
+  border-top: 1px solid rgba(32,35,43,.22);
+}
+.ce-note-window-footer > button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--aj-ink);
+  border-radius: 999px;
+  color: #fff;
+  background: var(--aj-ink);
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.ce-note-window-footer > button span { margin-left: 5px; color: #FFE36E; }
+
 .ce-custom-cursor {
   position: fixed;
   z-index: 1000;
@@ -908,6 +1009,7 @@
   }
   .ce-desk-note h4 { margin-top: 15px; font-size: 28px; }
   .ce-note-grip { width: 30px; height: 27px; }
+  .ce-note-open { width: 30px; height: 27px; }
   .ce-custom-cursor { display: none; }
   .ce-desk-footer { grid-template-columns: minmax(0,1fr); }
   .ce-desk-time > strong { font-size: 28px; }
