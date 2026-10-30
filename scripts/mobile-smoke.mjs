@@ -61,6 +61,11 @@ async function runViewport(viewport) {
     );
     await page.locator("#ce-tab-desk").tap();
     await page.getByRole("button", { name: "Shuffle the desk" }).tap();
+    await page.getByRole("button", { name: "Open note details: Stay curious." }).tap();
+    const noteWindow = page.getByRole("dialog", { name: "Stay curious." });
+    await noteWindow.waitFor({ state: "visible" });
+    await noteWindow.getByRole("button", { name: "Close note details" }).tap();
+    await noteWindow.waitFor({ state: "hidden" });
     await page.getByRole("button", { name: "Find the secret" }).tap();
     const secretMessage = (await page.locator(".ce-secret-card p").textContent()) || "";
     assert(
