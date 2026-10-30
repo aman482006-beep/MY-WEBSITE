@@ -11,6 +11,7 @@ import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { MotionRoot } from "@/components/motion/motion-root";
+import { NewTabLinks } from "@/components/ui/new-tab-links";
 
 const newsreader = Newsreader({
   weight: ["400", "500", "600", "700"],
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={newsreader.variable + " " + manrope.variable + " " + caveat.variable + " font-body antialiased min-h-screen"}>
+        <NewTabLinks />
         <a className="aj-skip-link" href="#main">Skip to content</a>
         <script
           type="application/ld+json"
