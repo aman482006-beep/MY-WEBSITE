@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { dailyNewspaperAutomationPrompt } from "./daily-newspaper-prompt";
+import "./newspaper-resource.css";
 
 const resourceAreas = [
   {
@@ -25,6 +27,47 @@ const resourceAreas = [
 
 export function ResourcesContent() {
   const [requestText, setRequestText] = useState("");
+  const [copyStatus, setCopyStatus] = useState<"idle" | "success" | "error">("idle");
+
+  function openNewspaperPreview() {
+    const basePath = window.location.pathname.startsWith("/MY-WEBSITE") ? "/MY-WEBSITE" : "";
+    const previewPath = `${basePath}/resources/daily-newspaper-preview-2026-10-30.html`;
+    window.open(previewPath, "_blank", "noopener,noreferrer");
+  }
+
+  async function copyNewspaperPrompt() {
+    setCopyStatus("idle");
+    let copied = false;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(dailyNewspaperAutomationPrompt);
+        copied = true;
+      }
+    } catch {
+      // Fall through to the selection-based clipboard fallback below.
+    }
+
+    if (!copied) {
+      const textarea = document.createElement("textarea");
+      textarea.value = dailyNewspaperAutomationPrompt;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      textarea.style.pointerEvents = "none";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      try {
+        copied = document.execCommand("copy");
+      } finally {
+        textarea.remove();
+      }
+    }
+
+    setCopyStatus(copied ? "success" : "error");
+  }
 
   function handleRequest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -43,6 +86,30 @@ export function ResourcesContent() {
           <h1>Useful tools for learning finance.</h1>
           <p>A small library of practical resources for learning, building and creating. I’ll add each one when it’s ready to use.</p>
         </header>
+
+        <section className="aj-daily-newspaper" aria-labelledby="daily-newspaper-heading">
+          <div className="aj-daily-newspaper-copy">
+            <p className="aj-daily-newspaper-kicker">A reusable ChatGPT workflow · Sample edition included</p>
+            <h2 id="daily-newspaper-heading">Your daily newspaper.</h2>
+            <p>Build a personalised newspaper that researches the topics you care about, explains what matters, and arrives on a schedule you choose. Preview today’s sample edition, then copy the setup prompt to create your own.</p>
+          </div>
+          <div className="aj-daily-newspaper-actions" aria-label="Daily newspaper actions">
+            <button type="button" className="aj-button aj-button-primary" onClick={openNewspaperPreview}>
+              Preview <span aria-hidden="true">↗</span>
+            </button>
+            <button type="button" className="aj-button aj-button-outline" onClick={copyNewspaperPrompt}>
+              {copyStatus === "success" ? "Copied!" : copyStatus === "error" ? "Try copy again" : "Copy prompt"}
+              <span aria-hidden="true">{copyStatus === "success" ? "✓" : "↗"}</span>
+            </button>
+          </div>
+          <p className="aj-daily-newspaper-status" data-state={copyStatus} aria-live="polite">
+            {copyStatus === "success"
+              ? "Full setup prompt copied. Paste it into ChatGPT to personalise and schedule your newspaper."
+              : copyStatus === "error"
+                ? "Clipboard access was blocked by this browser. Please allow clipboard access and try again."
+                : "Preview opens the 30 October 2026 sample only. Copy prompt gives you the complete reusable setup instructions."}
+          </p>
+        </section>
 
         <section className="aj-resource-grid" aria-label="Resource areas">
           {resourceAreas.map((area) => (
