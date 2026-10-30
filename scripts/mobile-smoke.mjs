@@ -62,7 +62,11 @@ async function runViewport(viewport) {
     await page.locator("#ce-tab-desk").tap();
     await page.getByRole("button", { name: "Shuffle the desk" }).tap();
     await page.getByRole("button", { name: "Find the secret" }).tap();
-    await page.getByText("You found the extra tab.", { exact: false }).waitFor();
+    const secretMessage = (await page.locator(".ce-secret-card p").textContent()) || "";
+    assert(
+      ["You found the extra tab.", "Tiny reminder:", "Plot twist:"].some((message) => secretMessage.startsWith(message)),
+      "Easter egg did not reveal one of its three messages: " + secretMessage,
+    );
     assert(await page.locator(".ce-desk-note").count() === 3, "Digital desk should show three notes");
 
     const homeOverflow = await page.evaluate(
