@@ -40,7 +40,6 @@ jobs:
               public/resources/daily-newspaper-preview-2026-10-30.part2.txt \
               public/resources/daily-newspaper-preview-2026-10-30.part3.txt \
               public/resources/daily-newspaper-preview-2026-10-30.part4.txt \
-            | tr -d '\\r\\n[:space:]' \
             | base64 --decode \
             | gzip --decompress --stdout > /tmp/daily-newspaper-preview.html
           echo "5d5067a4453b725414a826b64ebdb04df34d49be8f3332c7eebd1497da30c12a  /tmp/daily-newspaper-preview.html" | sha256sum --check
