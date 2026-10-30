@@ -101,8 +101,7 @@ export async function getLatestVideos(): Promise<LatestYouTubeResult> {
           url: "https://www.youtube.com/watch?v=" + video.id,
         };
       })
-      // Keep short-form uploads out of this long-form showcase.
-      .filter((video) => video.durationSeconds > 180)
+      // Include the newest channel uploads, including Shorts.
       .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
       .slice(0, 3)
       .map(({ id, title, publishedAt, duration, thumbnail, url }) => ({ id, title, publishedAt, duration, thumbnail, url }));
