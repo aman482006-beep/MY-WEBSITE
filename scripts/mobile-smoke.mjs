@@ -30,6 +30,48 @@ async function runViewport(viewport) {
     // Allow independent client components to finish hydration before simulating a real tap.
     await page.waitForTimeout(400);
 
+    // Check the global external-link policy: external websites open separately,
+    // while routes inside this portfolio stay in the current tab.
+    await page.evaluate(() => {
+      const external = document.createElement("a");
+      external.id = "external-link-smoke-test";
+      external.href = "https://example.com/";
+      external.textContent = "External link test";
+      external.style.cssText = "position:fixed;z-index:999999;top:8px;left:8px;padding:12px;background:#fff;color:#000";
+      const internal = document.createElement("a");
+      internal.id = "internal-link-smoke-test";
+      internal.href = "/MY-WEBSITE/resources/";
+      internal.textContent = "Internal link test";
+      internal.style.cssText = "position:fixed;z-index:999999;top:60px;left:8px;padding:12px;background:#fff;color:#000";
+      document.body.append(external, internal);
+      window.__externalLinkOpenCalls = [];
+      window.__originalWindowOpen = window.open;
+      window.open = (url, target, features) => {
+        window.__externalLinkOpenCalls.push({ url: String(url), target, features });
+        return null;
+      };
+    });
+    await page.waitForFunction(() =>
+      document.querySelector("#external-link-smoke-test")?.getAttribute("target") === "_blank" &&
+      document.querySelector("#internal-link-smoke-test")?.hasAttribute("target") === false
+    );
+    await page.locator("#external-link-smoke-test").tap();
+    const externalLinkEvidence = await page.evaluate(() => ({
+      calls: window.__externalLinkOpenCalls || [],
+      currentPath: window.location.pathname,
+      internalTarget: document.querySelector("#internal-link-smoke-test")?.getAttribute("target") ?? null,
+    }));
+    assert(externalLinkEvidence.calls.length === 1, "External link did not invoke the new-tab handler");
+    assert(externalLinkEvidence.calls[0].url === "https://example.com/", "External link opened an unexpected URL");
+    assert(externalLinkEvidence.calls[0].target === "_blank", "External link was not sent to a new tab");
+    assert(externalLinkEvidence.currentPath === "/MY-WEBSITE/", "External link changed the current website tab");
+    assert(externalLinkEvidence.internalTarget === null, "Internal link was incorrectly marked for a new tab");
+    await page.evaluate(() => {
+      window.open = window.__originalWindowOpen;
+      document.querySelector("#external-link-smoke-test")?.remove();
+      document.querySelector("#internal-link-smoke-test")?.remove();
+    });
+
     // Exercise the five Curiosity Lab modes, not just their visible shell.
     const lab = page.locator("#curiosity-lab");
     await lab.scrollIntoViewIfNeeded();
