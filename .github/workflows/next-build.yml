@@ -7,10 +7,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# The build job only reads source. Deployment permissions are scoped to deploy.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: github-pages
@@ -20,12 +19,14 @@ jobs:
   build:
     name: Check and export the portfolio
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: npm
@@ -44,10 +45,17 @@ jobs:
       - name: Exclude request-time API from static Pages build
         run: mv src/app/api/youtube/route.ts /tmp/youtube-route.ts
 
-      - name: Build static site
+      # Only trusted pushes/manual deployments receive the API key. Pull-request
+      # code is untrusted and must build using the public channel fallback.
+      - name: Build static site (trusted deployment)
+        if: github.event_name != 'pull_request'
         run: npm run build
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+
+      - name: Build static site (pull request, without secrets)
+        if: github.event_name == 'pull_request'
+        run: npm run build
 
       - name: Add nojekyll marker for Next.js asset paths
         run: touch out/.nojekyll
@@ -69,7 +77,7 @@ jobs:
           node scripts/mobile-smoke.mjs
 
       - name: Upload static site
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: ./out
 
@@ -80,7 +88,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
