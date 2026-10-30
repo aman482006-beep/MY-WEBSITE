@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-const WEBSITE_HOSTS = new Set(["amanmalu.me", "www.amanmalu.me");
+const WEBSITE_HOSTS = new Set(["amanmalu.me", "www.amanmalu.me"]);
 
 function isInternalWebsiteLink(href: string): boolean {
   try {
@@ -51,7 +51,7 @@ function makeLinkOpenInNewTab(anchor: HTMLAnchorElement) {
     anchor.removeAttribute("target");
 
     // Remove tab-opening security tokens when the destination is internal.
-    const rel = new Set((anchor.getAttribute("rel") ?? "").split(/\\s+/).filter(Boolean));
+    const rel = new Set((anchor.getAttribute("rel") ?? "").split(/\s+/).filter(Boolean));
     rel.delete("noopener");
     rel.delete("noreferrer");
     if (rel.size > 0) {
@@ -64,7 +64,7 @@ function makeLinkOpenInNewTab(anchor: HTMLAnchorElement) {
 
   anchor.setAttribute("target", "_blank");
 
-  const rel = new Set((anchor.getAttribute("rel") ?? "").split(/\\s+/).filter(Boolean));
+  const rel = new Set((anchor.getAttribute("rel") ?? "").split(/\s+/).filter(Boolean));
   rel.add("noopener");
   rel.add("noreferrer");
   anchor.setAttribute("rel", Array.from(rel).join(" "));
