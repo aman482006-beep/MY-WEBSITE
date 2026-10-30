@@ -21,32 +21,46 @@ noscript{display:block;margin-top:18px;color:#ffd0bd}
 <main>
 <div class="brand">The Money Briefing · Finance × AI × Opportunity</div>
 <h1>Money, Markets &amp; Main Character Energy.</h1>
-<p>This preview is loading the exact standalone HTML edition published on 30 October 2026. The original document is embedded in this file and integrity-checked before it is displayed.</p>
-<p id="preview-status" class="status" role="status" aria-live="polite">Preparing your newspaper…</p>
-<noscript>This preview requires JavaScript to unpack the embedded newsletter edition.</noscript>
+<p>This preview loads the complete, standalone HTML edition published on 30 October 2026. The edition is assembled from four static text pieces and checked against its SHA-256 digest before display.</p>
+<p id="preview-status" class="status" role="status" aria-live="polite">Loading your newspaper…</p>
+<noscript>This preview requires JavaScript. Open it in a recent browser with JavaScript enabled.</noscript>
 </main>
 <script>
 (() => {
-  const compressedBase64 = "${match[1]}${remainder}";
   const expectedSha256 = "5d5067a4453b725414a826b64ebdb04df34d49be8f3332c7eebd1497da30c12a";
   const status = document.getElementById("preview-status");
+  const partNames = [
+    "daily-newspaper-preview-2026-10-30.part1.txt",
+    "daily-newspaper-preview-2026-10-30.part2.txt",
+    "daily-newspaper-preview-2026-10-30.part3.txt",
+    "daily-newspaper-preview-2026-10-30.part4.txt"
+  ];
 
   async function renderEdition() {
     if (typeof DecompressionStream === "undefined") {
-      throw new Error("This browser does not support the compressed preview. Please open the preview in a recent version of Chrome, Edge, Firefox or Safari.");
+      throw new Error("This browser does not support the compressed preview. Please open it in a recent version of Chrome, Edge, Firefox or Safari.");
     }
 
+    const parts = await Promise.all(partNames.map(async (name) => {
+      const response = await fetch(new URL(name, window.location.href), { cache: "no-store" });
+      if (!response.ok) throw new Error("A newspaper preview file could not be loaded (" + response.status + "). Please refresh and try again.");
+      return (await response.text()).trim();
+    }));
+
+    const compressedBase64 = parts.join("");
     const binary = atob(compressedBase64);
     const compressedBytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
     const decompressedStream = new Blob([compressedBytes]).stream().pipeThrough(new DecompressionStream("gzip"));
     const editionHtml = await new Response(decompressedStream).text();
 
-    if (globalThis.crypto?.subtle) {
-      const digestBuffer = await globalThis.crypto.subtle.digest("SHA-256", new TextEncoder().encode(editionHtml));
-      const actualSha256 = Array.from(new Uint8Array(digestBuffer), (byte) => byte.toString(16).padStart(2, "0")).join("");
-      if (actualSha256 !== expectedSha256) {
-        throw new Error("The embedded edition failed its integrity check. The newsletter was not displayed.");
-      }
+    const digestBuffer = await globalThis.crypto.subtle.digest("SHA-256", new TextEncoder().encode(editionHtml));
+    const actualSha256 = Array.from(new Uint8Array(digestBuffer), (byte) => byte.toString(16).padStart(2, "0")).join("");
+    if (actualSha256 !== expectedSha256) {
+      throw new Error("The newspaper failed its integrity check. The preview was stopped rather than showing incomplete content.");
+    }
+
+    if (!editionHtml.trimStart().toLowerCase().startsWith("<!doctype html") || !editionHtml.includes("</html>")) {
+      throw new Error("The newspaper file is incomplete or malformed.");
     }
 
     document.open();
