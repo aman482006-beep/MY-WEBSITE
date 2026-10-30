@@ -235,6 +235,12 @@ const JOURNEY_STAGES = [
   },
 ];
 
+const MOBILE_NOTE_LAYOUT: Record<NoteId, Point> = {
+  question: { x: 50, y: 20 },
+  experiment: { x: 50, y: 50 },
+  share: { x: 50, y: 80 },
+};
+
 const NOTE_LAYOUTS: Record<NoteId, Point>[] = [
   {
     question: { x: 17, y: 48 },
@@ -343,6 +349,16 @@ export function CuriosityEngine() {
     const intervalId = window.setInterval(updateClock, 15000);
     return () => window.clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 680px)");
+    const syncLayout = () => {
+      setNotePositions(media.matches ? MOBILE_NOTE_LAYOUT : NOTE_LAYOUTS[deskArrangement]);
+    };
+    syncLayout();
+    media.addEventListener("change", syncLayout);
+    return () => media.removeEventListener("change", syncLayout);
+  }, [deskArrangement]);
 
   useEffect(() => {
     if (activeTab !== "desk") return;
@@ -487,9 +503,13 @@ export function CuriosityEngine() {
 
     const x = drag.origin.x + ((event.clientX - drag.startX) / rect.width) * 100;
     const y = drag.origin.y + ((event.clientY - drag.startY) / rect.height) * 100;
+    const mobile = window.matchMedia("(max-width: 680px)").matches;
     setNotePositions((current) => ({
       ...current,
-      [drag.id]: { x: clamp(x, 12, 88), y: clamp(y, 24, 76) },
+      [drag.id]: {
+        x: clamp(x, mobile ? 38 : 12, mobile ? 62 : 88),
+        y: clamp(y, mobile ? 17 : 24, mobile ? 83 : 76),
+      },
     }));
   }
 
@@ -500,7 +520,9 @@ export function CuriosityEngine() {
   function shuffleDesk() {
     const next = (deskArrangement + 1) % NOTE_LAYOUTS.length;
     setDeskArrangement(next);
-    setNotePositions(NOTE_LAYOUTS[next]);
+    setNotePositions(
+      window.matchMedia("(max-width: 680px)").matches ? MOBILE_NOTE_LAYOUT : NOTE_LAYOUTS[next],
+    );
   }
 
   const notes: {
