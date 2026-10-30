@@ -693,3 +693,23 @@ body {
     transform: none;
   }
 }
+
+/* Centre the inner-page introduction panels within the shared page grid.
+   Keep the reading width, but remove the left-anchored empty space visible
+   on Creator, Recruiters, Resources and Contact at wide desktop sizes. */
+.aj-inner-page > .aj-container > .aj-inner-heading {
+  margin-inline: auto;
+  text-align: center;
+}
+.aj-inner-page > .aj-container > .aj-inner-heading > .aj-eyebrow {
+  justify-content: center;
+}
+.aj-inner-page > .aj-container > .aj-inner-heading > p:not(.aj-eyebrow):not(.aj-currently-line) {
+  margin-inline: auto;
+}
+.aj-inner-page > .aj-container > .aj-inner-heading > .aj-feature-actions {
+  justify-content: center;
+}
+.aj-recruiters-page > .aj-container > .aj-inner-heading > .aj-currently-line {
+  margin-inline: auto;
+}
