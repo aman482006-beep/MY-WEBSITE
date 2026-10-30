@@ -5,6 +5,7 @@ import { Caveat, Manrope, Newsreader } from "next/font/google";
 import "./globals.css";
 import "./motion.css";
 import "./curiosity-engine.css";
+import "./paper-pop-theme.css";
 import { ScrollProgressBar } from "@/components/ui/scroll-progress";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { Navbar } from "@/components/layout/navbar";
