@@ -29,6 +29,20 @@ async function runViewport(viewport) {
     );
     // Allow independent client components to finish hydration before simulating a real tap.
     await page.waitForTimeout(400);
+    // The homepage portrait and the handwritten status note must both render.
+    const portrait = page.locator(".aj-profile-image");
+    const portraitSource = await portrait.getAttribute("src");
+    assert(
+      portraitSource?.includes("avatars.githubusercontent.com/u/228033672"),
+      "Homepage portrait is not using the connected GitHub profile image",
+    );
+    const currentlyNote = page.locator(".aj-currently-note");
+    assert(await currentlyNote.isVisible(), "Homepage CURRENTLY sticky note is not visible");
+    const currentlyCopy = (await currentlyNote.innerText()).replace(/\\s+/g, " ");
+    for (const phrase of ["CURRENTLY", "Following the curiosity", "Building as I go", "Tabs: too many"]) {
+      assert(currentlyCopy.includes(phrase), "Homepage status note is missing: " + phrase);
+    }
+
 
     // Check the global external-link policy: external websites open separately,
     // while routes inside this portfolio stay in the current tab.
