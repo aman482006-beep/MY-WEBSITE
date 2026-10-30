@@ -263,6 +263,47 @@ async function runViewport(viewport) {
   }
 }
 
+async function runDesktopCenteringAudit() {
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  try {
+    for (const route of ["/creator/", "/recruiters/", "/resources/", "/contact/"]) {
+      await page.goto(base + route, { waitUntil: "domcontentloaded" });
+      const intro = page.locator(".aj-inner-page > .aj-container > .aj-inner-heading");
+      await intro.waitFor({ state: "visible" });
+      const result = await intro.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          midpoint: rect.left + rect.width / 2,
+          viewportMidpoint: window.innerWidth / 2,
+          textAlign: getComputedStyle(element).textAlign,
+        };
+      });
+      assert(
+        Math.abs(result.midpoint - result.viewportMidpoint) <= 2 && result.textAlign === "center",
+        "Desktop centering failed on " + route + ": " + JSON.stringify(result),
+      );
+    }
+
+    for (const route of ["/", "/projects/"]) {
+      await page.goto(base + route, { waitUntil: "domcontentloaded" });
+      const mainContainer = page.locator(".aj-home .aj-container, .aj-projects-page > .aj-container").first();
+      await mainContainer.waitFor({ state: "visible" });
+      const result = await mainContainer.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return { midpoint: rect.left + rect.width / 2, viewportMidpoint: window.innerWidth / 2 };
+      });
+      assert(
+        Math.abs(result.midpoint - result.viewportMidpoint) <= 2,
+        "Main page container is not centred on " + route + ": " + JSON.stringify(result),
+      );
+    }
+    process.stdout.write("PASS desktop centering audit at 1440px\n");
+  } finally {
+    await browser.close();
+  }
+}
+
 for (const viewport of [{ width: 390, height: 844 }, { width: 360, height: 800 }]) {
   try {
     await runViewport(viewport);
@@ -278,3 +319,5 @@ if (failures.length) {
 } else {
   process.stdout.write("All mobile interaction checks passed.\n");
 }
+
+try { await runDesktopCenteringAudit(); } catch (error) { failures.push("desktop: " + (error instanceof Error ? error.message : String(error))); }
