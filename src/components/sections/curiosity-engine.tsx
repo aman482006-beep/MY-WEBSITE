@@ -816,11 +816,10 @@ export function CuriosityEngine() {
                   {notes.map((note) => (
                     <article
                       key={note.id}
-                      className={"ce-desk-note ce-desk-note-" + note.tone}
+                      className={"ce-desk-note ce-desk-note-" + note.tone + " ce-desk-note-tilt-" + note.id}
                       style={{
                         left: notePositions[note.id].x + "%",
                         top: notePositions[note.id].y + "%",
-                        ["--ce-note-tilt" as string]: note.tilt,
                       }}
                     >
                       <div className="ce-desk-note-top">
