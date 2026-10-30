@@ -719,6 +719,9 @@
 }
 .ce-desk-note-blue { background: #A9E5F3; }
 .ce-desk-note-pink { background: #F7AFC6; }
+.ce-desk-note-tilt-question { --ce-note-tilt: -3deg; }
+.ce-desk-note-tilt-experiment { --ce-note-tilt: 2deg; }
+.ce-desk-note-tilt-share { --ce-note-tilt: -1.5deg; }
 .ce-desk-note:hover { z-index: 5; box-shadow: 7px 8px 0 rgba(32,35,43,.92); }
 .ce-desk-note-top { display: flex; align-items: center; justify-content: space-between; gap: 7px; }
 .ce-desk-note-top > span { font-size: 8px; font-weight: 900; letter-spacing: .11em; }
