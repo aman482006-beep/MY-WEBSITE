@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { LatestVideos } from "@/components/sections/latest-videos";
+import { CuriosityEngine } from "@/components/sections/curiosity-engine";
 import { SocialIcon, type SocialIconName } from "@/components/layout/social-icon";
 
 const socials: { label: string; href: string; icon: SocialIconName }[] = [
@@ -139,6 +140,8 @@ export default function Home() {
         </div>
       </section>
 
+      <CuriosityEngine />
+
       <LatestVideos />
 
       <section className="aj-section aj-home-story aj-note-wall-section" id="what-you-get">
@@ -171,44 +174,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="aj-section aj-home-story aj-no-plan-section" id="the-journey">
-        <div className="aj-container aj-no-plan-grid">
-          <div className="aj-no-plan-intro">
-            <p className="aj-eyebrow aj-eyebrow-accent">THE ONGOING PLOT</p>
-            <h2>Live the journey of a man with <em>no master plan.</em></h2>
-            <p>I&apos;m not following a 47-step life blueprint. I&apos;m following interesting questions, taking side quests, and seeing what turns into something worth sharing.</p>
-            <div className="aj-plan-doodle" aria-label="Master plan: loading">
-              <span>MASTER PLAN</span>
-              <strong>loading…</strong>
-              <i aria-hidden="true">↻</i>
-            </div>
-          </div>
-          <div className="aj-story-path" aria-label="How a side quest usually goes">
-            <article className="aj-story-step">
-              <span className="aj-story-step-number">01</span>
-              <div><h3>Spot something interesting.</h3><p>“I&apos;ll just look this up quickly.” Famous last words.</p></div>
-              <span className="aj-story-step-mark" aria-hidden="true">↘</span>
-            </article>
-            <article className="aj-story-step">
-              <span className="aj-story-step-number">02</span>
-              <div><h3>Fall down the rabbit hole.</h3><p>Finance becomes AI. AI becomes a tool. The tool somehow becomes a video.</p></div>
-              <span className="aj-story-step-mark" aria-hidden="true">⌘</span>
-            </article>
-            <article className="aj-story-step">
-              <span className="aj-story-step-number">03</span>
-              <div><h3>Make something out of it.</h3><p>The useful bits, the failed experiments and the occasional idea that actually works.</p></div>
-              <span className="aj-story-step-mark" aria-hidden="true">✳</span>
-            </article>
-          </div>
-          <aside className="aj-story-end-note">
-            <span className="aj-sticky-note-label">IMPORTANT COMMUNITY UPDATE</span>
-            <h3>The fan club has room for at least one more.</h3>
-            <p>If you&apos;re here, hi. I&apos;m genuinely excited to meet people who watch, learn, build or just bring a good question. I&apos;ll try to act cool for the first seven seconds. No promises.</p>
-            <Link href="/contact" className="aj-button aj-button-primary">Say hi (I&apos;ll try to be normal) <span aria-hidden="true">↗</span></Link>
-            <span className="aj-story-end-doodle" aria-hidden="true">pls be normal</span>
-          </aside>
-        </div>
-      </section>
+
 
       <section className="aj-section aj-contact-section" id="contact">
         <div className="aj-container aj-contact-grid">
