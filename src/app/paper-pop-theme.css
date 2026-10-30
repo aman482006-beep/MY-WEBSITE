@@ -201,7 +201,6 @@ body {
 .aj-contact-compose,
 .aj-contact-direct,
 .aj-contact-social-card,
-.aj-resource-card,
 .aj-resource-request,
 .aj-case-feature,
 .aj-case-screenshot-placeholder,
@@ -579,7 +578,7 @@ body {
    form controls. */
 .aj-project-filter:focus-visible,
 .aj-contact-category:focus-visible,
-.aj-resource-request textarea:focus-visible,
+.aj-resource-request input:focus-visible,
 .aj-contact-compose button:focus-visible {
   outline: 3px solid rgba(169, 229, 243, .9);
   outline-offset: 3px;
@@ -611,6 +610,31 @@ body {
   border-color: var(--aj-ink);
   box-shadow: 5px 6px 0 var(--aj-ink);
   transform: translate(-1px, -2px);
+}
+
+.aj-resource-card {
+  border: 1px solid rgba(32, 35, 43, .10);
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(32, 35, 43, .035);
+}
+.aj-resource-card:hover {
+  border-color: rgba(32, 35, 43, .18);
+  box-shadow: 0 8px 20px rgba(32, 35, 43, .07);
+  transform: translateY(-2px);
+}
+.aj-resource-request {
+  border: 1px solid rgba(32, 35, 43, .10);
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(32, 35, 43, .03);
+}
+.aj-resource-request input {
+  border: 1px solid rgba(32, 35, 43, .20);
+  border-radius: 9px;
+  background: #FFFEFB;
+}
+.aj-resource-request input:focus-visible {
+  outline: 3px solid rgba(169, 229, 243, .65);
+  border-color: var(--aj-ink);
 }
 
 .aj-section-heading h2,
