@@ -33,9 +33,11 @@ async function runViewport(viewport) {
     const portrait = page.locator(".aj-profile-image");
     const portraitSource = await portrait.getAttribute("src");
     assert(
-      portraitSource?.includes("avatars.githubusercontent.com/u/228033672"),
-      "Homepage portrait is not using the connected GitHub profile image",
+      portraitSource?.includes("aman-profile.webp") || portraitSource?.includes("%2Faman-profile.webp"),
+      "Homepage portrait is not using the new local profile image",
     );
+    const portraitLoaded = await portrait.evaluate((image) => image.complete && image.naturalWidth > 0);
+    assert(portraitLoaded, "Homepage portrait image failed to load");
     const currentlyNote = page.locator(".aj-currently-note");
     assert(await currentlyNote.isVisible(), "Homepage CURRENTLY sticky note is not visible");
     const currentlyCopy = (await currentlyNote.innerText()).replace(/\\s+/g, " ");
@@ -134,6 +136,40 @@ async function runViewport(viewport) {
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
     );
     assert(!homeOverflow, "Homepage has horizontal overflow at " + viewport.width + "px");
+
+    // The four inner-page introduction panels should be centred at every tested
+    // viewport, not merely constrained to a width while remaining left-aligned.
+    for (const route of ["/creator/", "/recruiters/", "/resources/", "/contact/"]) {
+      await page.goto(base + route, { waitUntil: "domcontentloaded" });
+      const intro = page.locator(".aj-inner-page > .aj-container > .aj-inner-heading");
+      await intro.waitFor({ state: "visible" });
+      const alignment = await intro.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return {
+          midpoint: rect.left + rect.width / 2,
+          viewportMidpoint: window.innerWidth / 2,
+          textAlign: style.textAlign,
+          width: rect.width,
+        };
+      });
+      assert(
+        Math.abs(alignment.midpoint - alignment.viewportMidpoint) <= 2,
+        route + " introduction panel is not horizontally centred: " + JSON.stringify(alignment),
+      );
+      assert(alignment.textAlign === "center", route + " introduction text is not centred");
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+      );
+      assert(!overflow, route + " has horizontal overflow at " + viewport.width + "px");
+    }
+    await page.goto(base + "/", { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(
+      () => document.documentElement.classList.contains("aj-motion-enabled"),
+      null,
+      { timeout: 15000 },
+    );
+    await page.waitForTimeout(250);
 
     // Verify a primary homepage CTA with a real touch, independently of the menu.
     await page.getByRole("link", { name: "Explore projects", exact: true }).tap();
