@@ -102,7 +102,7 @@ export default function Home() {
             <div className="aj-note aj-note-right">Same curiosity.<br />Different ways. ☺</div>
             <div className="aj-photo-backdrop" />
             <div className="aj-photo-frame">
-              <Image src="https://avatars.githubusercontent.com/u/228033672?v=4" alt="Portrait of Aman Jain" fill preload sizes="(max-width: 900px) 78vw, 440px" className="aj-profile-image" />
+              <Image src="/aman-profile.webp" alt="Portrait of Aman Jain" fill preload sizes="(max-width: 900px) 78vw, 440px" className="aj-profile-image" />
             </div>
             <div className="aj-note aj-currently-note" aria-label="Currently: Following the curiosity. Building as I go. Tabs: too many."><strong>CURRENTLY</strong><span>Following the curiosity</span><span>Building as I go</span><span>Tabs: too many</span></div>
             <span className="aj-spark aj-spark-one" aria-hidden="true">〰</span>
