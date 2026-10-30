@@ -135,3 +135,17 @@ Used here: project-card movement is a small transform-only hover enhancement wit
 3. Replace TODO(Aman) finance-work entries with completed PDF/Excel files and verified takeaways.
 4. Add details about individual Fokus engineering decisions, testing and lessons learned.
 5. Enable GitHub Pages and complete live browser QA.
+
+
+## 10. Paper Pop — shared visual language (30 October 2026)
+
+Reference supplied by Aman: the Curiosity Lab interest-map interface. The site now reuses its warm paper, subtle dot field, near-black outlines, offset ink shadows, serif display typography, handwritten note accents and restrained yellow / sky-blue / pink palette.
+
+Applied across the shared design system:
+- Main navigation: active-page capsule, outlined controls and yellow primary actions.
+- Homepage: dot-paper canvas, pastel Finance / Build / Create cards, and more tactile sticky notes.
+- Content surfaces: video, project, creator, recruiter, contact and resource cards share the outlined, offset-shadow treatment.
+- Forms and selected states use the same yellow / blue interaction cues.
+- The Curiosity Lab remains the visual reference point; its draggable map, idea mixer, journey, calculator and note desk behaviour are preserved.
+
+Implementation is CSS-first and reuses the existing Newsreader, Manrope and Caveat fonts. It does not add dependencies or replace working page components. Responsive breakpoints and reduced-motion rules remain in place.
