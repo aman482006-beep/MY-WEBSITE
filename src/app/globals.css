@@ -1201,3 +1201,50 @@ a[href]:active, button:active { opacity: .82; }
   .aj-story-end-note { transition: none; transform: none; }
   .aj-story-path::before { transition: none; transform: none; }
 }
+
+
+/* Homepage portrait and status note: keep the profile image sourced from the account avatar and keep the status copy above the photo frame. */
+.aj-home .aj-currently-note {
+  top: auto;
+  right: 0;
+  bottom: 8px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: min(48%, 190px);
+  min-width: 148px;
+  max-width: 190px;
+  padding: 13px 15px 14px;
+  transform: rotate(3deg);
+  background: #DDF0F5;
+  color: #263943;
+  font-size: 15px;
+  line-height: 1.32;
+  box-shadow: 4px 5px 0 rgba(35, 39, 47, .9);
+}
+.aj-home .aj-currently-note strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #17232B;
+  font-family: var(--font-manrope);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+.aj-home .aj-currently-note span {
+  display: block;
+}
+@media (max-width: 700px) {
+  .aj-home .aj-currently-note {
+    right: 0;
+    bottom: 5px;
+    width: min(50%, 170px);
+    min-width: 140px;
+    padding: 11px 12px;
+    font-size: 14px;
+  }
+  .aj-home .aj-currently-note strong {
+    font-size: 11px;
+  }
+}
