@@ -48,13 +48,13 @@ jobs:
       # Only trusted pushes/manual deployments receive the API key. Pull-request
       # code is untrusted and must build using the public channel fallback.
       - name: Build static site (trusted deployment)
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: npm run build
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
 
       - name: Build static site (pull request, without secrets)
-        if: github.event_name == 'pull_request'
+        if: github.ref != 'refs/heads/main' || github.event_name == 'pull_request'
         run: npm run build
 
       - name: Add nojekyll marker for Next.js asset paths
@@ -82,7 +82,7 @@ jobs:
           path: ./out
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
