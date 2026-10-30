@@ -899,14 +899,11 @@
   .ce-growth-results { grid-template-columns: 1fr 1fr; }
   .ce-growth-results > div:last-child { grid-column: 1 / -1; }
   .ce-desk-actions { justify-items: start; }
-  .ce-desk-board { display: grid; min-height: 0; gap: 13px; padding: 14px; }
+  .ce-desk-board { display: block; min-height: 500px; padding: 0; }
   .ce-desk-note {
-    position: relative;
-    left: auto !important;
-    top: auto !important;
-    width: 100%;
-    min-height: 145px;
-    transform: none !important;
+    position: absolute;
+    width: 76%;
+    min-height: 135px;
     padding: 13px 14px 17px;
   }
   .ce-desk-note h4 { margin-top: 15px; font-size: 28px; }
