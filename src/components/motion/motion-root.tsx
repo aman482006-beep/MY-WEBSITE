@@ -37,6 +37,13 @@ const REVEAL_SELECTOR = [
   ".aj-contact-compose",
   ".aj-contact-direct",
   ".aj-contact-social-card",
+  ".ce-heading",
+  ".ce-map-card",
+  ".ce-interest-detail",
+  ".ce-idea-card",
+  ".ce-journey-detail",
+  ".ce-growth-chart-card",
+  ".ce-desk-note",
   ".aj-resource-card",
   ".aj-resource-request",
 ].join(",");
