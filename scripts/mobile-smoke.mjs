@@ -30,6 +30,41 @@ async function runViewport(viewport) {
     // Allow independent client components to finish hydration before simulating a real tap.
     await page.waitForTimeout(400);
 
+    // Exercise the five Curiosity Lab modes, not just their visible shell.
+    const lab = page.locator("#curiosity-lab");
+    await lab.scrollIntoViewIfNeeded();
+    await page.locator("#ce-tab-map").waitFor({ state: "visible" });
+    const financeNode = page.getByRole("button", { name: "Explore Finance: how money moves" });
+    await financeNode.tap();
+    assert((await page.locator(".ce-interest-detail h3").textContent())?.startsWith("Finance"),
+      "Interest map did not update its detail card");
+    await page.locator("#ce-tab-idea").tap();
+    await page.getByLabel("First ingredient").selectOption("markets");
+    await page.getByLabel("Second ingredient").selectOption("content");
+    await page.waitForFunction(
+      () => document.querySelector(".ce-idea-card h4")?.textContent?.includes("market postcard"),
+      null,
+      { timeout: 5000 },
+    );
+    await page.locator("#ce-tab-journey").tap();
+    await page.locator(".ce-journey-stop").nth(1).tap();
+    assert((await page.locator(".ce-journey-detail h4").textContent())?.startsWith("Go deeper"),
+      "Journey map did not change its selected stop");
+    await page.locator("#ce-tab-growth").tap();
+    const valueBefore = await page.locator(".ce-growth-summary > strong").textContent();
+    await page.locator(".ce-growth-controls input[type=range]").first().focus();
+    await page.keyboard.press("End");
+    await page.waitForFunction(
+      (previous) => document.querySelector(".ce-growth-summary > strong")?.textContent !== previous,
+      valueBefore,
+      { timeout: 5000 },
+    );
+    await page.locator("#ce-tab-desk").tap();
+    await page.getByRole("button", { name: "Shuffle the desk" }).tap();
+    await page.getByRole("button", { name: "Find the secret" }).tap();
+    await page.getByText("You found the extra tab.", { exact: false }).waitFor();
+    assert(await page.locator(".ce-desk-note").count() === 3, "Digital desk should show three notes");
+
     const homeOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
     );
