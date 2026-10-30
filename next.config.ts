@@ -22,6 +22,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        pathname: "/u/**",
+      },
+      {
+        protocol: "https",
         hostname: "amanmalu.me",
         pathname: "/_next/image",
       },
