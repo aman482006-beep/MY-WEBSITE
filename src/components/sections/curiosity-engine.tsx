@@ -184,10 +184,10 @@ const IDEA_BANK: Record<string, { title: string; prompt: string; firstStep: stri
     secondStep: "Use dated sources and avoid implying causation without evidence.",
   },
   "design|finance": {
-    title: "Make compounding feel obvious",
-    prompt: "Design a visual explainer where someone can change the amount, return assumption and time horizon to see how compounding behaves.",
-    firstStep: "Keep the inputs simple and label them clearly.",
-    secondStep: "Show the difference between principal and growth.",
+    title: "Make business economics feel obvious",
+    prompt: "Design a visual explainer that shows how a fictional company's revenue, variable costs and contribution margin move together as activity changes.",
+    firstStep: "Choose three clearly labelled operating metrics.",
+    secondStep: "Make it obvious when growth improves or weakens unit economics.",
   },
   "design|markets": {
     title: "A chart that tells the truth",
@@ -435,18 +435,6 @@ export function CuriosityEngine() {
       secondStep: "Make one small prototype and ask someone to try it.",
     };
   }, [pairKey, mixA, mixB]);
-
-  const compoundValues = useMemo(
-    () => Array.from({ length: years + 1 }, (_, year) => principal * Math.pow(1 + annualRate / 100, year)),
-    [annualRate, principal, years],
-  );
-  const simpleValues = useMemo(
-    () => Array.from({ length: years + 1 }, (_, year) => principal * (1 + (annualRate / 100) * year)),
-    [annualRate, principal, years],
-  );
-  const chartMax = Math.max(1, compoundValues[compoundValues.length - 1] * 1.08);
-  const compoundTotal = compoundValues[compoundValues.length - 1];
-  const simpleTotal = simpleValues[simpleValues.length - 1];
 
   function startNodeDrag(id: InterestId, event: ReactPointerEvent<HTMLButtonElement>) {
     if (!event.isPrimary) return;
