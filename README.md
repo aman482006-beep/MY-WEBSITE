@@ -9,7 +9,8 @@ This repository is the GitHub Pages copy of [amanmalu.me](https://amanmalu.me), 
 - `/creator/` — Creator pillars and YouTube feed / channel fallback.
 - `/recruiters/` — Education, internships, CFA candidate status, skills, selected qualifications and résumé action.
 - `/resources/` — Planned finance toolkits, CFA study systems, creator workflows and resource-request email draft.
-- `/contact/` — Accessible contact page with inquiry categories, email copy action and social links.
+- `/contact/` — Contact form, inquiry categories, email draft and social links.
+- `/inbox/` — Password-protected private message inbox (Supabase Auth + row-level security).
 
 ## Design research & rationale
 
@@ -55,6 +56,10 @@ The workflow passes the optional `YOUTUBE_API_KEY` repository secret to the buil
 - **Fokus screenshots:** Add 3–4 genuine screenshots from the actual app build. The current case-study slots are labeled placeholders, not fabricated app captures.
 - **Finance files:** Attach completed PDF / Excel assets and replace the `TODO(Aman)` takeaways in `src/data/finance-work.ts`. No research conclusions or performance metrics have been invented.
 - **Project deployment:** Set GitHub Pages source to GitHub Actions once in Settings, then confirm the first Actions run.
+
+## Contact inbox setup
+
+See [docs/contact-inbox-setup.md](docs/contact-inbox-setup.md) for the Supabase project, password, database and GitHub Actions setup required to activate the form and private inbox.
 
 ## Contact
 
