@@ -133,10 +133,10 @@ export async function signInToInbox(password: string): Promise<void> {
 }
 
 export async function signOutOfInbox(): Promise<void> {
-  const { url, key } = requireConfig();
   const session = readSession();
   window.sessionStorage.removeItem(SESSION_KEY);
-  if (!session) return;
+  if (!session || !supabaseUrl || !supabaseAnonKey) return;
+  const { url, key } = requireConfig();
   try {
     await fetch(`${url}/auth/v1/logout`, {
       method: "POST",
