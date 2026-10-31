@@ -229,7 +229,7 @@ export function InboxContent() {
                     </div>
                     <div className="aj-inbox-contact-line">
                       <a href={`mailto:${message.email}`}>{message.email}</a>
-                      {message.phone && <a href={`tel:${message.phone.replace(/[^+\\d]/g, "")}`}>{message.phone}</a>}
+                      {message.phone && <a href={`tel:${message.phone.replace(/[^+0-9]/g, "")}`}>{message.phone}</a>}
                     </div>
                     <p className="aj-inbox-message-body">{message.message}</p>
                     <div className="aj-inbox-message-actions">
