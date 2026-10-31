@@ -108,15 +108,25 @@ async function runViewport(viewport) {
     await page.locator(".ce-journey-stop").nth(1).tap();
     assert((await page.locator(".ce-journey-detail h4").textContent())?.startsWith("Go deeper"),
       "Journey map did not change its selected stop");
-    await page.locator("#ce-tab-growth").tap();
-    const valueBefore = await page.locator(".ce-growth-summary > strong").textContent();
-    await page.locator(".ce-growth-controls input[type=range]").first().focus();
-    await page.keyboard.press("End");
-    await page.waitForFunction(
-      (previous) => document.querySelector(".ce-growth-summary > strong")?.textContent !== previous,
-      valueBefore,
-      { timeout: 5000 },
-    );
+    await page.locator("#ce-tab-signal").tap();
+    const signalOptions = page.locator(".ce-signal-option");
+    await signalOptions.nth(1).tap();
+    assert((await page.locator(".ce-signal-feedback > strong").textContent()) === "You found the signal.",
+      "Signal Room did not explain the fintech unit-economics answer");
+    await page.locator(".ce-signal-card-footer button").tap();
+    await signalOptions.nth(0).tap();
+    assert((await page.locator(".ce-signal-feedback > strong").textContent()) === "You found the signal.",
+      "Signal Room did not explain the cash-flow answer");
+    await page.locator(".ce-signal-card-footer button").tap();
+    await signalOptions.nth(1).tap();
+    assert((await page.locator(".ce-signal-feedback > strong").textContent()) === "You found the signal.",
+      "Signal Room did not explain the creator-conversion answer");
+    await page.locator(".ce-signal-card-footer button").tap();
+    assert((await page.locator(".ce-signal-final-score > strong").textContent())?.includes("3"),
+      "Signal Room did not show the completed scorecard");
+    await page.locator(".ce-signal-finish button").tap();
+    assert((await page.locator(".ce-signal-brief h4").textContent())?.includes("app is growing"),
+      "Signal Room restart did not reset to the first case");
     await page.locator("#ce-tab-desk").tap();
     await page.getByRole("button", { name: "Shuffle the desk" }).tap();
     await page.getByRole("button", { name: "Open note details: Stay curious." }).tap();
