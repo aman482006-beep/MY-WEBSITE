@@ -6,7 +6,7 @@ import { SocialIcon, type SocialIconName } from "@/components/layout/social-icon
 
 // GitHub Pages is published below /MY-WEBSITE; Vercel uses the domain root.
 const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/aman-profile.webp"
+  ? "/MY-WEBSITE/aman-profile.avif"
   : "/aman-profile.webp";
 
 const socials: { label: string; href: string; icon: SocialIconName }[] = [
