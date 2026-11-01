@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { FOKUS } from "@/data/fokus";
 
-const assetPrefix = process.env.GITHUB_ACTIONS === "true" ? "/MY-WEBSITE" : "";
+const assetPrefix = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const fokusScreenshots = [
   {
