@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { FOKUS } from "@/data/fokus";
 
 const assetPrefix = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -29,29 +30,145 @@ const fokusScreenshots = [
 ] as const;
 
 function FokusGallery() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const activeScreen = fokusScreenshots[activeIndex];
+
+  useEffect(() => {
+    if (!isViewerOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsViewerOpen(false);
+      if (event.key === "ArrowRight") {
+        setActiveIndex((current) => (current + 1) % fokusScreenshots.length);
+      }
+      if (event.key === "ArrowLeft") {
+        setActiveIndex((current) => (current - 1 + fokusScreenshots.length) % fokusScreenshots.length);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isViewerOpen]);
+
+  const openScreenshot = (index: number) => {
+    setActiveIndex(index);
+    setIsViewerOpen(true);
+  };
+
+  const showPrevious = () => {
+    setActiveIndex((current) => (current - 1 + fokusScreenshots.length) % fokusScreenshots.length);
+  };
+
+  const showNext = () => {
+    setActiveIndex((current) => (current + 1) % fokusScreenshots.length);
+  };
+
   return (
     <div className="aj-project-art aj-fokus-gallery" aria-label="Fokus app screenshots">
-      {fokusScreenshots.map((screen) => (
-        <a
-          className="aj-fokus-shot"
-          href={screen.src}
-          key={screen.label}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`Open the Fokus ${screen.label} screenshot in a new tab`}
+      <button
+        className="aj-fokus-featured-shot"
+        type="button"
+        onClick={() => setIsViewerOpen(true)}
+        aria-label={`Enlarge the Fokus ${activeScreen.label} screenshot`}
+      >
+        <span className="aj-fokus-shot-image">
+          <Image
+            src={activeScreen.src}
+            alt={activeScreen.alt}
+            fill
+            sizes="(max-width: 900px) 100vw, 46vw"
+            unoptimized
+            priority
+          />
+        </span>
+        <span className="aj-fokus-shot-label">{activeScreen.label}</span>
+        <span className="aj-fokus-zoom-hint" aria-hidden="true">Click to enlarge ↗</span>
+      </button>
+
+      <div className="aj-fokus-thumbnails" role="group" aria-label="More Fokus screenshots">
+        {fokusScreenshots.map((screen, index) => (
+          <button
+            className="aj-fokus-thumbnail"
+            type="button"
+            key={screen.label}
+            onClick={() => openScreenshot(index)}
+            aria-label={`View ${screen.label} screenshot larger`}
+            aria-pressed={activeIndex === index}
+          >
+            <span className="aj-fokus-thumbnail-image">
+              <Image
+                src={screen.src}
+                alt=""
+                fill
+                sizes="160px"
+                unoptimized
+              />
+            </span>
+            <span className="aj-fokus-thumbnail-label">{screen.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {isViewerOpen && (
+        <div
+          className="aj-fokus-lightbox"
+          role="presentation"
+          onClick={() => setIsViewerOpen(false)}
         >
-          <div className="aj-fokus-shot-image">
-            <Image
-              src={screen.src}
-              alt={screen.alt}
-              fill
-              sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 42vw"
-              unoptimized
-            />
+          <div
+            className="aj-fokus-lightbox-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Fokus screenshot: ${activeScreen.label}`}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="aj-fokus-lightbox-close"
+              type="button"
+              onClick={() => setIsViewerOpen(false)}
+              aria-label="Close enlarged screenshot"
+            >
+              ×
+            </button>
+            <button
+              className="aj-fokus-lightbox-nav aj-fokus-lightbox-prev"
+              type="button"
+              onClick={showPrevious}
+              aria-label="Previous screenshot"
+            >
+              ‹
+            </button>
+            <div className="aj-fokus-lightbox-image">
+              <Image
+                src={activeScreen.src}
+                alt={activeScreen.alt}
+                fill
+                sizes="(max-width: 900px) 96vw, 88vw"
+                unoptimized
+              />
+            </div>
+            <button
+              className="aj-fokus-lightbox-nav aj-fokus-lightbox-next"
+              type="button"
+              onClick={showNext}
+              aria-label="Next screenshot"
+            >
+              ›
+            </button>
+            <div className="aj-fokus-lightbox-caption">
+              <span>{activeScreen.label}</span>
+              <span>{activeIndex + 1} / {fokusScreenshots.length}</span>
+            </div>
           </div>
-          <span>{screen.label}</span>
-        </a>
-      ))}
+        </div>
+      )}
     </div>
   );
 }
