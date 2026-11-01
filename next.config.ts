@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isGitHubPages ? "/MY-WEBSITE" : "",
+  },
   // Static export is enabled only for the GitHub Pages workflow. Other hosts retain
   // the normal Next.js runtime, including the request-time YouTube API route.
   ...(isGitHubPages
