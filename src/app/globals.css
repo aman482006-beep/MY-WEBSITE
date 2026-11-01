@@ -1250,18 +1250,19 @@ a[href]:active, button:active { opacity: .82; }
 }
 
 
-/* Fokus project gallery: one featured screen, a horizontal thumbnail rail, and an accessible image viewer. */
+/* Fokus project gallery: compact featured screen, scrollable thumbnails, and full-size viewer. */
 .aj-project-card-fokus {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(340px, .88fr);
+  grid-template-columns: minmax(0, .9fr) minmax(420px, 1.1fr);
   align-items: stretch;
 }
 .aj-fokus-gallery {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 13px;
+  gap: 11px;
   min-width: 0;
   min-height: 100%;
   padding: clamp(14px, 2vw, 24px);
@@ -1273,15 +1274,15 @@ a[href]:active, button:active { opacity: .82; }
 .aj-fokus-featured-shot {
   position: relative;
   display: block;
-  width: 100%;
-  max-height: 350px;
+  width: min(100%, 380px);
+  max-height: 214px;
   aspect-ratio: 16 / 9;
   padding: 0;
   overflow: hidden;
   border: 1px solid rgba(42, 67, 87, .16);
-  border-radius: 13px;
+  border-radius: 12px;
   background: #EAF4FF;
-  box-shadow: 0 8px 23px rgba(37, 65, 88, .12);
+  box-shadow: 0 7px 19px rgba(37, 65, 88, .11);
   cursor: zoom-in;
   text-align: left;
 }
@@ -1295,24 +1296,25 @@ a[href]:active, button:active { opacity: .82; }
 .aj-fokus-zoom-hint {
   position: absolute;
   z-index: 1;
-  bottom: 11px;
-  padding: 6px 9px;
+  bottom: 8px;
+  padding: 5px 8px;
   border: 1px solid rgba(255,255,255,.25);
   border-radius: 7px;
   color: #fff;
   background: rgba(20, 31, 45, .84);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   line-height: 1.2;
   pointer-events: none;
 }
-.aj-fokus-shot-label { left: 11px; }
-.aj-fokus-zoom-hint { right: 11px; color: rgba(255,255,255,.92); font-size: 10px; font-weight: 650; }
+.aj-fokus-shot-label { left: 8px; }
+.aj-fokus-zoom-hint { right: 8px; color: rgba(255,255,255,.92); font-size: 9px; font-weight: 650; }
 .aj-fokus-thumbnails {
   display: flex;
-  gap: 9px;
+  width: min(100%, 380px);
+  gap: 7px;
   min-width: 0;
-  padding: 2px 2px 8px;
+  padding: 2px 2px 7px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
@@ -1321,13 +1323,13 @@ a[href]:active, button:active { opacity: .82; }
 }
 .aj-fokus-thumbnail {
   display: flex;
-  flex: 0 0 132px;
+  flex: 0 0 104px;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   min-width: 0;
-  padding: 4px;
+  padding: 3px;
   border: 1px solid transparent;
-  border-radius: 9px;
+  border-radius: 8px;
   background: rgba(255,255,255,.48);
   cursor: pointer;
   scroll-snap-align: start;
@@ -1346,7 +1348,7 @@ a[href]:active, button:active { opacity: .82; }
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 5px;
   background: #EAF4FF;
 }
 .aj-fokus-thumbnail-image img { object-fit: contain; }
@@ -1354,7 +1356,7 @@ a[href]:active, button:active { opacity: .82; }
   display: block;
   overflow: hidden;
   color: #334155;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 750;
   line-height: 1.25;
   text-overflow: ellipsis;
@@ -1456,13 +1458,14 @@ a[href]:active, button:active { opacity: .82; }
 @media (max-width: 900px) {
   .aj-project-card-fokus { grid-template-columns: minmax(0, 1fr); }
   .aj-fokus-gallery { min-height: 0; }
-  .aj-fokus-featured-shot { max-height: 390px; }
+  .aj-fokus-featured-shot { max-height: 280px; }
 }
 @media (max-width: 700px) {
   .aj-project-card-fokus { grid-column: auto; }
-  .aj-fokus-gallery { gap: 10px; padding: 12px; }
-  .aj-fokus-featured-shot { max-height: 280px; }
-  .aj-fokus-thumbnail { flex-basis: 116px; }
+  .aj-fokus-gallery { gap: 9px; padding: 11px; }
+  .aj-fokus-featured-shot { width: min(100%, 380px); max-height: 214px; }
+  .aj-fokus-thumbnails { width: min(100%, 380px); }
+  .aj-fokus-thumbnail { flex-basis: 96px; }
   .aj-project-card-fokus .aj-project-card-content { padding: 22px 18px; }
   .aj-fokus-capabilities { grid-template-columns: minmax(0, 1fr); }
   .aj-fokus-lightbox { padding: 10px; }
@@ -1470,7 +1473,7 @@ a[href]:active, button:active { opacity: .82; }
   .aj-fokus-lightbox-nav { width: 32px; height: 32px; }
   .aj-fokus-lightbox-prev { left: 5px; }
   .aj-fokus-lightbox-next { right: 5px; }
-  .aj-fokus-zoom-hint { font-size: 9px; }
+  .aj-fokus-zoom-hint { font-size: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .aj-fokus-shot-image img,
