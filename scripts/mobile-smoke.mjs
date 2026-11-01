@@ -33,7 +33,7 @@ async function runViewport(viewport) {
     const portrait = page.locator(".aj-profile-image");
     const portraitSource = await portrait.getAttribute("src");
     assert(
-      portraitSource?.includes("aman-profile.webp") || portraitSource?.includes("%2Faman-profile.webp"),
+      portraitSource?.includes("aman-profile-4k.avif") || portraitSource?.includes("%2Faman-profile-4k.avif"),
       "Homepage portrait is not using the new local profile image",
     );
     const portraitLoaded = await portrait.evaluate((image) => image.complete && image.naturalWidth > 0);
