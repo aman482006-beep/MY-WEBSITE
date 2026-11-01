@@ -1344,3 +1344,10 @@ a[href]:active, button:active { opacity: .82; }
 @media (prefers-reduced-motion: reduce) {
   .aj-fokus-shot-image img { transition: none; }
 }
+
+
+/* Let the two-row Fokus gallery size to its screenshots instead of inheriting the old mockup height. */
+.aj-project-card-fokus .aj-fokus-gallery {
+  height: auto;
+  min-height: 0;
+}
