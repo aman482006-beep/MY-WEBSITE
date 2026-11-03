@@ -103,6 +103,9 @@ try {
             links: rect(".aj-nav-links"),
             cta: rect(".aj-nav-cta"),
             toggle: rect(".aj-menu-toggle"),
+            linksPosition: document.querySelector(".aj-nav-links") ? getComputedStyle(document.querySelector(".aj-nav-links")).position : null,
+            toggleDisplay: document.querySelector(".aj-menu-toggle") ? getComputedStyle(document.querySelector(".aj-menu-toggle")).display : null,
+            ctaDisplay: document.querySelector(".aj-nav-cta") ? getComputedStyle(document.querySelector(".aj-nav-cta")).display : null,
             scrollWidth: navElement?.scrollWidth ?? 0,
             clientWidth: navElement?.clientWidth ?? 0,
           };
@@ -175,11 +178,12 @@ try {
         }
 
         if (viewport.width <= 1023) {
-          assert(metrics.nav.toggle?.width > 0, "Compact navigation toggle is missing at " + viewport.width + "px");
+          assert(metrics.nav.toggle?.width > 0 && metrics.nav.toggleDisplay !== "none", "Compact navigation toggle is missing at " + viewport.width + "px");
+          assert(metrics.nav.linksPosition === "absolute" && metrics.nav.ctaDisplay === "none", "Compact navigation dropdown is not configured correctly at " + viewport.width + "px");
           assert(!overlaps(metrics.nav.brand, metrics.nav.toggle),
             "Compact-navigation logo and menu button overlap at " + viewport.width + "px");
         } else {
-          assert(metrics.nav.links?.width > 0 && metrics.nav.cta?.width > 0,
+          assert(metrics.nav.links?.width > 0 && metrics.nav.cta?.width > 0 && metrics.nav.ctaDisplay !== "none" && metrics.nav.linksPosition === "relative",
             "Desktop navigation is not visible at " + viewport.width + "px");
           assert(!overlaps(metrics.nav.brand, metrics.nav.links),
             "Desktop logo overlaps navigation links at " + viewport.width + "px");
