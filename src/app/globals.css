@@ -1266,8 +1266,10 @@ a[href]:active, button:active { opacity: .82; }
   justify-content: center;
   min-width: 0;
   min-height: 0;
+  height: auto;
   padding: 0;
   overflow: hidden;
+  border-bottom: 0;
   background: var(--aj-card);
 }
 .aj-fokus-featured-shot {
