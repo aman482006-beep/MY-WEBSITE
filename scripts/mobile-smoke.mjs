@@ -16,7 +16,6 @@ async function runViewport(viewport) {
     hasTouch: true,
     deviceScaleFactor: 1,
     reducedMotion: "no-preference",
-    reducedMotion: "no-preference",
   });
   const page = await context.newPage();
   page.on("pageerror", (error) => pageErrors.push(viewport.width + "px: " + error.message));
