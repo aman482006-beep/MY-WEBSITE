@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const featuredVideos = [
   { id: "pRhaLS19QVc", number: "01" },
@@ -7,6 +10,38 @@ const featuredVideos = [
 ] as const;
 
 export function LatestVideos() {
+  const [videoTitles, setVideoTitles] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+
+    Promise.all(
+      featuredVideos.map(async (video) => {
+        const watchUrl = `https://www.youtube.com/watch?v=${video.id}`;
+        try {
+          const response = await fetch(
+            `https://www.youtube.com/oembed?url=${encodeURIComponent(watchUrl)}&format=json`
+          );
+          if (!response.ok) return [video.id, ""] as const;
+          const metadata = (await response.json()) as { title?: string };
+          return [video.id, metadata.title?.trim() ?? ""] as const;
+        } catch {
+          return [video.id, ""] as const;
+        }
+      })
+    ).then((entries) => {
+      if (!cancelled) {
+        setVideoTitles(
+          Object.fromEntries(entries.filter(([, title]) => Boolean(title)))
+        );
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <section className="aj-section aj-videos-section" id="latest-videos">
       <div className="aj-container">
@@ -29,7 +64,7 @@ export function LatestVideos() {
               href={`https://www.youtube.com/watch?v=${video.id}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Play featured YouTube video ${video.number}`}
+              aria-label={`Play ${videoTitles[video.id] || `YouTube video ${video.number}`}`}
             >
               <div className="aj-video-thumbnail">
                 <Image
@@ -41,7 +76,7 @@ export function LatestVideos() {
               </div>
               <div className="aj-video-info">
                 <span className="aj-video-label">YOUTUBE · {video.number}</span>
-                <h3>Featured video {video.number}</h3>
+                <h3>{videoTitles[video.id] || "Loading video title…"}</h3>
                 <span className="aj-video-cta">Click to play <span aria-hidden="true">↗</span></span>
               </div>
             </a>
