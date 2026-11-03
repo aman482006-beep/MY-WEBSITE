@@ -184,7 +184,7 @@ async function runViewport(viewport) {
     // Verify a primary homepage CTA with a real touch, independently of the menu.
     await page.getByRole("link", { name: "Explore projects", exact: true }).tap();
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
-    await page.getByRole("heading", { name: "Selected builds, experiments and tools." }).waitFor();
+    await page.getByRole("heading", { name: "See what I do." }).waitFor();
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
     await page.waitForFunction(
       () => document.documentElement.classList.contains("aj-motion-enabled"),
@@ -227,7 +227,7 @@ async function runViewport(viewport) {
 
     await page.locator('#primary-navigation a[data-nav-href="/projects"]').tap();
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
-    await page.getByRole("heading", { name: "Selected builds, experiments and tools." }).waitFor();
+    await page.getByRole("heading", { name: "See what I do." }).waitFor();
 
     const projectOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
@@ -237,7 +237,33 @@ async function runViewport(viewport) {
     await page.getByRole("heading", { name: "Fokus" }).waitFor();
     assert(await page.getByRole("link", { name: /View on GitHub/i }).isVisible(), "Fokus GitHub link is missing");
     assert(await page.getByRole("link", { name: /Get Fokus/i }).isVisible(), "Fokus product link is missing");
-    assert(await page.locator(".aj-project-card").count() === 1, "Projects section should contain only Fokus");
+    assert(await page.locator(".aj-project-card").count() === 4, "Projects section should show Fokus and the three active AI/finance builds");
+    for (const projectTitle of ["AI Personal Finance Manager", "Automated Financial Modelling Agent", "AI-Powered Quantitative Trading System"]) {
+      await page.getByRole("heading", { name: projectTitle, exact: true }).waitFor();
+    }
+
+    // Verify that the new interactive story route is present and that its chapter
+    // navigation changes the content rather than rendering a static placeholder.
+    await page.goto(base + "/story/", { waitUntil: "domcontentloaded" });
+    await page.locator(".aj-story-hero h1").waitFor({ state: "visible" });
+    assert(await page.locator(".aj-story-chapter-tab").count() === 5, "Explore My Story should contain five chapters");
+    await page.locator(".aj-story-chapter-tab").nth(2).tap();
+    assert(
+      (await page.locator(".aj-story-chapter-panel h3").textContent())?.includes("explaining what I was learning"),
+      "Story chapter navigation did not open the content-creation chapter",
+    );
+    await page.locator(".aj-story-chapter-tab").nth(4).tap();
+    assert(
+      (await page.locator(".aj-story-chapter-panel h3").textContent())?.includes("what I'm moving towards"),
+      "Story chapter navigation did not open the next-chapter panel",
+    );
+    const storyOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+    );
+    assert(!storyOverflow, "Explore My Story has horizontal overflow at " + viewport.width + "px");
+
+    await page.goto(base + "/projects/", { waitUntil: "domcontentloaded" });
+    await page.getByRole("heading", { name: "See what I do." }).waitFor();
 
     await page.locator(".aj-menu-toggle").tap();
     await page.waitForFunction(
