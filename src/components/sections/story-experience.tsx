@@ -7,9 +7,9 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-story-face.jpg"
   : "/aman-story-face.jpg";
-const storyAvatarSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/aman-story-avatar.webp"
-  : "/aman-story-avatar.webp";
+// Reuse the verified portrait asset in the window scene. The previous WebP
+// cutout was truncated and could not be decoded by Chromium in the Pages build.
+const storyAvatarSrc = profileImageSrc;
 
 const chapters = [
   {
