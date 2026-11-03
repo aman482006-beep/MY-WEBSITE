@@ -254,7 +254,7 @@ async function runViewport(viewport) {
     );
     await page.locator(".aj-story-chapter-tab").nth(4).tap();
     assert(
-      (await page.locator(".aj-story-chapter-panel h3").textContent())?.includes("what I'm moving towards"),
+      (await page.locator(".aj-story-chapter-panel h3").textContent())?.includes("More experiments"),
       "Story chapter navigation did not open the next-chapter panel",
     );
     const storyOverflow = await page.evaluate(
