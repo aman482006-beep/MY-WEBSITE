@@ -429,7 +429,7 @@ export function StoryExperience() {
                   <div className="aj-story-scene-paragraphs">
                     {chapter.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
                   </div>
-                  {chapter.caption && <p className="aj-story-scene-caption">{chapter.caption}</p>}
+                  {"caption" in chapter && chapter.caption && <p className="aj-story-scene-caption">{chapter.caption}</p>}
                   <div className="aj-story-scene-proof">
                     {chapter.proof.map((item) => <span key={item}>{item}</span>)}
                   </div>
