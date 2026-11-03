@@ -18,6 +18,7 @@ async function runViewport(viewport) {
     reducedMotion: "no-preference",
   });
   const page = await context.newPage();
+  let currentStage = "homepage initial load";
   page.on("pageerror", (error) => pageErrors.push(viewport.width + "px: " + error.message));
 
   try {
@@ -50,10 +51,12 @@ async function runViewport(viewport) {
     assert(await storyWindow.count() === 1, "Homepage My Story window is missing");
     assert(await storyWindow.locator(".aj-story-cloud").count() === 3, "Moving-sky clouds are missing");
     assert(await storyWindow.locator(".aj-story-window-shutter").count() === 2, "The opening window needs two shutters");
+    currentStage = "load transparent portrait inside My Story window";
     await page.waitForFunction(() => {
       const image = document.querySelector(".aj-story-window-person img");
       return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
     }, null, { timeout: 15000 });
+    currentStage = "open the My Story window when it enters view";
     await page.waitForFunction(
       () => document.querySelector(".aj-story-window-scene")?.getAttribute("data-window-open") === "true",
       null,
@@ -207,6 +210,8 @@ async function runViewport(viewport) {
 
     // Verify a primary homepage CTA with a real touch, independently of the menu.
     await page.getByRole("link", { name: /See what I’ve built/ }).tap();
+    currentStage = "navigate to Projects from the home-page button";
+    currentStage = "navigate to Projects from the mobile menu";
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
     await page.getByRole("heading", { name: "Things I've built." }).waitFor();
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
@@ -313,6 +318,7 @@ async function runViewport(viewport) {
       { timeout: 5000 },
     );
     await page.locator('#primary-navigation a[data-nav-href="/contact"]').tap();
+    currentStage = "navigate to Contact from the mobile menu";
     await page.waitForURL(/\/MY-WEBSITE\/contact\/$/, { timeout: 15000 });
     await page.getByRole("heading", { name: "What would you like to discuss?" }).waitFor();
 
@@ -385,7 +391,7 @@ for (const viewport of [{ width: 390, height: 844 }, { width: 360, height: 800 }
   try {
     await runViewport(viewport);
   } catch (error) {
-    failures.push(viewport.width + "px: " + (error instanceof Error ? error.message : String(error)));
+    failures.push(viewport.width + "px [" + currentStage + "]: " + (error instanceof Error ? error.message : String(error)));
   }
 }
 
