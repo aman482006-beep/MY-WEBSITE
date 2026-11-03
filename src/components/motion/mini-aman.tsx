@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
 import { usePathname } from "next/navigation";
 
 type Pose =
@@ -24,6 +24,10 @@ const WAYPOINTS: Waypoint[] = [
   { selector: ".aj-contact-section", side: "right", top: "65vh", pose: "wave", message: "Come say hello." },
   { selector: ".aj-footer", side: "left", top: "66vh", pose: "celebrate", message: "You made it. Nice." },
 ];
+
+const subscribeToMount = (_onStoreChange: () => void) => () => {};
+const getClientMountSnapshot = () => true;
+const getServerMountSnapshot = () => false;
 
 function MiniAmanArt({ pose }: { pose: Pose }) {
   const sitting = pose === "work" || pose === "read";
@@ -193,7 +197,7 @@ function MiniAmanArt({ pose }: { pose: Pose }) {
 
 export function MiniAman() {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(subscribeToMount, getClientMountSnapshot, getServerMountSnapshot);
   const [sceneIndex, setSceneIndex] = useState(-1);
   const [pose, setPose] = useState<Pose>("peek");
   const [message, setMessage] = useState("");
@@ -208,7 +212,6 @@ export function MiniAman() {
   const isHome = pathname === "/" || pathname === "/MY-WEBSITE" || pathname === "/MY-WEBSITE/";
 
   useEffect(() => {
-    setMounted(true);
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const updateMotion = () => setReducedMotion(media.matches);
     const updateVisibility = () => setPageVisible(!document.hidden);
@@ -252,12 +255,7 @@ export function MiniAman() {
     transitionTimers.current.forEach((timer) => window.clearTimeout(timer));
     transitionTimers.current = [];
 
-    if (reducedMotion) {
-      setPose("idle");
-      setTransition("rest");
-      setMessage("");
-      return;
-    }
+    if (reducedMotion) return;
 
     const enterScene = () => {
       setPose(waypoint.pose);
@@ -385,6 +383,9 @@ export function MiniAman() {
 
   if (!mounted || !isHome) return null;
 
+  const displayPose: Pose = reducedMotion ? "idle" : pose;
+  const displayTransition = reducedMotion ? "rest" : transition;
+  const displayMessage = reducedMotion ? "" : message;
   const waypoint = WAYPOINTS[Math.max(0, sceneIndex)];
   const sideStyle: CSSProperties = waypoint.side === "left"
     ? { left: "max(5px, calc((100vw - 1180px) / 2 - 54px))", right: "auto", top: waypoint.top }
@@ -392,15 +393,15 @@ export function MiniAman() {
 
   return (
     <div
-      className={"mini-aman mini-aman-side-" + waypoint.side + (transition !== "rest" ? " mini-aman-transition-" + transition : "") + (!pageVisible ? " mini-aman-page-paused" : "")}
+      className={"mini-aman mini-aman-side-" + waypoint.side + (displayTransition !== "rest" ? " mini-aman-transition-" + displayTransition : "") + (!pageVisible ? " mini-aman-page-paused" : "")}
       style={sideStyle}
-      data-pose={pose}
+      data-pose={displayPose}
       aria-hidden="true"
     >
-      <div className={"mini-aman-bubble" + (message ? " is-visible" : "")}>{message}</div>
+      <div className={"mini-aman-bubble" + (displayMessage ? " is-visible" : "")}>{displayMessage}</div>
       <div className="mini-aman-character">
         <span className="mini-aman-trail" />
-        <MiniAmanArt pose={pose} />
+        <MiniAmanArt pose={displayPose} />
         <span className="mini-aman-shadow" />
       </div>
     </div>
