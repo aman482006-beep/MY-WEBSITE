@@ -895,3 +895,35 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-buil
   .aj-story-build-flip-face.is-back { transform: none; }
   .aj-story-build-flip-card:not(.is-flipped) .aj-story-build-flip-face.is-back { display: none; }
 }
+
+
+/* Real captures from the deployed project previews. The CSS artwork beneath
+   each image remains a graceful fallback if a preview capture is unavailable. */
+.aj-project-lab-art { position: relative; }
+.aj-project-screenshot {
+  z-index: 2;
+  max-width: 100%;
+  object-fit: contain;
+  background: #F3F5F4;
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+.aj-project-screenshot.is-loaded { opacity: 1; }
+.aj-project-screenshot-label {
+  position: absolute;
+  z-index: 3;
+  right: 12px;
+  bottom: 10px;
+  padding: 6px 9px;
+  border: 1.5px solid var(--aj-ink);
+  border-radius: 999px;
+  color: var(--aj-ink);
+  background: rgba(255,252,247,.94);
+  box-shadow: 2px 2px 0 var(--aj-ink);
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .08em;
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-project-screenshot { transition: none; }
+}
