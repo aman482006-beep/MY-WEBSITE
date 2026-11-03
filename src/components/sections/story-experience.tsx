@@ -83,7 +83,7 @@ export function StoryPreview() {
         <div className="aj-story-preview-copy">
           <p className="aj-eyebrow aj-eyebrow-accent">BEHIND THE PROJECTS</p>
           <h2>Explore my story<span>.</span></h2>
-          <p>Not a résumé in paragraph form. The route behind the work: what I studied, where I learned, what I made, and what I'm figuring out next.</p>
+          <p>Not a résumé in paragraph form. The route behind the work: what I studied, where I learned, what I made, and what I&apos;m figuring out next.</p>
           <Link href="/story" className="aj-button aj-button-primary">Explore my story <span aria-hidden="true">→</span></Link>
         </div>
         <div className="aj-story-preview-map" aria-label="A quick map of the story">
@@ -92,7 +92,7 @@ export function StoryPreview() {
           <div className="aj-story-preview-node"><span>02</span><div><strong>Explore</strong><small>Internships · experience</small></div></div>
           <div className="aj-story-preview-node"><span>03</span><div><strong>Create</strong><small>100+ videos</small></div></div>
           <div className="aj-story-preview-node"><span>04</span><div><strong>Build</strong><small>Products · experiments</small></div></div>
-          <div className="aj-story-preview-node"><span>05</span><div><strong>What's next</strong><small>Test · learn · repeat</small></div></div>
+          <div className="aj-story-preview-node"><span>05</span><div><strong>What&apos;s next</strong><small>Test · learn · repeat</small></div></div>
         </div>
       </div>
     </section>
@@ -110,7 +110,7 @@ export function StoryExperience() {
           <div className="aj-story-hero-copy">
             <p className="aj-eyebrow aj-eyebrow-accent">A WORK IN PROGRESS · IN THE BEST WAY</p>
             <h1>Explore my <em>story.</em></h1>
-            <p className="aj-story-hero-lede">A little finance, a little making, a lot of curiosity. Here's how the pieces connect—and what I'm trying to figure out next.</p>
+            <p className="aj-story-hero-lede">A little finance, a little making, a lot of curiosity. Here&apos;s how the pieces connect—and what I&apos;m trying to figure out next.</p>
             <div className="aj-story-hero-actions">
               <a className="aj-button aj-button-primary" href="#story-chapters">Start exploring <span aria-hidden="true">↓</span></a>
               <Link className="aj-button aj-button-outline" href="/projects">See what I do</Link>
@@ -197,7 +197,7 @@ export function StoryExperience() {
             <div><span>01</span><strong>Find the friction</strong><p>What is confusing, slow or needlessly difficult for someone?</p></div>
             <div><span>02</span><strong>Make a first version</strong><p>Build the smallest useful idea instead of waiting for a perfect plan.</p></div>
             <div><span>03</span><strong>Put it in front of people</strong><p>Listen to what they do—not only what they say.</p></div>
-            <div><span>04</span><strong>Measure and adapt</strong><p>Keep what works, be honest about what doesn't, and try again.</p></div>
+            <div><span>04</span><strong>Measure and adapt</strong><p>Keep what works, be honest about what doesn&apos;t, and try again.</p></div>
           </div>
         </div>
       </section>
@@ -206,7 +206,7 @@ export function StoryExperience() {
         <div className="aj-container aj-story-outro-inner">
           <p className="aj-eyebrow aj-eyebrow-accent">STILL ADDING CHAPTERS</p>
           <h2>The best part of the story<br /><em>is what I do next.</em></h2>
-          <p>This page should keep getting more specific as I document the real decisions, unexpected turns and lessons behind the work. The point isn't to make the journey look perfect. It's to make the learning visible.</p>
+          <p>This page should keep getting more specific as I document the real decisions, unexpected turns and lessons behind the work. The point isn&apos;t to make the journey look perfect. It's to make the learning visible.</p>
           <div className="aj-story-outro-actions">
             <Link href="/projects" className="aj-button aj-button-primary">See what I do <span aria-hidden="true">→</span></Link>
             <Link href="/contact" className="aj-button aj-button-outline">Start a conversation</Link>
