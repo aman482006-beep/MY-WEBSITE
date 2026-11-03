@@ -72,7 +72,8 @@ try {
             return { left: box.left, right: box.right, width: box.width, height: box.height };
           };
           const selectors = [
-            ".aj-project-card", ".aj-story-chapter-panel", ".aj-contact-compose",
+            ".aj-project-card", ".aj-story-chapter-panel", ".aj-story-visual-card",
+            ".aj-story-topic-track", ".aj-story-flow", ".aj-story-lesson", ".aj-contact-compose",
             ".aj-contact-direct", ".aj-contact-social-card", ".aj-daily-newspaper",
             ".aj-resource-card", ".aj-resource-request", ".aj-creator-pillar",
             ".aj-video-card", ".aj-pillar", ".aj-sticky-note",
