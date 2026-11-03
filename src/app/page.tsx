@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { LatestVideos } from "@/components/sections/latest-videos";
+import { StoryPreview } from "@/components/sections/story-experience";
 import { CuriosityEngine } from "@/components/sections/curiosity-engine";
 import { SocialIcon, type SocialIconName } from "@/components/layout/social-icon";
 
@@ -146,6 +147,8 @@ export default function Home() {
       </section>
 
       <CuriosityEngine />
+
+      <StoryPreview />
 
       <LatestVideos />
 

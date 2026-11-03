@@ -13,6 +13,8 @@ const fokusScreenshots = [
   { src: assetPrefix + "/fokus/fokus-analytics.svg", label: "Analytics", alt: "Fokus Statistics with focus time, streaks, weekly trends and consistency grid" },
 ] as const;
 
+type ProjectArtworkKind = "finance" | "model" | "quant";
+
 function FokusGallery() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
@@ -62,15 +64,47 @@ function FokusGallery() {
   );
 }
 
+function ProjectArtwork({ kind }: { kind: ProjectArtworkKind }) {
+  const title = kind === "finance" ? "MONEY OVERVIEW" : kind === "model" ? "MODEL WORKSPACE" : "STRATEGY LAB";
+  return (
+    <div className={`aj-project-art aj-project-lab-art aj-project-lab-${kind}`} aria-hidden="true">
+      <div className="aj-project-lab-window">
+        <div className="aj-project-lab-windowbar"><i /><i /><i /><strong>{title}</strong><small>WORK IN PROGRESS</small></div>
+        <div className="aj-project-lab-body">
+          {kind === "finance" && (
+            <>
+              <div className="aj-project-lab-stats"><div><small>Income</small><b>₹—</b></div><div><small>Spent</small><b>₹—</b></div><div><small>Saved</small><b>—%</b></div></div>
+              <div className="aj-project-lab-chart">{Array.from({ length: 7 }, (_, index) => <i key={index} />)}</div>
+            </>
+          )}
+          {kind === "model" && (
+            <div className="aj-project-lab-model-rows">
+              <span>Revenue assumptions <b>INPUT</b></span><span>Historical financials <b>DATA</b></span><span>Forecast schedule <b>MODEL</b></span><span>Valuation outputs <b>OUTPUT</b></span>
+            </div>
+          )}
+          {kind === "quant" && (
+            <>
+              <div className="aj-project-lab-stats"><div><small>Signals</small><b>TEST</b></div><div><small>Backtest</small><b>RUN</b></div><div><small>Risk</small><b>CHECK</b></div></div>
+              <div className="aj-project-lab-quant-line">
+                <svg viewBox="0 0 400 70" preserveAspectRatio="none"><path d="M0 55 L35 48 L70 52 L108 30 L144 39 L182 19 L218 29 L250 14 L285 25 L320 10 L350 18 L400 5" fill="none" stroke="#79977C" strokeWidth="2.5" vectorEffect="non-scaling-stroke" /></svg>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ProjectShowcase() {
   return (
     <section className="aj-section aj-projects-section" id="projects" aria-labelledby="projects-heading">
       <div className="aj-container">
         <div className="aj-section-heading aj-projects-heading">
           <div>
-            <p className="aj-eyebrow aj-eyebrow-accent">PROJECTS</p>
-            <h2 id="projects-heading">Selected builds, experiments and tools.</h2>
-            <p className="aj-heading-subtitle">Products I build, problems I explore, and the work behind them.</p>
+            <p className="aj-eyebrow aj-eyebrow-accent">WHAT I'M MAKING</p>
+            <h2 id="projects-heading">See what I do.</h2>
+            <p className="aj-heading-subtitle">One product available to use, and a few experiments I'm actively building. I keep the status clear so you can tell what's shipped and what's still being tested.</p>
           </div>
           <a className="aj-text-link" href="https://github.com/aman482006-beep" target="_blank" rel="noopener noreferrer">Browse GitHub <span aria-hidden="true">↗</span></a>
         </div>
@@ -79,7 +113,7 @@ export function ProjectShowcase() {
           <article className="aj-project-card aj-project-card-fokus">
             <FokusGallery />
             <div className="aj-project-card-content">
-              <div className="aj-project-card-meta"><span>Desktop productivity app · Flutter</span><span>01</span></div>
+              <div className="aj-project-card-meta"><span>Product · Windows app · Available</span><span>01</span></div>
               <h3>{FOKUS.name}</h3>
               <p className="aj-project-subtitle">{FOKUS.tagline}</p>
               <p className="aj-project-description">Focus sessions, tasks, screen-time insights and practical offline tools — all in one workspace.</p>
@@ -91,7 +125,44 @@ export function ProjectShowcase() {
               </div>
             </div>
           </article>
+
+          <article className="aj-project-card">
+            <ProjectArtwork kind="finance" />
+            <div className="aj-project-card-content">
+              <div className="aj-project-card-meta"><span>Fintech · In development</span><span>02</span></div>
+              <h3>AI Personal Finance Manager</h3>
+              <p className="aj-project-description">An experiment in making personal finances easier to understand, with spending views, budgeting workflows and AI-assisted insights in one place.</p>
+              <div className="aj-project-tags"><span>Personal finance</span><span>AI</span><span>Fintech</span><span>Product thinking</span></div>
+              <p className="aj-project-note">Currently being developed. The interface and workflows are still evolving.</p>
+              <div className="aj-project-actions"><a href="https://github.com/aman482006-beep/AI-Personal-Finance-Manager" target="_blank" rel="noopener noreferrer">Explore repository <span aria-hidden="true">↗</span></a></div>
+            </div>
+          </article>
+
+          <article className="aj-project-card">
+            <ProjectArtwork kind="model" />
+            <div className="aj-project-card-content">
+              <div className="aj-project-card-meta"><span>Finance × AI · In development</span><span>03</span></div>
+              <h3>Automated Financial Modelling Agent</h3>
+              <p className="aj-project-description">Exploring how an AI-assisted workflow can organise assumptions, historical financials, forecast schedules and valuation outputs.</p>
+              <div className="aj-project-tags"><span>Financial modelling</span><span>Automation</span><span>AI agents</span></div>
+              <p className="aj-project-note">An active build—not presented as a finished modelling system.</p>
+              <div className="aj-project-actions"><a href="https://github.com/aman482006-beep/Automated-Financial-Modelling-Agent" target="_blank" rel="noopener noreferrer">Explore repository <span aria-hidden="true">↗</span></a></div>
+            </div>
+          </article>
+
+          <article className="aj-project-card">
+            <ProjectArtwork kind="quant" />
+            <div className="aj-project-card-content">
+              <div className="aj-project-card-meta"><span>Quant · Research prototype</span><span>04</span></div>
+              <h3>AI-Powered Quantitative Trading System</h3>
+              <p className="aj-project-description">A research project exploring strategy signals, historical backtesting and risk-aware evaluation before any live-trading claims.</p>
+              <div className="aj-project-tags"><span>Python</span><span>Quantitative research</span><span>Backtesting</span><span>Risk</span></div>
+              <p className="aj-project-note">Prototype status. Historical tests do not guarantee future performance.</p>
+              <div className="aj-project-actions"><a href="https://github.com/aman482006-beep/AI-Powered-Quantitative-Trading-System" target="_blank" rel="noopener noreferrer">Explore repository <span aria-hidden="true">↗</span></a></div>
+            </div>
+          </article>
         </div>
+        <p className="aj-project-disclaimer">A work-in-progress label is intentional: a public repository is not the same as a finished, tested product.</p>
       </div>
     </section>
   );
