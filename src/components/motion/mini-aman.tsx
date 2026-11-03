@@ -19,7 +19,7 @@ const WAYPOINTS: Waypoint[] = [
   { selector: ".aj-hero", side: "right", top: "66vh", pose: "idle", message: "Hey, welcome in!" },
   { selector: ".aj-pillars-section", side: "left", top: "66vh", pose: "inspect", message: "Which rabbit hole first?" },
   { selector: "#curiosity-lab", side: "left", top: "66vh", pose: "think", message: "Interesting connection..." },
-  { selector: "#latest-videos", side: "right", top: "66vh", pose: "click", message: "Pick a video!" },
+  { selector: "#latest-videos", side: "right", top: "66vh", pose: "inspect", message: "Pick a video!" },
   { selector: ".aj-note-wall-section", side: "left", top: "66vh", pose: "read", message: "One more thing to learn." },
   { selector: ".aj-contact-section", side: "right", top: "66vh", pose: "wave", message: "Come say hello." },
   { selector: ".aj-footer", side: "left", top: "66vh", pose: "celebrate", message: "You made it. Nice." },
@@ -96,8 +96,8 @@ function MiniAmanArt({ pose }: { pose: Pose }) {
         </g>
       ) : waving ? (
         <g className="mini-aman-arms">
-          <path d="M72 66 Q83 63 87 51 L91 36" fill="none" stroke="url(#mini-aman-plaid)" strokeWidth="10" strokeLinecap="round" />
-          <path d="M91 36 Q86 30 91 25 Q95 22 98 28 L100 36 Q96 42 91 36Z" fill="#C88770" stroke="#29262E" strokeWidth="2" />
+          <path className="mini-aman-wave-arm" d="M72 66 Q83 63 87 51 L91 36" fill="none" stroke="url(#mini-aman-plaid)" strokeWidth="10" strokeLinecap="round" />
+          <path className="mini-aman-wave-hand" d="M91 36 Q86 30 91 25 Q95 22 98 28 L100 36 Q96 42 91 36Z" fill="#C88770" stroke="#29262E" strokeWidth="2" />
           <path d="M39 66 Q30 75 34 89 L40 94" fill="none" stroke="url(#mini-aman-plaid)" strokeWidth="10" strokeLinecap="round" />
           <path d="M40 94Q46 96 47 91" fill="none" stroke="#C88770" strokeWidth="5" strokeLinecap="round" />
         </g>
