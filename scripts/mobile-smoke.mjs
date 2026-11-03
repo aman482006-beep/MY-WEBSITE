@@ -15,6 +15,7 @@ async function runViewport(viewport) {
     isMobile: true,
     hasTouch: true,
     deviceScaleFactor: 1,
+    reducedMotion: "no-preference",
   });
   const page = await context.newPage();
   page.on("pageerror", (error) => pageErrors.push(viewport.width + "px: " + error.message));
@@ -22,13 +23,10 @@ async function runViewport(viewport) {
   try {
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
     await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => undefined);
-    await page.waitForFunction(
-      () => document.documentElement.classList.contains("aj-motion-enabled"),
-      null,
-      { timeout: 15000 },
-    );
-    // Allow independent client components to finish hydration before simulating a real tap.
-    await page.waitForTimeout(400);
+    // Wait for a fully loaded document and give independent client components
+    // a moment to hydrate; the global reveal class is not a page-readiness signal.
+    await page.waitForFunction(() => document.readyState === "complete", null, { timeout: 10000 });
+    await page.waitForTimeout(450);
     // The homepage portrait and the handwritten status note must both render.
     const portrait = page.locator(".aj-profile-image");
     const portraitSource = await portrait.getAttribute("src");
@@ -199,24 +197,16 @@ async function runViewport(viewport) {
       assert(!overflow, route + " has horizontal overflow at " + viewport.width + "px");
     }
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
-    await page.waitForFunction(
-      () => document.documentElement.classList.contains("aj-motion-enabled"),
-      null,
-      { timeout: 15000 },
-    );
-    await page.waitForTimeout(250);
+    await page.waitForFunction(() => document.readyState === "complete", null, { timeout: 10000 });
+    await page.waitForTimeout(350);
 
     // Verify a primary homepage CTA with a real touch, independently of the menu.
     await page.getByRole("link", { name: /See what I’ve built/ }).tap();
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
     await page.getByRole("heading", { name: "Things I've built." }).waitFor();
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
-    await page.waitForFunction(
-      () => document.documentElement.classList.contains("aj-motion-enabled"),
-      null,
-      { timeout: 15000 },
-    );
-    await page.waitForTimeout(250);
+    await page.waitForFunction(() => document.readyState === "complete", null, { timeout: 10000 });
+    await page.waitForTimeout(350);
 
     const menuButton = page.locator(".aj-menu-toggle");
     assert(await menuButton.isVisible(), "Mobile menu button is not visible");
