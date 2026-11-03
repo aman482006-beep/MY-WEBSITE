@@ -1538,6 +1538,7 @@ a[href]:active, button:active { opacity: .82; }
 .aj-creator-page .aj-video-card {
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(112px, .88fr);
+  grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
   gap: 10px;
   min-width: 0;
@@ -1556,6 +1557,7 @@ a[href]:active, button:active { opacity: .82; }
 }
 .aj-video-thumbnail {
   position: relative;
+  grid-row: auto;
   align-self: center;
   width: 100%;
   min-width: 0;
@@ -1673,4 +1675,12 @@ a[href]:active, button:active { opacity: .82; }
   .aj-video-info { gap: 6px; padding: 7px 6px; }
   .aj-video-info h3 { font-size: 13px; }
   .aj-video-cta { min-height: 34px; padding-inline: 7px; font-size: 11px; }
+}
+
+
+/* Keep the longer navigation label comfortable on tablet-width screens. */
+@media (min-width: 701px) and (max-width: 980px) {
+  .aj-nav-links > a { padding-inline: 6px; font-size: 12px; }
+  .aj-nav-cta { padding-inline: 10px; font-size: 12px; }
+  .aj-brand-name { font-size: 11px; }
 }
