@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-profile-4k.avif"
@@ -141,7 +141,7 @@ const chapters = [
 
 function StoryWindow() {
   return (
-    <div className="aj-story-preview-window" aria-label="An animated window opening onto a moving sky, with Aman waving">
+    <div className="aj-story-preview-window" role="img" aria-label="An animated window opening onto a moving sky, with Aman waving">
       <div className="aj-story-window-scene">
         <div className="aj-story-window-sky">
           <span className="aj-story-cloud aj-story-cloud-one" />
@@ -278,7 +278,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
     return (
       <div className="aj-story-visual-card aj-story-people-visual">
         <span className="aj-story-visual-kicker">ONE IDEA AT A TIME</span>
-        <div className="aj-story-people-grid" aria-hidden="true">{Array.from({ length: 48 }, (_, index) => <i key={index} style={{ "--dot-index": index } as React.CSSProperties} />)}</div>
+        <div className="aj-story-people-grid" aria-hidden="true">{Array.from({ length: 48 }, (_, index) => <i key={index} style={{ "--dot-index": index } as CSSProperties} />)}</div>
         <div className="aj-story-people-message"><span>THE GOAL</span><b>Make the unfamiliar feel approachable.</b></div>
         <p>Less about the number under a post. More about what someone understands after it.</p>
       </div>
@@ -338,7 +338,15 @@ export function StoryExperience() {
 
   useEffect(() => {
     const scenes = Array.from(document.querySelectorAll<HTMLElement>(".aj-story-scene"));
-    if (!("IntersectionObserver" in window) || scenes.length === 0) return;
+    if (scenes.length === 0) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      scenes.forEach((scene) => { scene.dataset.revealed = "true"; });
+      return;
+    }
+
+    document.documentElement.classList.add("aj-story-motion-ready");
+    scenes.forEach((scene) => { scene.dataset.revealed = "false"; });
 
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
@@ -353,7 +361,11 @@ export function StoryExperience() {
     scenes.forEach((scene) => observer.observe(scene));
     if (scenes[0]) scenes[0].dataset.revealed = "true";
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove("aj-story-motion-ready");
+      scenes.forEach((scene) => { delete scene.dataset.revealed; });
+    };
   }, []);
 
   return (
