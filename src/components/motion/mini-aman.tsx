@@ -16,9 +16,8 @@ type Waypoint = {
 };
 
 const WAYPOINTS: Waypoint[] = [
-  { selector: ".aj-hero", side: "right", top: "66vh", pose: "peek", message: "Hey, welcome in!" },
+  { selector: ".aj-hero", side: "right", top: "66vh", pose: "idle", message: "Hey, welcome in!" },
   { selector: ".aj-pillars-section", side: "left", top: "64vh", pose: "inspect", message: "Which rabbit hole first?" },
-  { selector: ".aj-featured-section", side: "right", top: "66vh", pose: "work", message: "Building something useful." },
   { selector: "#curiosity-lab", side: "left", top: "66vh", pose: "think", message: "Interesting connection..." },
   { selector: "#latest-videos", side: "right", top: "67vh", pose: "click", message: "Pick a video!" },
   { selector: ".aj-note-wall-section", side: "left", top: "66vh", pose: "read", message: "One more thing to learn." },
@@ -312,11 +311,13 @@ export function MiniAman() {
       const project = origin.closest(".aj-feature-card, .aj-project-card, .aj-project-card-fokus");
       const target = video || project || pillar || curiosity;
       if (!target) return;
-      const key = video ? "video" : project ? "project" : pillar ? "pillar" : "curiosity";
+      const pillarTitle = pillar?.querySelector("h2")?.textContent?.trim().toLowerCase() ?? "";
+      const buildCard = pillarTitle === "build";
+      const key = video ? "video" : project ? "project" : pillar ? "pillar-" + pillarTitle : "curiosity";
       if (lastTarget.current === key) return;
       lastTarget.current = key;
-      setPose(video ? "click" : project ? "work" : pillar ? "inspect" : "think");
-      setMessage(video ? "This one!" : project ? "Made with curiosity." : pillar ? "Let's look closer." : "Interesting...");
+      setPose(video ? "click" : project || buildCard ? "work" : pillar ? "inspect" : "think");
+      setMessage(video ? "This one!" : project || buildCard ? "Let's build." : pillar ? "Let's look closer." : "Interesting...");
       restorePose();
     };
 
@@ -326,6 +327,15 @@ export function MiniAman() {
       if (origin.closest(".aj-video-card")) {
         setPose("click");
         setMessage("Tap!");
+        restorePose();
+      } else if (origin.closest(".aj-pillar")) {
+        const title = origin.closest(".aj-pillar")?.querySelector("h2")?.textContent?.trim().toLowerCase();
+        setPose(title === "build" ? "work" : "inspect");
+        setMessage(title === "build" ? "Let's build." : "Good direction.");
+        restorePose();
+      } else if (origin.closest(".ce-node, .ce-tab, .ce-journey-stop")) {
+        setPose("think");
+        setMessage("Noted. Interesting.");
         restorePose();
       } else if (origin.closest(".aj-button, .aj-contact-detail, .aj-nav-cta")) {
         setPose("wave");
