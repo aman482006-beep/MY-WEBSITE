@@ -17,11 +17,11 @@ type Waypoint = {
 
 const WAYPOINTS: Waypoint[] = [
   { selector: ".aj-hero", side: "right", top: "66vh", pose: "idle", message: "Hey, welcome in!" },
-  { selector: ".aj-pillars-section", side: "left", top: "64vh", pose: "inspect", message: "Which rabbit hole first?" },
+  { selector: ".aj-pillars-section", side: "left", top: "66vh", pose: "inspect", message: "Which rabbit hole first?" },
   { selector: "#curiosity-lab", side: "left", top: "66vh", pose: "think", message: "Interesting connection..." },
-  { selector: "#latest-videos", side: "right", top: "67vh", pose: "click", message: "Pick a video!" },
+  { selector: "#latest-videos", side: "right", top: "66vh", pose: "click", message: "Pick a video!" },
   { selector: ".aj-note-wall-section", side: "left", top: "66vh", pose: "read", message: "One more thing to learn." },
-  { selector: ".aj-contact-section", side: "right", top: "65vh", pose: "wave", message: "Come say hello." },
+  { selector: ".aj-contact-section", side: "right", top: "66vh", pose: "wave", message: "Come say hello." },
   { selector: ".aj-footer", side: "left", top: "66vh", pose: "celebrate", message: "You made it. Nice." },
 ];
 
@@ -403,12 +403,12 @@ export function MiniAman() {
   const displayMessage = reducedMotion ? "" : message;
   const waypoint = WAYPOINTS[Math.max(0, sceneIndex)];
   const pageGutter = "max(5px, calc((100vw - 1180px) / 2 - 54px))";
-  const sideStyle: CSSProperties = {
-    left: waypoint.side === "left"
+  const sideStyle = {
+    "--mini-x": waypoint.side === "left"
       ? pageGutter
       : "calc(100vw - " + pageGutter + " - var(--mini-size))",
     top: waypoint.top,
-  };
+  } as CSSProperties;
 
   return (
     <div
