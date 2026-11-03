@@ -206,7 +206,7 @@ export function StoryExperience() {
         <div className="aj-container aj-story-outro-inner">
           <p className="aj-eyebrow aj-eyebrow-accent">STILL ADDING CHAPTERS</p>
           <h2>The best part of the story<br /><em>is what I do next.</em></h2>
-          <p>This page should keep getting more specific as I document the real decisions, unexpected turns and lessons behind the work. The point isn&apos;t to make the journey look perfect. It's to make the learning visible.</p>
+          <p>This page should keep getting more specific as I document the real decisions, unexpected turns and lessons behind the work. The point isn&apos;t to make the journey look perfect. It&apos;s to make the learning visible.</p>
           <div className="aj-story-outro-actions">
             <Link href="/projects" className="aj-button aj-button-primary">See what I do <span aria-hidden="true">→</span></Link>
             <Link href="/contact" className="aj-button aj-button-outline">Start a conversation</Link>
