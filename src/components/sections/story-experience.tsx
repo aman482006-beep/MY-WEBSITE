@@ -7,9 +7,10 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-story-face.jpg"
   : "/aman-story-face.jpg";
-// Reuse the verified portrait asset in the window scene. The previous WebP
-// cutout was truncated and could not be decoded by Chromium in the Pages build.
-const storyAvatarSrc = profileImageSrc;
+// Transparent, verified photo cut-out used only in the My Story window.
+const storyAvatarSrc = process.env.GITHUB_ACTIONS === "true"
+  ? "/MY-WEBSITE/aman-story-avatar.webp"
+  : "/aman-story-avatar.webp";
 
 const chapters = [
   {
@@ -178,7 +179,7 @@ function StoryWindow() {
           <span className="aj-story-window-hill aj-story-window-hill-front" />
         </div>
         <div className="aj-story-window-person">
-          <Image src={storyAvatarSrc} alt="Aman smiling in a portrait" fill sizes="(max-width: 620px) 56vw, 220px" />
+          <Image src={storyAvatarSrc} alt="Aman smiling in a portrait" fill loading="eager" sizes="(max-width: 620px) 56vw, 220px" />
         </div>
         <svg className="aj-story-window-wave" viewBox="0 0 110 170" aria-hidden="true">
           <g className="aj-story-wave-arm">
