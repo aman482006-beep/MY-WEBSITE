@@ -970,7 +970,7 @@ a[href]:active, button:active { opacity: .82; }
    Keep positioning desktop-only: later global rules must not pull the mobile dropdown
    back into the horizontal navbar row. */
 .aj-nav-links { isolation: isolate; }
-@media (min-width: 981px) {
+@media (min-width: 1024px) {
   .aj-nav-links { position: relative; }
 }
 .aj-nav-animated-highlight {
