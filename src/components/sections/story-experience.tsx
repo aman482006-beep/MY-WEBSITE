@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/aman-profile-4k.avif"
-  : "/aman-profile.webp";
+  ? "/MY-WEBSITE/aman-story-face.jpg"
+  : "/aman-story-face.jpg";
 const storyAvatarSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-story-avatar.webp"
   : "/aman-story-avatar.webp";
