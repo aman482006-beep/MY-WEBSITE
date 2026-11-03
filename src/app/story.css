@@ -221,19 +221,18 @@
 .aj-story-window-person {
   position: absolute;
   z-index: 5;
-  bottom: 0;
-  left: 29%;
-  width: 42%;
-  height: 83%;
-  overflow: hidden;
-  border: 3px solid rgba(255,255,255,.82);
-  border-bottom: 0;
-  border-radius: 47% 47% 0 0;
-  background: #D9C2AE;
-  box-shadow: 0 7px 18px rgba(45,54,48,.18);
+  bottom: -1%;
+  left: 27%;
+  width: 46%;
+  height: 86%;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   animation: aj-story-person-float 4.2s ease-in-out infinite;
 }
-.aj-story-window-person img { object-fit: cover; object-position: center 18%; }
+.aj-story-window-person img { object-fit: contain; object-position: center bottom; filter: drop-shadow(0 5px 8px rgba(45,54,48,.12)); }
 .aj-story-window-wave {
   position: absolute;
   z-index: 7;
