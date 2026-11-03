@@ -4,8 +4,8 @@
   --mini-orange: #e96a31;
   position: fixed;
   z-index: 420;
-  width: 72px;
-  height: 112px;
+  width: 64px;
+  height: 100px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -19,8 +19,8 @@
 .mini-aman[data-pose] { opacity: .98; transform: translate3d(0,0,0); }
 .mini-aman-character {
   position: relative;
-  width: 72px;
-  height: 100px;
+  width: 64px;
+  height: 82px;
   transform-origin: 50% 90%;
   animation: mini-aman-idle 2.8s ease-in-out infinite;
 }
@@ -95,6 +95,7 @@
 .mini-aman[data-pose="run"] .mini-aman-arm-left { animation: mini-aman-arm-swing 240ms ease-in-out infinite alternate; transform-origin: 38px 68px; }
 .mini-aman[data-pose="run"] .mini-aman-arm-right { animation: mini-aman-arm-swing 240ms ease-in-out infinite alternate-reverse; transform-origin: 74px 68px; }
 .mini-aman[data-pose="jump"] .mini-aman-character { animation: mini-aman-air-bob 620ms ease-out both; }
+.mini-aman.mini-aman-transition-jump[data-pose="jump"] .mini-aman-character { animation: mini-aman-jump 620ms cubic-bezier(.22,.8,.22,1) both; }
 .mini-aman[data-pose="celebrate"] .mini-aman-character { animation: mini-aman-celebrate 1.9s ease-in-out infinite; }
 .mini-aman[data-pose="think"] .mini-aman-character { animation: mini-aman-think 3.8s ease-in-out infinite; }
 .mini-aman[data-pose="work"] .mini-aman-character,
@@ -176,14 +177,14 @@
 }
 
 @media (max-width: 1100px) {
-  .mini-aman { width: 58px; height: 88px; }
-  .mini-aman-character { width: 58px; height: 81px; }
+  .mini-aman { width: 52px; height: 80px; }
+  .mini-aman-character { width: 52px; height: 67px; }
   .mini-aman-bubble { font-size: 13px; }
 }
 @media (max-width: 680px) {
   .mini-aman {
-    width: 48px;
-    height: 70px;
+    width: 44px;
+    height: 66px;
     top: auto !important;
     bottom: 84px;
     transform: translate3d(0, 5px, 0);
@@ -191,7 +192,7 @@
   .mini-aman[data-pose] { transform: translate3d(0,0,0); }
   .mini-aman-side-left { left: 2px !important; right: auto !important; }
   .mini-aman-side-right { right: 2px !important; left: auto !important; }
-  .mini-aman-character { width: 48px; height: 66px; }
+  .mini-aman-character { width: 44px; height: 56px; }
   .mini-aman-bubble { max-width: 100px; font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
