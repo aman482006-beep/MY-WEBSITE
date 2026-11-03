@@ -299,20 +299,25 @@
 .aj-story-window-caption b { margin-left: auto; font-family: var(--font-note); font-size: 20px; font-weight: 600; }
 .aj-story-window-caption i { color: var(--aj-orange-dark); font-size: 16px; font-style: normal; }
 
-@keyframes aj-story-window-open-left { from { transform: rotateY(0); } to { transform: rotateY(-78deg); } }
-@keyframes aj-story-window-open-right { from { transform: rotateY(0); } to { transform: rotateY(78deg); } }
+.aj-story-window-shutter-left,
+.aj-story-window-shutter-right {
+  transform: rotateY(0);
+  transition: transform 1.05s cubic-bezier(.2,.8,.2,1);
+}
+.aj-story-window-scene[data-window-open="true"] .aj-story-window-shutter-left { transform: rotateY(-78deg); }
+.aj-story-window-scene[data-window-open="true"] .aj-story-window-shutter-right { transform: rotateY(78deg); }
 @keyframes aj-story-cloud-drift { from { translate: 0 0; } to { translate: 155% 0; } }
 @keyframes aj-story-sun-breathe { from { scale: .96; opacity: .86; } to { scale: 1.05; opacity: 1; } }
 @keyframes aj-story-person-float { 0%,100% { translate: 0 0; } 50% { translate: 0 -5px; } }
 @keyframes aj-story-wave { 0%,100% { rotate: -2deg; } 50% { rotate: 16deg; } }
 
-@media (prefers-reduced-motion: no-preference) {
-  .aj-story-window-shutter-left { animation: aj-story-window-open-left 1.05s cubic-bezier(.2,.8,.2,1) .3s both; }
-  .aj-story-window-shutter-right { animation: aj-story-window-open-right 1.05s cubic-bezier(.2,.8,.2,1) .3s both; }
-}
 @media (prefers-reduced-motion: reduce) {
-  .aj-story-window-shutter-left { transform: rotateY(-78deg); }
-  .aj-story-window-shutter-right { transform: rotateY(78deg); }
+  .aj-story-window-shutter-left,
+  .aj-story-window-shutter-right {
+    transform: rotateY(78deg);
+    transition: none;
+  }
+  .aj-story-window-scene[data-window-open="true"] .aj-story-window-shutter-left { transform: rotateY(-78deg); }
 }
 
 .aj-story-journey-intro {
@@ -693,4 +698,66 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-less
     transform: none !important;
     scale: 1 !important;
   }
+}
+
+/* Scroll beats for the archive, stage meter and final idea pipeline. */
+html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-topic-card {
+  opacity: .42;
+  translate: 22px 0;
+}
+.aj-story-topic-card {
+  transition: opacity 520ms ease, translate 620ms cubic-bezier(.22,1,.36,1);
+}
+.aj-story-topic-card:nth-child(1) { transition-delay: .04s; }
+.aj-story-topic-card:nth-child(2) { transition-delay: .12s; }
+.aj-story-topic-card:nth-child(3) { transition-delay: .20s; }
+.aj-story-topic-card:nth-child(4) { transition-delay: .28s; }
+.aj-story-topic-card:nth-child(5) { transition-delay: .36s; }
+.aj-story-scene[data-revealed="true"] .aj-story-topic-card {
+  opacity: 1;
+  translate: 0 0;
+}
+.aj-story-topic-card:nth-child(-n+4) i { transform: scaleX(0); transition: transform 360ms ease; }
+.aj-story-scene[data-revealed="true"] .aj-story-topic-card:nth-child(-n+4) i {
+  transform: scaleX(1);
+  transition-delay: .52s;
+}
+
+@keyframes aj-story-meter-settle {
+  from { transform: rotate(-10deg); }
+  to { transform: rotate(5deg); }
+}
+@keyframes aj-story-meter-waver {
+  0%, 100% { transform: rotate(4deg); }
+  50% { transform: rotate(6deg); }
+}
+.aj-story-scene[data-revealed="true"] .aj-story-stage-needle {
+  animation: aj-story-meter-settle 850ms cubic-bezier(.2,.9,.25,1) both,
+             aj-story-meter-waver 2.2s ease-in-out 850ms infinite;
+}
+
+@keyframes aj-story-flow-arrow {
+  from { opacity: .2; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.aj-story-flow > i { opacity: .25; }
+.aj-story-scene[data-revealed="true"] .aj-story-flow > i {
+  animation: aj-story-flow-arrow 520ms ease both;
+}
+.aj-story-scene[data-revealed="true"] .aj-story-flow > i:nth-child(2) { animation-delay: .16s; }
+.aj-story-scene[data-revealed="true"] .aj-story-flow > i:nth-child(4) { animation-delay: .32s; }
+.aj-story-scene[data-revealed="true"] .aj-story-flow > i:nth-child(6) { animation-delay: .48s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .aj-story-topic-card,
+  .aj-story-topic-card:nth-child(-n+4) i,
+  .aj-story-stage-needle,
+  .aj-story-flow > i {
+    opacity: 1 !important;
+    translate: none !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+  .aj-story-stage-needle { transform: rotate(5deg) !important; }
 }
