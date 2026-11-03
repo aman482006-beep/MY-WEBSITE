@@ -1684,3 +1684,33 @@ a[href]:active, button:active { opacity: .82; }
   .aj-nav-cta { padding-inline: 10px; font-size: 12px; }
   .aj-brand-name { font-size: 11px; }
 }
+
+
+/* Mobile project cards: let each item size to its own content instead of preserving desktop row heights. */
+@media (max-width: 700px) {
+  .aj-projects-page .aj-project-grid {
+    grid-auto-rows: auto;
+    align-content: start;
+  }
+  .aj-projects-page .aj-project-card,
+  .aj-projects-page .aj-project-card-fokus {
+    height: auto;
+    min-height: 0;
+  }
+  .aj-projects-page .aj-project-art,
+  .aj-projects-page .aj-fokus-gallery {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+  .aj-projects-page .aj-fokus-featured-shot {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .aj-projects-page .aj-project-card-content {
+    flex: 0 0 auto;
+    min-height: 0;
+  }
+  .aj-projects-page .aj-project-card .aj-project-tags {
+    margin-top: 8px;
+  }
+}
