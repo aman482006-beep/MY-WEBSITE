@@ -385,6 +385,38 @@ export function StoryPreview() {
   );
 }
 
+function StoryTypewriter({ text, active }: { text: string; active: boolean }) {
+  const [typedText, setTypedText] = useState("");
+  const [started, setStarted] = useState(false);
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    if (!active || startedRef.current) return;
+    startedRef.current = true;
+    setStarted(true);
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTypedText(text);
+      return;
+    }
+
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 1;
+      setTypedText(text.slice(0, index));
+      if (index >= text.length) window.clearInterval(timer);
+    }, 30);
+
+    return () => {
+      window.clearInterval(timer);
+      if (index < text.length) setTypedText(text);
+    };
+  }, [active, text]);
+
+  const shownText = active && !started ? "" : (started ? typedText : text);
+  return <span aria-label={text}>{shownText}</span>;
+}
+
 export function StoryExperience() {
   const [activeChapter, setActiveChapter] = useState(0);
 
@@ -394,7 +426,21 @@ export function StoryExperience() {
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
       scenes.forEach((scene) => { scene.dataset.revealed = "true"; });
-      return;
+      const updateActiveChapter = () => {
+        const activationLine = window.innerHeight * 0.42;
+        let current = 0;
+        scenes.forEach((scene, index) => {
+          if (scene.getBoundingClientRect().top <= activationLine) current = index;
+        });
+        setActiveChapter(current);
+      };
+      updateActiveChapter();
+      window.addEventListener("scroll", updateActiveChapter, { passive: true });
+      window.addEventListener("resize", updateActiveChapter);
+      return () => {
+        window.removeEventListener("scroll", updateActiveChapter);
+        window.removeEventListener("resize", updateActiveChapter);
+      };
     }
 
     document.documentElement.classList.add("aj-story-motion-ready");
@@ -462,7 +508,9 @@ export function StoryExperience() {
                   </div>
                   <div className="aj-story-lesson">
                     <span>WHAT STUCK WITH ME</span>
-                    <p>{chapter.takeaway}</p>
+                    <p>{chapter.number === "09"
+                      ? <StoryTypewriter text={chapter.takeaway} active={activeChapter === index} />
+                      : chapter.takeaway}</p>
                     <i />
                   </div>
                 </div>
