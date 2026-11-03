@@ -234,12 +234,20 @@ export function MiniAman() {
     if (!targets.length) return;
 
     const observer = new IntersectionObserver((entries) => {
-      const active = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (!active) return;
-      const match = targets.find((target) => target.element === active.target);
-      if (match) setSceneIndex(match.index);
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      // Choose the section closest to the same visual focus line. This avoids
+      // stale scenes when IntersectionObserver reports only one changed entry.
+      const focusY = window.innerHeight * 0.42;
+      const nearest = targets
+        .map((target) => {
+          const rect = target.element.getBoundingClientRect();
+          const distance = focusY < rect.top ? rect.top - focusY
+            : focusY > rect.bottom ? focusY - rect.bottom
+              : 0;
+          return { ...target, distance };
+        })
+        .sort((a, b) => a.distance - b.distance)[0];
+      if (nearest) setSceneIndex(nearest.index);
     }, { rootMargin: "-22% 0px -46% 0px", threshold: [0, 0.08, 0.2, 0.35] });
 
     targets.forEach(({ element }) => observer.observe(element));
@@ -387,9 +395,13 @@ export function MiniAman() {
   const displayTransition = reducedMotion ? "rest" : transition;
   const displayMessage = reducedMotion ? "" : message;
   const waypoint = WAYPOINTS[Math.max(0, sceneIndex)];
-  const sideStyle: CSSProperties = waypoint.side === "left"
-    ? { left: "max(5px, calc((100vw - 1180px) / 2 - 54px))", right: "auto", top: waypoint.top }
-    : { right: "max(5px, calc((100vw - 1180px) / 2 - 54px))", left: "auto", top: waypoint.top };
+  const pageGutter = "max(5px, calc((100vw - 1180px) / 2 - 54px))";
+  const sideStyle: CSSProperties = {
+    left: waypoint.side === "left"
+      ? pageGutter
+      : "calc(100vw - " + pageGutter + " - var(--mini-size))",
+    top: waypoint.top,
+  };
 
   return (
     <div
