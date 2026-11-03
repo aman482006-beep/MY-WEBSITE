@@ -290,6 +290,14 @@ async function runViewport(viewport) {
     assert(await buildFlipCard.getAttribute("aria-pressed") === "false", "The build card did not flip back when tapped");
 
     assert(await page.locator(".aj-story-flow .flow-step").count() === 4, "The Wispr Flow to Emergent story sequence is incomplete");
+    const finalStoryLine = "Tarika-varika sab seekh lenge. Bas rukna nahi hai.";
+    const finalStoryLineNode = page.locator(".aj-story-scene").nth(8).locator(".aj-story-lesson p");
+    await finalStoryLineNode.scrollIntoViewIfNeeded();
+    await page.waitForFunction(
+      (expected) => document.querySelectorAll(".aj-story-scene .aj-story-lesson p")[8]?.textContent === expected,
+      finalStoryLine,
+      { timeout: 8000 },
+    );
     const storyOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
     );
