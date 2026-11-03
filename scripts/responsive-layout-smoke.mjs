@@ -74,6 +74,7 @@ try {
             ".aj-contact-direct", ".aj-contact-social-card", ".aj-daily-newspaper",
             ".aj-resource-card", ".aj-resource-request", ".aj-creator-pillar",
             ".aj-video-card", ".aj-pillar", ".aj-sticky-note",
+            ".aj-footer-inner", ".ce-interest-detail", ".ce-idea-card", ".ce-signal-card",
           ];
           const overflowing = [];
           for (const selector of selectors) {
@@ -94,12 +95,24 @@ try {
             const box = el.getBoundingClientRect();
             return { left: box.left, right: box.right, width: box.width };
           });
+          const navElement = document.querySelector(".aj-nav");
           const nav = {
             brand: rect(".aj-brand"),
             links: rect(".aj-nav-links"),
             cta: rect(".aj-nav-cta"),
             toggle: rect(".aj-menu-toggle"),
+            scrollWidth: navElement?.scrollWidth ?? 0,
+            clientWidth: navElement?.clientWidth ?? 0,
           };
+          const introElement = document.querySelector(
+            ".aj-inner-page > .aj-container > .aj-inner-heading"
+          );
+          const introRect = introElement?.getBoundingClientRect();
+          const intro = introRect ? {
+            midpoint: introRect.left + introRect.width / 2,
+            viewportMidpoint: window.innerWidth / 2,
+            textAlign: getComputedStyle(introElement).textAlign,
+          } : null;
           const projectGrid = rect(".aj-projects-page .aj-project-grid");
           const projectGridColumns = projectGrid
             ? getComputedStyle(document.querySelector(".aj-projects-page .aj-project-grid")).gridTemplateColumns.split(" ").length
@@ -116,6 +129,7 @@ try {
             containers,
             overflowing,
             nav,
+            intro,
             projectGridColumns,
             fokusRatio: fokus && fokus.height > 0 ? fokus.width / fokus.height : null,
           };
@@ -144,6 +158,19 @@ try {
           route.path + " has clipped card content at " + viewport.width + "px: " +
             JSON.stringify(metrics.overflowing.slice(0, 3))
         );
+
+        assert(
+          metrics.nav.scrollWidth <= metrics.nav.clientWidth + 3,
+          "Header contents overflow their navigation container at " + viewport.width + "px"
+        );
+        if (metrics.intro) {
+          assert(
+            Math.abs(metrics.intro.midpoint - metrics.intro.viewportMidpoint) <= 2 &&
+              metrics.intro.textAlign === "center",
+            route.path + " inner-page introduction is not centred at " + viewport.width +
+              "px: " + JSON.stringify(metrics.intro)
+          );
+        }
 
         if (viewport.width <= 700) {
           assert(metrics.nav.toggle?.width > 0, "Mobile menu toggle is missing at " + viewport.width + "px");
