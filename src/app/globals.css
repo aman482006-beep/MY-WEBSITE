@@ -1516,3 +1516,19 @@ a[href]:active, button:active { opacity: .82; }
   .aj-projects-page .aj-project-card-content,
   .aj-projects-page .aj-project-card-fokus .aj-project-card-content { padding: 17px 17px 15px; }
 }
+
+
+/* Equalise project-card heights across both grid rows, not only within a row. */
+.aj-projects-page .aj-project-grid {
+  grid-auto-rows: minmax(0, 1fr);
+  align-content: stretch;
+  align-items: stretch;
+}
+.aj-projects-page .aj-project-card,
+.aj-projects-page .aj-project-card-fokus {
+  height: 100%;
+  min-height: 0;
+}
+.aj-projects-page .aj-project-card-content {
+  min-height: 0;
+}
