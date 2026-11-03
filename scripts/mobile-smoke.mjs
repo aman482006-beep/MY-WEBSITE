@@ -16,6 +16,7 @@ async function runViewport(viewport) {
     hasTouch: true,
     deviceScaleFactor: 1,
     reducedMotion: "no-preference",
+    reducedMotion: "no-preference",
   });
   const page = await context.newPage();
   page.on("pageerror", (error) => pageErrors.push(viewport.width + "px: " + error.message));
@@ -64,8 +65,11 @@ async function runViewport(viewport) {
       transform: getComputedStyle(element).transform,
     }));
     assert(
-      windowMotion.transitionDuration.split(",").some((duration) => Number.parseFloat(duration) >= 1),
-      "The My Story window opening transform transition is missing: " + JSON.stringify(windowMotion),
+      windowMotion.transitionDuration.split(",").some((duration) => {
+        const seconds = Number.parseFloat(duration);
+        return seconds >= 0.8 && seconds < 0.9;
+      }),
+      "The My Story window opening should be an 800–899ms transform transition: " + JSON.stringify(windowMotion),
     );
     await page.evaluate(() => window.scrollTo(0, 0));
 
