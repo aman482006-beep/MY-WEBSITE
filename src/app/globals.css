@@ -1402,3 +1402,117 @@ a[href]:active, button:active { opacity: .82; }
   .aj-fokus-featured-shot img,
   .aj-fokus-inline-nav { transition: none; }
 }
+
+
+/* Projects page — consistent card sizing across every project.
+   Fokus keeps its interactive gallery, but no longer gets a larger featured-card layout. */
+.aj-projects-page .aj-project-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 18px;
+}
+.aj-projects-page .aj-project-card {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.aj-projects-page .aj-project-card-fokus {
+  grid-column: auto;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.aj-projects-page .aj-project-art,
+.aj-projects-page .aj-fokus-gallery {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 228px;
+  min-height: 0;
+  border-bottom: 1px solid var(--aj-line);
+}
+.aj-projects-page .aj-fokus-featured-shot {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+.aj-projects-page .aj-fokus-featured-shot img {
+  object-fit: cover;
+}
+.aj-projects-page .aj-project-card-content,
+.aj-projects-page .aj-project-card-fokus .aj-project-card-content {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  padding: 20px 21px 18px;
+}
+.aj-projects-page .aj-project-card-meta,
+.aj-projects-page .aj-project-card-fokus .aj-project-card-meta {
+  font-size: 12px;
+  letter-spacing: .09em;
+}
+.aj-projects-page .aj-project-card h3,
+.aj-projects-page .aj-project-card-fokus h3 {
+  margin: 10px 0 3px;
+  font-size: clamp(25px, 2.5vw, 31px);
+}
+.aj-projects-page .aj-project-card .aj-project-subtitle,
+.aj-projects-page .aj-project-card-fokus .aj-project-subtitle {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.aj-projects-page .aj-project-card .aj-project-description,
+.aj-projects-page .aj-project-card-fokus .aj-project-description {
+  margin: 11px 0 13px;
+  font-size: 14px;
+  line-height: 1.62;
+}
+.aj-projects-page .aj-project-card .aj-project-tags,
+.aj-projects-page .aj-project-card-fokus .aj-project-tags {
+  gap: 6px;
+  margin-top: auto;
+}
+.aj-projects-page .aj-project-card .aj-project-tags span,
+.aj-projects-page .aj-project-card-fokus .aj-project-tags span {
+  min-height: 27px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+.aj-projects-page .aj-project-card .aj-project-note,
+.aj-projects-page .aj-project-card-fokus .aj-project-note {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.aj-projects-page .aj-project-card .aj-project-actions,
+.aj-projects-page .aj-project-card-fokus .aj-project-actions {
+  gap: 8px 18px;
+  margin-top: 15px;
+  padding-top: 13px;
+}
+.aj-projects-page .aj-project-card .aj-project-actions a,
+.aj-projects-page .aj-project-card-fokus .aj-project-actions a {
+  min-height: 44px;
+  font-size: 14px;
+}
+@media (max-width: 980px) {
+  .aj-projects-page .aj-project-art,
+  .aj-projects-page .aj-fokus-gallery { height: 205px; }
+  .aj-projects-page .aj-project-card-content,
+  .aj-projects-page .aj-project-card-fokus .aj-project-card-content { padding: 17px; }
+}
+@media (max-width: 700px) {
+  .aj-projects-page .aj-project-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .aj-projects-page .aj-project-card,
+  .aj-projects-page .aj-project-card-fokus { width: 100%; }
+  .aj-projects-page .aj-project-art,
+  .aj-projects-page .aj-fokus-gallery { height: 226px; }
+  .aj-projects-page .aj-project-card-content,
+  .aj-projects-page .aj-project-card-fokus .aj-project-card-content { padding: 17px 17px 15px; }
+}
