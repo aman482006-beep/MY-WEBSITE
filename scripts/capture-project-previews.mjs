@@ -46,7 +46,7 @@ try {
       }
 
       await page.waitForLoadState("load", { timeout: 20000 }).catch(() => {});
-      await page.evaluate(() => document.fonts?.ready);
+      await page.evaluate(async () => { await document.fonts.ready; return true; });
       await page.waitForTimeout(1800);
 
       const details = await page.evaluate(() => ({
