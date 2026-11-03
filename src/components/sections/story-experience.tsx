@@ -144,21 +144,19 @@ const chapters = [
 
 function StoryWindow() {
   const sceneRef = useRef<HTMLDivElement | null>(null);
-  const [windowOpen, setWindowOpen] = useState(false);
-
   useEffect(() => {
     const scene = sceneRef.current;
     if (!scene) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion || !("IntersectionObserver" in window)) {
-      setWindowOpen(true);
+      scene.dataset.windowOpen = "true";
       return;
     }
 
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((entry) => entry.isIntersecting)) {
-        setWindowOpen(true);
+        scene.dataset.windowOpen = "true";
         observer.disconnect();
       }
     }, { threshold: 0.35, rootMargin: "0px 0px -8% 0px" });
@@ -169,7 +167,7 @@ function StoryWindow() {
 
   return (
     <div className="aj-story-preview-window" role="img" aria-label="An animated wooden window opens onto a moving sky while Aman waves">
-      <div className="aj-story-window-scene" ref={sceneRef} data-window-open={windowOpen ? "true" : "false"}>
+      <div className="aj-story-window-scene" ref={sceneRef} data-window-open="false">
         <div className="aj-story-window-sky">
           <span className="aj-story-cloud aj-story-cloud-one" />
           <span className="aj-story-cloud aj-story-cloud-two" />
@@ -273,7 +271,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   if (visual === "stage") {
     return (
       <div className="aj-story-visual-card aj-story-stage-visual">
-        <span className="aj-story-visual-kicker">THE NERVES DON'T GO TO ZERO</span>
+        <span className="aj-story-visual-kicker">THE NERVES DON&apos;T GO TO ZERO</span>
         <svg viewBox="0 0 360 205" className="aj-story-stage-gauge" role="img" aria-label="A gauge showing that nervousness can remain while you continue to show up">
           <path d="M48 166 A132 132 0 0 1 312 166" fill="none" stroke="#EFE5D9" strokeWidth="17" strokeLinecap="round" />
           <path d="M48 166 A132 132 0 0 1 276 72" fill="none" stroke="#E2A47B" strokeWidth="17" strokeLinecap="round" />
@@ -401,7 +399,7 @@ export function StoryExperience() {
         <div className="aj-container aj-story-journey-intro-inner">
           <p className="aj-eyebrow aj-eyebrow-accent">A WINDOW INTO HOW I THINK</p>
           <h1>Not a straight line.<br /><em>A trail of experiments.</em></h1>
-          <p>This is the story behind the work: the things I tried, the things I got wrong, what I learned, and what I'm building towards. Scroll through it like a journey, not a résumé.</p>
+          <p>This is the story behind the work: the things I tried, the things I got wrong, what I learned, and what I&apos;m building towards. Scroll through it like a journey, not a résumé.</p>
           <a className="aj-story-scroll-cue" href="#story-journey">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
         </div>
       </header>
@@ -454,9 +452,9 @@ export function StoryExperience() {
         <div className="aj-container aj-story-outro-inner">
           <p className="aj-eyebrow aj-eyebrow-accent">STILL ADDING CHAPTERS</p>
           <h2>The best part of the story<br /><em>is what I do next.</em></h2>
-          <p>I don't want a polished story that pretends every step was planned. I want a body of work that shows what I tried, what changed, and what I learned along the way.</p>
+          <p>I don&apos;t want a polished story that pretends every step was planned. I want a body of work that shows what I tried, what changed, and what I learned along the way.</p>
           <div className="aj-story-outro-actions">
-            <Link href="/projects" className="aj-button aj-button-primary">See what I'm building <span aria-hidden="true">→</span></Link>
+            <Link href="/projects" className="aj-button aj-button-primary">See what I&apos;m building <span aria-hidden="true">→</span></Link>
             <Link href="/contact" className="aj-button aj-button-outline">Start a conversation</Link>
           </div>
           <p className="aj-story-outro-signoff">Tarika-varika sab seekh lenge. Bas rukna nahi hai.</p>
