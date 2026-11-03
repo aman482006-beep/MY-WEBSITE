@@ -5,6 +5,7 @@
   --mini-size: 64px;
   position: fixed;
   z-index: 420;
+  left: 0;
   width: var(--mini-size);
   height: 100px;
   display: flex;
@@ -12,12 +13,12 @@
   justify-content: center;
   pointer-events: none;
   opacity: 0;
-  transform: translate3d(0, 12px, 0);
-  transition: left 760ms cubic-bezier(.2,.72,.18,1), top 760ms cubic-bezier(.2,.72,.18,1), opacity 380ms ease, transform 650ms cubic-bezier(.2,.72,.18,1);
+  transform: translate3d(var(--mini-x, 0px), 12px, 0);
+  transition: transform 760ms cubic-bezier(.2,.72,.18,1), opacity 380ms ease;
   contain: layout paint style;
-  will-change: left, top, transform;
+  will-change: transform, opacity;
 }
-.mini-aman[data-pose] { opacity: .98; transform: translate3d(0,0,0); }
+.mini-aman[data-pose] { opacity: .98; transform: translate3d(var(--mini-x, 0px),0,0); }
 .mini-aman-character {
   position: relative;
   width: 64px;
@@ -188,8 +189,9 @@
     width: var(--mini-size);
     height: 76px;
     top: auto !important;
-    right: 8px !important;
-    left: auto !important;
+    --mini-x: calc(100vw - var(--mini-size) - 8px) !important;
+    left: 0 !important;
+    right: auto !important;
     bottom: 88px;
   }
   .mini-aman-character { width: 48px; height: 62px; }
@@ -208,12 +210,13 @@
     --mini-size: 40px;
     width: var(--mini-size);
     height: 62px;
-    right: 7px !important;
-    left: auto !important;
+    --mini-x: calc(100vw - var(--mini-size) - 7px) !important;
+    left: 0 !important;
+    right: auto !important;
     bottom: calc(env(safe-area-inset-bottom, 0px) + 76px);
     transform: translate3d(0, 5px, 0);
   }
-  .mini-aman[data-pose] { transform: translate3d(0,0,0); }
+.mini-aman[data-pose] { transform: translate3d(var(--mini-x, 0px),0,0); }
   .mini-aman-character { width: 40px; height: 52px; }
   .mini-aman-bubble {
     max-width: 104px;
