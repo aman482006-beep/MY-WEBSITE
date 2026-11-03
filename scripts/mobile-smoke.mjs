@@ -65,7 +65,9 @@ async function runViewport(viewport) {
     }));
     assert(
       windowMotion.transitionDuration.split(",").some((duration) => {
-        const seconds = Number.parseFloat(duration);
+        const raw = duration.trim();
+        const parsed = Number.parseFloat(raw);
+        const seconds = raw.endsWith("ms") ? parsed / 1000 : parsed;
         return seconds >= 0.8 && seconds < 0.9;
       }),
       "The My Story window opening should be an 800–899ms transform transition: " + JSON.stringify(windowMotion),
