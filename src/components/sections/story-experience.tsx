@@ -8,8 +8,8 @@ const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-story-face.jpg"
   : "/aman-story-face.jpg";
 const storyAvatarSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/aman-story-face.jpg"
-  : "/aman-story-face.jpg";
+  ? "/MY-WEBSITE/aman-story-avatar.webp"
+  : "/aman-story-avatar.webp";
 
 const chapters = [
   {
