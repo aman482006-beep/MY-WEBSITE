@@ -88,6 +88,9 @@ jobs:
           curl --silent --fail http://127.0.0.1:4173/MY-WEBSITE/ > /dev/null
           node scripts/mobile-smoke.mjs
 
+      - name: Audit responsive layouts across phone, tablet, laptop and desktop
+        run: node scripts/responsive-layout-smoke.mjs
+
       - name: Upload static site
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
