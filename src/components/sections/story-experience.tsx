@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-profile-4k.avif"
@@ -143,9 +143,33 @@ const chapters = [
 ] as const;
 
 function StoryWindow() {
+  const sceneRef = useRef<HTMLDivElement | null>(null);
+  const [windowOpen, setWindowOpen] = useState(false);
+
+  useEffect(() => {
+    const scene = sceneRef.current;
+    if (!scene) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion || !("IntersectionObserver" in window)) {
+      setWindowOpen(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setWindowOpen(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.35, rootMargin: "0px 0px -8% 0px" });
+
+    observer.observe(scene);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="aj-story-preview-window" role="img" aria-label="An animated window opening onto a moving sky, with Aman waving">
-      <div className="aj-story-window-scene">
+    <div className="aj-story-preview-window" role="img" aria-label="An animated wooden window opens onto a moving sky while Aman waves">
+      <div className="aj-story-window-scene" ref={sceneRef} data-window-open={windowOpen ? "true" : "false"}>
         <div className="aj-story-window-sky">
           <span className="aj-story-cloud aj-story-cloud-one" />
           <span className="aj-story-cloud aj-story-cloud-two" />
