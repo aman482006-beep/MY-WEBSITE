@@ -1253,8 +1253,10 @@ a[href]:active, button:active { opacity: .82; }
 /* Fokus project gallery: compact featured screen, scrollable thumbnails, and full-size viewer. */
 .aj-project-card-fokus {
   grid-column: 1 / -1;
+  width: min(100%, 980px);
+  margin-inline: auto;
   display: grid;
-  grid-template-columns: minmax(0, .9fr) minmax(420px, 1.1fr);
+  grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr);
   align-items: stretch;
 }
 .aj-fokus-gallery {
@@ -1262,10 +1264,10 @@ a[href]:active, button:active { opacity: .82; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 11px;
+  gap: 9px;
   min-width: 0;
   min-height: 100%;
-  padding: clamp(14px, 2vw, 24px);
+  padding: 16px 10px;
   border-bottom: 0;
   background:
     radial-gradient(circle at 12% 10%, rgba(119, 196, 232, .24), transparent 38%),
@@ -1274,8 +1276,8 @@ a[href]:active, button:active { opacity: .82; }
 .aj-fokus-featured-shot {
   position: relative;
   display: block;
-  width: min(100%, 380px);
-  max-height: 214px;
+  width: min(100%, 260px);
+  max-height: 146px;
   aspect-ratio: 16 / 9;
   padding: 0;
   overflow: hidden;
@@ -1311,7 +1313,7 @@ a[href]:active, button:active { opacity: .82; }
 .aj-fokus-zoom-hint { right: 8px; color: rgba(255,255,255,.92); font-size: 9px; font-weight: 650; }
 .aj-fokus-thumbnails {
   display: flex;
-  width: min(100%, 380px);
+  width: min(100%, 260px);
   gap: 7px;
   min-width: 0;
   padding: 2px 2px 7px;
@@ -1323,7 +1325,7 @@ a[href]:active, button:active { opacity: .82; }
 }
 .aj-fokus-thumbnail {
   display: flex;
-  flex: 0 0 104px;
+  flex: 0 0 60px;
   flex-direction: column;
   gap: 4px;
   min-width: 0;
@@ -1427,7 +1429,7 @@ a[href]:active, button:active { opacity: .82; }
   font-size: 12px;
   font-weight: 750;
 }
-.aj-project-card-fokus .aj-project-card-content { padding: clamp(22px, 3vw, 38px); }
+.aj-project-card-fokus .aj-project-card-content { padding: clamp(20px, 2.3vw, 28px); }
 .aj-fokus-kicker {
   margin: 16px 0 0;
   color: #168CB8;
@@ -1435,7 +1437,7 @@ a[href]:active, button:active { opacity: .82; }
   font-weight: 850;
   letter-spacing: .15em;
 }
-.aj-project-card-fokus h3 { margin-top: 7px; font-size: clamp(32px, 3.3vw, 42px); }
+.aj-project-card-fokus h3 { margin-top: 7px; font-size: clamp(30px, 2.8vw, 36px); }
 .aj-fokus-capabilities {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1458,14 +1460,14 @@ a[href]:active, button:active { opacity: .82; }
 @media (max-width: 900px) {
   .aj-project-card-fokus { grid-template-columns: minmax(0, 1fr); }
   .aj-fokus-gallery { min-height: 0; }
-  .aj-fokus-featured-shot { max-height: 280px; }
+  .aj-fokus-featured-shot { width: min(100%, 260px); max-height: 146px; }
 }
 @media (max-width: 700px) {
   .aj-project-card-fokus { grid-column: auto; }
   .aj-fokus-gallery { gap: 9px; padding: 11px; }
-  .aj-fokus-featured-shot { width: min(100%, 380px); max-height: 214px; }
-  .aj-fokus-thumbnails { width: min(100%, 380px); }
-  .aj-fokus-thumbnail { flex-basis: 96px; }
+  .aj-fokus-featured-shot { width: min(100%, 250px); max-height: 141px; }
+  .aj-fokus-thumbnails { width: min(100%, 250px); }
+  .aj-fokus-thumbnail { flex-basis: 56px; }
   .aj-project-card-fokus .aj-project-card-content { padding: 22px 18px; }
   .aj-fokus-capabilities { grid-template-columns: minmax(0, 1fr); }
   .aj-fokus-lightbox { padding: 10px; }

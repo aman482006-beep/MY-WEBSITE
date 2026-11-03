@@ -10,22 +10,22 @@ const fokusScreenshots = [
   {
     src: assetPrefix + "/fokus/fokus-focus.svg",
     label: "Focus timer",
-    alt: "Fokus focus timer screen showing a 25-minute session, task picker and ambient sound controls",
+    alt: "4K vector preview of the Fokus focus timer with a 25-minute session, presets and ambient sound controls",
   },
   {
     src: assetPrefix + "/fokus/fokus-tools.svg",
     label: "Tools library",
-    alt: "Fokus tools page showing productivity, capture and personal finance tools",
+    alt: "4K vector preview of the Fokus tools library with productivity, finance, calculator and mindfulness tools",
   },
   {
     src: assetPrefix + "/fokus/fokus-reality.svg",
     label: "Your Reality",
-    alt: "Fokus Your Reality dashboard showing screen time, application usage and category breakdown",
+    alt: "4K vector preview of Fokus Your Reality screen-time insights, app usage and category breakdown",
   },
   {
     src: assetPrefix + "/fokus/fokus-analytics.svg",
     label: "Analytics",
-    alt: "Fokus Analytics dashboard showing focus hours, streak, weekly distribution and consistency grid",
+    alt: "4K vector preview of Fokus Statistics with focus time, streaks, weekly trends and consistency grid",
   },
 ] as const;
 
@@ -71,7 +71,7 @@ function FokusGallery() {
   };
 
   return (
-    <div className="aj-project-art aj-fokus-gallery" aria-label="Fokus app screenshots">
+    <div className="aj-project-art aj-fokus-gallery" aria-label="Fokus app screen previews">
       <button
         className="aj-fokus-featured-shot"
         type="button"
@@ -83,9 +83,9 @@ function FokusGallery() {
             src={activeScreen.src}
             alt={activeScreen.alt}
             fill
-            sizes="(max-width: 900px) 100vw, 46vw"
+            sizes="(max-width: 900px) 260px, 260px"
             unoptimized
-            priority
+            loading="lazy"
           />
         </span>
         <span className="aj-fokus-shot-label">{activeScreen.label}</span>
@@ -107,8 +107,9 @@ function FokusGallery() {
                 src={screen.src}
                 alt=""
                 fill
-                sizes="160px"
+                sizes="60px"
                 unoptimized
+                loading="lazy"
               />
             </span>
             <span className="aj-fokus-thumbnail-label">{screen.label}</span>
@@ -150,7 +151,7 @@ function FokusGallery() {
                 src={activeScreen.src}
                 alt={activeScreen.alt}
                 fill
-                sizes="(max-width: 900px) 96vw, 88vw"
+                sizes="(max-width: 900px) 94vw, 1120px"
                 unoptimized
               />
             </div>
