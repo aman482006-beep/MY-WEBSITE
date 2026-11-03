@@ -282,6 +282,18 @@ async function runViewport(viewport) {
       (await page.locator(".aj-story-scene").nth(1).locator("h2").textContent())?.includes("sharing one result"),
       "The first-post chapter is missing its story copy",
     );
+    const postButton = page.locator(".aj-story-post-button");
+    await postButton.scrollIntoViewIfNeeded();
+    await postButton.tap();
+    assert((await postButton.textContent())?.includes("POSTED"), "The first-post interaction did not update its state");
+
+    const buildFlipCard = page.locator(".aj-story-build-flip-card").first();
+    await buildFlipCard.scrollIntoViewIfNeeded();
+    await buildFlipCard.tap();
+    assert(await buildFlipCard.getAttribute("aria-pressed") === "true", "The build card did not flip when tapped");
+    await buildFlipCard.tap();
+    assert(await buildFlipCard.getAttribute("aria-pressed") === "false", "The build card did not flip back when tapped");
+
     assert(await page.locator(".aj-story-flow .flow-step").count() === 4, "The Wispr Flow to Emergent story sequence is incomplete");
     const storyOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
