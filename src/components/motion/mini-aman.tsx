@@ -247,6 +247,7 @@ export function MiniAman() {
   useEffect(() => {
     if (sceneIndex < 0) return;
     const waypoint = WAYPOINTS[sceneIndex];
+    const previous = sceneIndexRef.current;
     sceneIndexRef.current = sceneIndex;
     if (interactionTimer.current !== null) window.clearTimeout(interactionTimer.current);
     transitionTimers.current.forEach((timer) => window.clearTimeout(timer));
@@ -259,7 +260,6 @@ export function MiniAman() {
       return;
     }
 
-    const previous = sceneIndexRef.current === sceneIndex ? sceneIndex : -1;
     const enterScene = () => {
       setPose(waypoint.pose);
       setTransition("rest");
