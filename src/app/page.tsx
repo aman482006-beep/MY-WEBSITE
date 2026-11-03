@@ -88,7 +88,7 @@ export default function Home() {
               <span>Explanations with tadka</span>
             </div>
             <div className="aj-hero-actions">
-              <Link href="/projects" className="aj-button aj-button-primary">Explore projects <span aria-hidden="true">→</span></Link>
+              <Link href="/projects" className="aj-button aj-button-primary">See what I’ve built <span aria-hidden="true">→</span></Link>
               <Link href="/creator" className="aj-button aj-button-outline">Explore my content</Link>
             </div>
             <div className="aj-socials" aria-label="Social links">
