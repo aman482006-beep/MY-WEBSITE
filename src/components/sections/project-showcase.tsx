@@ -102,9 +102,9 @@ export function ProjectShowcase() {
       <div className="aj-container">
         <div className="aj-section-heading aj-projects-heading">
           <div>
-            <p className="aj-eyebrow aj-eyebrow-accent">WHAT I&apos;M MAKING</p>
-            <h2 id="projects-heading">See what I do.</h2>
-            <p className="aj-heading-subtitle">One product available to use, and a few experiments I&apos;m actively building. I keep the status clear so you can tell what&apos;s shipped and what&apos;s still being tested.</p>
+            <p className="aj-eyebrow aj-eyebrow-accent">THE BUILD LOG</p>
+            <h2 id="projects-heading">Things I&apos;ve built.</h2>
+            <p className="aj-heading-subtitle">Products, experiments and useful tools I&apos;ve built or am actively developing. Each status is labelled clearly, so you can tell what is ready and what is still evolving.</p>
           </div>
           <a className="aj-text-link" href="https://github.com/aman482006-beep" target="_blank" rel="noopener noreferrer">Browse GitHub <span aria-hidden="true">↗</span></a>
         </div>
