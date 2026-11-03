@@ -64,11 +64,30 @@ function FokusGallery() {
   );
 }
 
+const projectPreviewAssets: Record<ProjectArtworkKind, string> = {
+  finance: "ai-personal-finance-manager.jpg",
+  model: "automated-financial-modelling-agent.jpg",
+  quant: "ai-powered-quantitative-trading-system.jpg",
+};
+
+const projectPreviewDescriptions: Record<ProjectArtworkKind, string> = {
+  finance: "Moneta personal finance dashboard, captured from the live project preview.",
+  model: "ModelForge financial modelling workspace, captured from the live project preview.",
+  quant: "India QuantLab historical research terminal, captured from the live project preview.",
+};
+
 function ProjectArtwork({ kind }: { kind: ProjectArtworkKind }) {
+  const [screenshotLoaded, setScreenshotLoaded] = useState(false);
   const title = kind === "finance" ? "MONEY OVERVIEW" : kind === "model" ? "MODEL WORKSPACE" : "STRATEGY LAB";
+  const screenshotSrc = assetPrefix + "/project-previews/" + projectPreviewAssets[kind];
+
   return (
-    <div className={`aj-project-art aj-project-lab-art aj-project-lab-${kind}`} aria-hidden="true">
-      <div className="aj-project-lab-window">
+    <div
+      className={`aj-project-art aj-project-lab-art aj-project-lab-${kind}`}
+      role="img"
+      aria-label={projectPreviewDescriptions[kind]}
+    >
+      <div className="aj-project-lab-window" aria-hidden="true">
         <div className="aj-project-lab-windowbar"><i /><i /><i /><strong>{title}</strong><small>WORK IN PROGRESS</small></div>
         <div className="aj-project-lab-body">
           {kind === "finance" && (
@@ -92,10 +111,20 @@ function ProjectArtwork({ kind }: { kind: ProjectArtworkKind }) {
           )}
         </div>
       </div>
+      <Image
+        src={screenshotSrc}
+        alt=""
+        fill
+        sizes="(max-width: 700px) 100vw, 50vw"
+        unoptimized
+        loading="lazy"
+        onLoad={() => setScreenshotLoaded(true)}
+        className={`aj-project-screenshot${screenshotLoaded ? " is-loaded" : ""}`}
+      />
+      {screenshotLoaded && <span className="aj-project-screenshot-label">LIVE INTERFACE · 4K CAPTURE</span>}
     </div>
   );
 }
-
 export function ProjectShowcase() {
   return (
     <section className="aj-section aj-projects-section" id="projects" aria-labelledby="projects-heading">
@@ -134,7 +163,7 @@ export function ProjectShowcase() {
               <p className="aj-project-description">An experiment in making personal finances easier to understand, with spending views, budgeting workflows and AI-assisted insights in one place.</p>
               <div className="aj-project-tags"><span>Personal finance</span><span>AI</span><span>Fintech</span><span>Product thinking</span></div>
               <p className="aj-project-note">Currently being developed. The interface and workflows are still evolving.</p>
-              <div className="aj-project-actions"><a href="https://github.com/aman482006-beep/AI-Personal-Finance-Manager" target="_blank" rel="noopener noreferrer">Explore repository <span aria-hidden="true">↗</span></a></div>
+              <div className="aj-project-actions"><a href="https://github.com/aman482006-beep/AI-Personal-Finance-Manager" target="_blank" rel="noopener noreferrer">Explore repository <span aria-hidden="true">↗</span></a><a className="aj-project-demo" href="https://aman482006-beep.github.io/AI-Personal-Finance-Manager/" target="_blank" rel="noopener noreferrer">Open live preview <span aria-hidden="true">↗</span></a></div>
             </div>
           </article>
 
@@ -146,7 +175,7 @@ export function ProjectShowcase() {
               <p className="aj-project-description">Exploring how an AI-assisted workflow can organise assumptions, historical financials, forecast schedules and valuation outputs.</p>
               <div className="aj-project-tags"><span>Financial modelling</span><span>Automation</span><span>AI agents</span></div>
               <p className="aj-project-note">An active build—not presented as a finished modelling system.</p>
-              <div className="aj-project-actions"><a href="https://github.com/aman482006-beep/Automated-Financial-Modelling-Agent" target="_blank" rel="noopener noreferrer">Explore repository <span aria-hidden="true">↗</span></a></div>
+              <div className="aj-project-actions"><a href="https://github.com/aman482006-beep/Automated-Financial-Modelling-Agent" target="_blank" rel="noopener noreferrer">Explore repository <span aria-hidden="true">↗</span></a><a className="aj-project-demo" href="https://aman482006-beep.github.io/Automated-Financial-Modelling-Agent/" target="_blank" rel="noopener noreferrer">Open live preview <span aria-hidden="true">↗</span></a></div>
             </div>
           </article>
 
@@ -158,7 +187,7 @@ export function ProjectShowcase() {
               <p className="aj-project-description">A research project exploring strategy signals, historical backtesting and risk-aware evaluation before any live-trading claims.</p>
               <div className="aj-project-tags"><span>Python</span><span>Quantitative research</span><span>Backtesting</span><span>Risk</span></div>
               <p className="aj-project-note">Prototype status. Historical tests do not guarantee future performance.</p>
-              <div className="aj-project-actions"><a href="https://github.com/aman482006-beep/AI-Powered-Quantitative-Trading-System" target="_blank" rel="noopener noreferrer">Explore repository <span aria-hidden="true">↗</span></a></div>
+              <div className="aj-project-actions"><a href="https://github.com/aman482006-beep/AI-Powered-Quantitative-Trading-System" target="_blank" rel="noopener noreferrer">Explore repository <span aria-hidden="true">↗</span></a><a className="aj-project-demo" href="https://aman482006-beep.github.io/AI-Powered-Quantitative-Trading-System/" target="_blank" rel="noopener noreferrer">Open live preview <span aria-hidden="true">↗</span></a></div>
             </div>
           </article>
         </div>
