@@ -386,35 +386,33 @@ export function StoryPreview() {
 }
 
 function StoryTypewriter({ text, active }: { text: string; active: boolean }) {
-  const [typedText, setTypedText] = useState("");
-  const [started, setStarted] = useState(false);
+  const spanRef = useRef<HTMLSpanElement | null>(null);
   const startedRef = useRef(false);
 
   useEffect(() => {
-    if (!active || startedRef.current) return;
+    const node = spanRef.current;
+    if (!active || !node || startedRef.current) return;
     startedRef.current = true;
-    setStarted(true);
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setTypedText(text);
+      node.textContent = text;
       return;
     }
 
     let index = 0;
     const timer = window.setInterval(() => {
       index += 1;
-      setTypedText(text.slice(0, index));
+      node.textContent = text.slice(0, index);
       if (index >= text.length) window.clearInterval(timer);
     }, 30);
 
     return () => {
       window.clearInterval(timer);
-      if (index < text.length) setTypedText(text);
+      if (index < text.length && spanRef.current) spanRef.current.textContent = text;
     };
   }, [active, text]);
 
-  const shownText = active && !started ? "" : (started ? typedText : text);
-  return <span aria-label={text}>{shownText}</span>;
+  return <span ref={spanRef} aria-label={text} />;
 }
 
 export function StoryExperience() {
@@ -434,7 +432,6 @@ export function StoryExperience() {
         });
         setActiveChapter(current);
       };
-      updateActiveChapter();
       window.addEventListener("scroll", updateActiveChapter, { passive: true });
       window.addEventListener("resize", updateActiveChapter);
       return () => {
