@@ -56,8 +56,19 @@ async function runViewport(viewport) {
       const image = document.querySelector(".aj-story-window-person img");
       return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
     }, null, { timeout: 15000 });
-    const windowMotion = await storyWindow.locator(".aj-story-window-shutter-left").evaluate((element) => getComputedStyle(element).animationName);
-    assert(windowMotion.includes("aj-story-window-open"), "The My Story window opening animation is not active");
+    await page.waitForFunction(
+      () => document.querySelector(".aj-story-window-scene")?.getAttribute("data-window-open") === "true",
+      null,
+      { timeout: 8000 },
+    );
+    const windowMotion = await storyWindow.locator(".aj-story-window-shutter-left").evaluate((element) => ({
+      transitionDuration: getComputedStyle(element).transitionDuration,
+      transform: getComputedStyle(element).transform,
+    }));
+    assert(
+      windowMotion.transitionDuration.split(",").some((duration) => Number.parseFloat(duration) >= 1),
+      "The My Story window opening transform transition is missing: " + JSON.stringify(windowMotion),
+    );
     await page.evaluate(() => window.scrollTo(0, 0));
 
     // Check the global external-link policy: external websites open separately,
