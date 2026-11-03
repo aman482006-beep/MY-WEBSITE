@@ -317,8 +317,8 @@ async function runViewport(viewport) {
       null,
       { timeout: 5000 },
     );
-    await page.locator('#primary-navigation a[data-nav-href="/contact"]').tap();
     currentStage = "navigate to Contact from the mobile menu";
+    await page.locator('#primary-navigation a[data-nav-href="/contact"]').tap();
     await page.waitForURL(/\/MY-WEBSITE\/contact\/$/, { timeout: 15000 });
     await page.getByRole("heading", { name: "What would you like to discuss?" }).waitFor();
 
