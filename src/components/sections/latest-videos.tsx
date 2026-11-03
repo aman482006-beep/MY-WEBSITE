@@ -29,19 +29,21 @@ export function LatestVideos() {
               href={`https://www.youtube.com/watch?v=${video.id}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Watch featured YouTube video ${video.number}`}
+              aria-label={`Play featured YouTube video ${video.number}`}
             >
               <div className="aj-video-thumbnail">
                 <Image
                   src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
                   alt={`YouTube thumbnail for featured video ${video.number}`}
                   fill
-                  sizes="(max-width: 700px) 45vw, 30vw"
+                  sizes="(max-width: 700px) 48vw, 22vw"
                 />
-                <span className="aj-play-button" aria-hidden="true">▶</span>
               </div>
-              <h3>Featured video {video.number}</h3>
-              <p>Watch on YouTube <span aria-hidden="true">↗</span></p>
+              <div className="aj-video-info">
+                <span className="aj-video-label">YOUTUBE · {video.number}</span>
+                <h3>Featured video {video.number}</h3>
+                <span className="aj-video-cta">Click to play <span aria-hidden="true">↗</span></span>
+              </div>
             </a>
           ))}
         </div>
