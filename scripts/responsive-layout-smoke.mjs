@@ -21,8 +21,10 @@ const viewports = [
   { name: "tablet", width: 768, height: 1024 },
   { name: "large tablet", width: 820, height: 1180 },
   { name: "tablet wide", width: 980, height: 900 },
-  { name: "small laptop", width: 981, height: 768 },
-  { name: "laptop", width: 1024, height: 768 },
+  { name: "tablet-to-laptop transition", width: 1000, height: 768 },
+  { name: "compact laptop transition", width: 1001, height: 768 },
+  { name: "small laptop", width: 1024, height: 768 },
+  { name: "laptop", width: 1100, height: 768 },
   { name: "HD laptop", width: 1280, height: 800 },
   { name: "standard laptop", width: 1366, height: 768 },
   { name: "desktop", width: 1440, height: 900 },
@@ -172,10 +174,10 @@ try {
           );
         }
 
-        if (viewport.width <= 700) {
-          assert(metrics.nav.toggle?.width > 0, "Mobile menu toggle is missing at " + viewport.width + "px");
+        if (viewport.width <= 1000) {
+          assert(metrics.nav.toggle?.width > 0, "Compact navigation toggle is missing at " + viewport.width + "px");
           assert(!overlaps(metrics.nav.brand, metrics.nav.toggle),
-            "Mobile logo and menu button overlap at " + viewport.width + "px");
+            "Compact-navigation logo and menu button overlap at " + viewport.width + "px");
         } else {
           assert(metrics.nav.links?.width > 0 && metrics.nav.cta?.width > 0,
             "Desktop navigation is not visible at " + viewport.width + "px");
