@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ProjectShowcase } from "@/components/sections/project-showcase";
 
 export const metadata: Metadata = {
-  title: "Projects",
+  title: "What I’ve Built",
   description: "Selected finance, AI, education and product projects by Aman Jain, with source code and demos where available.",
   alternates: { canonical: "/projects" },
 };
