@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-profile-4k.avif"
@@ -11,70 +11,311 @@ const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
 const chapters = [
   {
     number: "01",
-    period: "2024 — 2027",
-    label: "The starting point",
-    title: "Curiosity found a direction.",
-    intro: "I chose to study business, finance and marketing because I wanted to understand two things: how decisions move money, and how ideas move people.",
+    label: "The contradiction",
+    period: "Where it starts",
+    title: "I can value a company. A microphone can still make me nervous.",
+    intro: "I'm Aman — a finance student, creator and builder who is learning that confidence doesn't arrive all at once.",
     paragraphs: [
-      "I'm pursuing a BBA in Finance & Marketing Analytics at CHRIST (Deemed to be University), Bengaluru. The mix matters to me: numbers explain what is happening, while marketing helps explain why people care.",
-      "Alongside college, I kept going deeper into finance through the CFA programme. I have cleared Level I and am currently a Level II candidate."
+      "I'm pursuing a BBA in Finance & Marketing Analytics at CHRIST University, Bengaluru. I cleared CFA Level I through self-study and I'm now a Level II candidate.",
+      "I can spend hours understanding a company, but speaking in front of people can still make my hands shake. Both things are true. This isn't a story about pretending the fear disappeared; it's about not letting it make every decision."
     ],
-    proof: ["BBA · Finance & Marketing Analytics", "CHRIST University, Bengaluru", "CFA Level II candidate"],
-    takeaway: "I enjoy the point where analytical thinking meets human behaviour."
+    proof: ["CHRIST · BBA Finance & Marketing Analytics", "CFA Level I cleared", "CFA Level II candidate"],
+    takeaway: "Being capable at one thing doesn't mean feeling fearless at everything.",
+    visual: "portrait"
   },
   {
     number: "02",
-    period: "Learning by doing",
-    label: "Outside the classroom",
-    title: "I wanted to see how the work actually happens.",
-    intro: "Internships gave me different views of finance and analysis: the detail inside a spreadsheet, the discipline behind a process, and the decisions that turn information into action.",
+    label: "The first post",
+    period: "A first attempt",
+    title: "I started by sharing one result.",
+    intro: "My first instinct was to talk about the CFA Level I result because it felt like the biggest milestone I'd reached.",
     paragraphs: [
-      "My experience includes finance work at DAGAS and Nuvama Wealth, along with earlier exposure to financial research and data analysis through D. E. Shaw FinRes and Unified Mentor.",
-      "At DAGAS, I worked as a Finance Intern from April to July 2026. I then joined Nuvama Wealth in Bengaluru as a Finance Intern from July to August 2026."
+      "There wasn't a carefully planned niche or a content calendar behind that first post. I had something I was proud of, and I decided to put it out there.",
+      "That first step mattered because it made the next one easier to imagine. I didn't need a perfect creator identity before I could begin; I needed to publish, learn and try again."
     ],
-    proof: ["DAGAS · Finance Intern · Apr–Jul 2026", "Nuvama Wealth · Finance Intern · Jul–Aug 2026", "D. E. Shaw FinRes · Internship", "Unified Mentor · Data Analyst Internship"],
-    takeaway: "The useful question is not only what a number says, but what decision it should inform."
+    proof: ["A real milestone", "One first post", "No perfect playbook"],
+    takeaway: "Starting before you feel ready gives you something real to improve.",
+    visual: "post"
   },
   {
     number: "03",
-    period: "Along the way",
-    label: "Making ideas understandable",
-    title: "I started explaining what I was learning.",
-    intro: "Content creation became a practical way to turn complicated subjects into something another person could understand and use.",
+    label: "The cringe archive",
+    period: "Trying things out",
+    title: "Finance news. Running. Motivation. Daily life. Back to finance.",
+    intro: "My content direction changed a lot before it started making sense.",
     paragraphs: [
-      "I've created more than 100 videos across finance, learning and related topics. The work has involved researching an idea, finding the simplest explanation, writing a hook, recording, editing and learning what makes someone stay.",
-      "That process taught me that knowing something and communicating it clearly are two different skills. The second takes deliberate work."
+      "I tried finance news, running, motivation and daily-life videos. Some ideas were a better fit than others. Looking back, the switches weren't wasted time; they were how I learned what I enjoyed making and what I could keep doing.",
+      "I kept coming back to explaining finance in a way students could actually use. The niche wasn't discovered in a brainstorming session. I posted my way towards it."
     ],
-    proof: ["100+ videos created", "YouTube · Instagram", "Research · Scripting · Editing"],
-    takeaway: "A good explanation respects the audience's time. A good story gives them a reason to care."
+    proof: ["Finance news", "Running", "Motivation", "Daily life", "Finance for students"],
+    takeaway: "You don't always think your way into a direction. Sometimes you make your way there.",
+    caption: "Sab try kiya. Jo tikka, wahi rakha.",
+    visual: "archive"
   },
   {
     number: "04",
-    period: "Building now",
-    label: "From ideas to things people can use",
-    title: "I got tired of leaving ideas in tabs and notes.",
-    intro: "I began building small products and experiments so I could learn by making something real—not just by reading about how it should work.",
+    label: "The gym lesson",
+    period: "A useful reset",
+    title: "I thought extreme was the shortcut. Consistency was the answer.",
+    intro: "The gym taught me a lesson that turned out to apply to much more than fitness.",
     paragraphs: [
-      "Fokus is my productivity app, available for Windows through the Microsoft Store. It brings focus sessions, tasks, screen-time insights and practical tools into one workspace.",
-      "I'm also working on AI and finance projects: a personal finance manager, an automated financial-modelling agent, and a quantitative trading and backtesting system. These are active builds and experiments, not finished products being presented as something they are not."
+      "Going extreme can feel like progress because it is intense and easy to notice. But the thing that actually compounds is showing up, following a process and repeating the basics.",
+      "I started seeing the same pattern in studying, making videos and building products. A dramatic burst can start something; consistency is what gives it a chance to become good."
     ],
-    proof: ["Fokus · Available on Microsoft Store", "AI Personal Finance Manager · In progress", "Financial Modelling Agent · In progress", "Quantitative Trading System · Prototype"],
-    takeaway: "Building makes gaps visible. It forces an idea to meet real constraints."
+    proof: ["Intensity is visible", "Consistency compounds", "The process wins"],
+    takeaway: "Extreme gets you a story. Consistent gets you a result.",
+    visual: "consistency"
   },
   {
     number: "05",
-    period: "The next chapter",
-    label: "What I'm moving towards",
-    title: "More experiments. More real-world feedback.",
-    intro: "The thread connecting my interests is simple: understand a problem, make an idea tangible, explain it clearly, and find out whether it is useful to someone.",
+    label: "Stage fear",
+    period: "Still showing up",
+    title: "Still shaky. Still showing up.",
+    intro: "Recording a video gives me another take. A stage doesn't.",
     paragraphs: [
-      "I'm interested in work where analytical thinking and creative execution meet—growth, fintech, product experiments, content and the systems that help good ideas reach people.",
-      "My next step is to get closer to users, test ideas in the real world, measure what works and get better at the parts that don't. I don't want a polished story that pretends every step was planned. I want a body of work that shows what I tried and what I learned."
+      "I can know what I'm talking about and still get nervous when all eyes are on me. My voice can change; my mind can go blank for a moment. Knowing the material doesn't automatically switch those feelings off.",
+      "I'm not going to invent a story where one event cured it. I'm still working on it. The progress is that nervousness is no longer a reason to automatically say no."
     ],
-    proof: ["Understand the audience", "Make and test the idea", "Measure what changed", "Share what I learned"],
-    takeaway: "Curiosity starts the work. Execution and feedback make it worth something."
+    proof: ["Notice the nerves", "Show up anyway", "Learn from the moment", "Try again"],
+    takeaway: "Courage isn't the absence of nerves. It's refusing to let them make every choice.",
+    visual: "stage"
+  },
+  {
+    number: "06",
+    label: "Hands dirty",
+    period: "Learning by building",
+    title: "I stopped leaving every idea in a tab.",
+    intro: "The fastest way I've found to expose a gap in my understanding is to try to build something.",
+    paragraphs: [
+      "Fokus — my productivity app — is one example. I've also been experimenting with finance tools, personal websites and AI-assisted workflows. The first version is rarely the final version; bugs and awkward decisions are part of the learning.",
+      "Reading gives me concepts. Building makes me work through constraints, trade-offs and the details that a neat explanation can leave out."
+    ],
+    proof: ["Fokus · Productivity app", "Finance tools · Experiments", "Web projects · Built and iterated"],
+    takeaway: "You understand an idea differently once you've had to make it work.",
+    visual: "build"
+  },
+  {
+    number: "07",
+    label: "The people part",
+    period: "Why I explain",
+    title: "I remember what it felt like not to know where to start.",
+    intro: "The point of making finance content gradually became bigger than posting another video.",
+    paragraphs: [
+      "When someone asks a question or tells me that an idea finally makes sense, it reminds me why clear explanations matter. Finance can feel unnecessarily intimidating when every answer assumes you already know the vocabulary.",
+      "I want to make the first few steps easier for students who are curious but don't know where to begin. Not by pretending everything is simple, but by explaining one useful thing at a time."
+    ],
+    proof: ["Student-first explanations", "Finance without unnecessary jargon", "Useful over impressive"],
+    takeaway: "The best reason to teach is remembering what it felt like to be a beginner.",
+    visual: "people"
+  },
+  {
+    number: "08",
+    label: "Internships",
+    period: "Real work, real deadlines",
+    title: "The spreadsheet eventually leaves the classroom.",
+    intro: "Internships gave me a closer look at how finance and analysis work inside real teams.",
+    paragraphs: [
+      "I've worked as a Finance Intern at DAGAS and Nuvama Wealth in Bengaluru, with earlier exposure to financial research and data analysis through D. E. Shaw FinRes and Unified Mentor.",
+      "Each experience gave me a different view of the work. The common lesson was simple: being useful means being careful, communicating clearly and following through on the task in front of you."
+    ],
+    proof: ["DAGAS · Finance Intern", "Nuvama Wealth · Finance Intern", "D. E. Shaw FinRes · Internship", "Unified Mentor · Data Analyst Intern"],
+    takeaway: "Being useful matters more than looking impressive.",
+    visual: "work"
+  },
+  {
+    number: "09",
+    label: "The deep end",
+    period: "What comes next",
+    title: "A nervous speaker can still build with his voice.",
+    intro: "For the next few years, I want to keep learning in public: explain more, build more and get closer to the people using what I make.",
+    paragraphs: [
+      "This project brings that direction together. I wanted to use my own story as the brief, then turn it into something people can explore rather than another document full of claims.",
+      "The workflow is part of the experiment: speak an idea with Wispr Flow, shape it into a clear brief, use Emergent to help make it tangible, then test and refine the result. The tools can speed up the first version; judgement and ownership still belong to me."
+    ],
+    proof: ["Speak", "Wispr Flow", "Emergent", "Build · test · improve"],
+    takeaway: "Tarika-varika sab seekh lenge. Bas rukna nahi hai.",
+    caption: "The next version starts with the next attempt.",
+    visual: "deep-end"
   }
 ] as const;
+
+function StoryWindow() {
+  return (
+    <div className="aj-story-preview-window" aria-label="An animated window opening onto a moving sky, with Aman waving">
+      <div className="aj-story-window-scene">
+        <div className="aj-story-window-sky">
+          <span className="aj-story-cloud aj-story-cloud-one" />
+          <span className="aj-story-cloud aj-story-cloud-two" />
+          <span className="aj-story-cloud aj-story-cloud-three" />
+          <span className="aj-story-window-sun" />
+          <span className="aj-story-window-horizon" />
+          <span className="aj-story-window-hill aj-story-window-hill-back" />
+          <span className="aj-story-window-hill aj-story-window-hill-front" />
+        </div>
+        <div className="aj-story-window-person">
+          <Image src={profileImageSrc} alt="Aman smiling in a portrait" fill sizes="(max-width: 620px) 56vw, 220px" />
+        </div>
+        <svg className="aj-story-window-wave" viewBox="0 0 110 170" aria-hidden="true">
+          <g className="aj-story-wave-arm">
+            <path d="M13 169 C12 145 19 119 27 96 C32 82 34 67 40 56 C36 47 34 38 36 29 C37 22 43 22 45 29 L48 42 L49 15 C50 7 57 8 58 16 L58 43 L63 22 C65 15 72 17 71 25 L67 48 L74 34 C78 27 84 32 80 40 L71 61 C67 75 58 90 53 111 C48 133 49 151 52 169 Z" fill="#BD7C5C" stroke="#8C523D" strokeWidth="1.5" />
+            <path d="M25 106 C31 86 35 73 40 59 L55 66 C49 88 44 106 42 124 Z" fill="#242936" />
+            <path d="M34 77 L48 82 M31 88 L45 93 M29 99 L43 104" stroke="#B7A7BE" strokeWidth="2" opacity=".8" />
+          </g>
+        </svg>
+        <div className="aj-story-window-sill" />
+        <div className="aj-story-window-frame aj-story-window-frame-top" />
+        <div className="aj-story-window-frame aj-story-window-frame-left" />
+        <div className="aj-story-window-frame aj-story-window-frame-right" />
+        <div className="aj-story-window-frame aj-story-window-frame-bottom" />
+        <div className="aj-story-window-mullion aj-story-window-mullion-vertical" />
+        <div className="aj-story-window-mullion aj-story-window-mullion-horizontal" />
+        <div className="aj-story-window-shutters" aria-hidden="true">
+          <div className="aj-story-window-shutter aj-story-window-shutter-left"><span /><span /><span /></div>
+          <div className="aj-story-window-shutter aj-story-window-shutter-right"><span /><span /><span /></div>
+        </div>
+      </div>
+      <div className="aj-story-window-caption"><span>MY STORY</span><b>Open a little window.</b><i>↗</i></div>
+    </div>
+  );
+}
+
+function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }) {
+  if (visual === "portrait") {
+    return (
+      <div className="aj-story-visual-card aj-story-visual-portrait">
+        <div className="aj-story-visual-kicker">A PERSON, NOT A PERFECT PLAN</div>
+        <div className="aj-story-portrait-large">
+          <Image src={profileImageSrc} alt="Aman's portrait" fill sizes="(max-width: 850px) 80vw, 440px" />
+        </div>
+        <div className="aj-story-portrait-stamp">STILL<br />LEARNING</div>
+        <p>Finance brain. Creator curiosity. A work in progress.</p>
+      </div>
+    );
+  }
+
+  if (visual === "post") {
+    return (
+      <div className="aj-story-visual-card aj-story-post-visual">
+        <div className="aj-story-phone">
+          <div className="aj-story-phone-speaker" />
+          <div className="aj-story-phone-screen">
+            <div className="aj-story-post-top"><span className="aj-story-post-avatar">AJ</span><span><b>Aman</b><small>One of my first posts</small></span><i>•••</i></div>
+            <div className="aj-story-post-art"><span>LEVEL I</span><strong>Cleared.</strong><small>A milestone worth sharing.</small></div>
+            <div className="aj-story-post-actions"><span>♡ Like</span><span>↗ Share</span></div>
+            <div className="aj-story-post-line" /><div className="aj-story-post-line short" />
+          </div>
+        </div>
+        <div className="aj-story-post-note"><span>01</span><b>Post the milestone.</b><small>Then learn what comes next.</small></div>
+      </div>
+    );
+  }
+
+  if (visual === "archive") {
+    return (
+      <div className="aj-story-visual-card aj-story-archive-visual">
+        <span className="aj-story-archive-label">THE CONTENT EXPERIMENTS</span>
+        <div className="aj-story-topic-track">
+          <div className="aj-story-topic-card topic-one"><small>01</small><b>Finance<br />news</b><i /></div>
+          <div className="aj-story-topic-card topic-two"><small>02</small><b>Running</b><i /></div>
+          <div className="aj-story-topic-card topic-three"><small>03</small><b>Motivation</b><i /></div>
+          <div className="aj-story-topic-card topic-four"><small>04</small><b>Daily<br />life</b><i /></div>
+          <div className="aj-story-topic-card topic-final"><small>05</small><b>Finance for<br />students</b><span>FOUND MY WAY</span></div>
+        </div>
+        <p className="aj-story-archive-foot">Not every experiment needs to become your identity.</p>
+      </div>
+    );
+  }
+
+  if (visual === "consistency") {
+    return (
+      <div className="aj-story-visual-card aj-story-chart-visual">
+        <div className="aj-story-visual-kicker">TWO WAYS TO APPROACH A GOAL</div>
+        <svg className="aj-story-consistency-chart" viewBox="0 0 440 270" role="img" aria-label="A conceptual chart comparing a quick extreme burst that falls away with a steady upward path">
+          <path d="M28 25 V230 H420" fill="none" stroke="#DAD1C6" strokeWidth="1.5" />
+          <path d="M28 180 H420 M28 125 H420 M28 70 H420" stroke="#EDE6DE" strokeDasharray="4 7" />
+          <path className="aj-story-chart-extreme" d="M30 212 C74 70 93 42 130 93 C160 132 180 203 240 208 C290 216 350 218 410 218" fill="none" stroke="#D36C57" strokeWidth="4" strokeLinecap="round" />
+          <path className="aj-story-chart-steady" d="M30 212 C80 198 106 183 150 167 S223 136 260 116 S337 77 410 38" fill="none" stroke="#718B67" strokeWidth="4" strokeLinecap="round" />
+          <circle cx="410" cy="38" r="6" fill="#718B67" />
+        </svg>
+        <div className="aj-story-chart-legend"><span><i className="is-extreme" />Extreme</span><span><i className="is-steady" />Consistent</span></div>
+        <p className="aj-story-chart-note">A conceptual lesson, not measured fitness data.</p>
+      </div>
+    );
+  }
+
+  if (visual === "stage") {
+    return (
+      <div className="aj-story-visual-card aj-story-stage-visual">
+        <span className="aj-story-visual-kicker">THE NERVES DON'T GO TO ZERO</span>
+        <svg viewBox="0 0 360 205" className="aj-story-stage-gauge" role="img" aria-label="A gauge showing that nervousness can remain while you continue to show up">
+          <path d="M48 166 A132 132 0 0 1 312 166" fill="none" stroke="#EFE5D9" strokeWidth="17" strokeLinecap="round" />
+          <path d="M48 166 A132 132 0 0 1 276 72" fill="none" stroke="#E2A47B" strokeWidth="17" strokeLinecap="round" />
+          <path d="M48 166 A132 132 0 0 1 112 59" fill="none" stroke="#D36C57" strokeWidth="17" strokeLinecap="round" opacity=".7" />
+          <g className="aj-story-stage-needle"><path d="M180 166 L95 105" stroke="#34343A" strokeWidth="4" strokeLinecap="round" /><circle cx="180" cy="166" r="9" fill="#34343A" /></g>
+          <text x="48" y="194" fill="#8B6C5A" fontSize="10">NERVOUS</text><text x="312" y="194" fill="#718B67" fontSize="10" textAnchor="end">SHOWING UP</text>
+          <text x="180" y="130" fill="#34343A" fontFamily="Georgia,serif" fontSize="26" textAnchor="middle">Still here.</text>
+        </svg>
+        <div className="aj-story-stage-steps"><span>Feel it</span><b>→</b><span>Go anyway</span><b>→</b><span>Repeat</span></div>
+      </div>
+    );
+  }
+
+  if (visual === "build") {
+    return (
+      <div className="aj-story-visual-card aj-story-build-visual">
+        <div className="aj-story-visual-kicker">IDEAS THAT LEFT THE NOTES APP</div>
+        <div className="aj-story-build-stack">
+          <article className="aj-story-build-card build-fokus"><span>01 · PRODUCTIVITY</span><b>Fokus</b><small>Focus sessions · Tasks · Insights</small><i>↗</i></article>
+          <article className="aj-story-build-card build-finance"><span>02 · FINANCE</span><b>Finance tools</b><small>Experiments in making numbers useful</small><i>↗</i></article>
+          <article className="aj-story-build-card build-web"><span>03 · WEB</span><b>Web projects</b><small>Build · break · fix · improve</small><i>↗</i></article>
+        </div>
+        <p>First versions are allowed to be imperfect.</p>
+      </div>
+    );
+  }
+
+  if (visual === "people") {
+    return (
+      <div className="aj-story-visual-card aj-story-people-visual">
+        <span className="aj-story-visual-kicker">ONE IDEA AT A TIME</span>
+        <div className="aj-story-people-grid" aria-hidden="true">{Array.from({ length: 48 }, (_, index) => <i key={index} style={{ "--dot-index": index } as React.CSSProperties} />)}</div>
+        <div className="aj-story-people-message"><span>THE GOAL</span><b>Make the unfamiliar feel approachable.</b></div>
+        <p>Less about the number under a post. More about what someone understands after it.</p>
+      </div>
+    );
+  }
+
+  if (visual === "work") {
+    return (
+      <div className="aj-story-visual-card aj-story-work-visual">
+        <span className="aj-story-visual-kicker">LEARNING IN REAL TEAMS</span>
+        <div className="aj-story-work-list">
+          <div><span>01</span><b>DAGAS</b><small>Finance Intern · Apr–Jul 2026</small></div>
+          <div><span>02</span><b>Nuvama Wealth</b><small>Finance Intern · Jul–Aug 2026</small></div>
+          <div><span>03</span><b>D. E. Shaw FinRes</b><small>Internship</small></div>
+          <div><span>04</span><b>Unified Mentor</b><small>Data Analyst Intern</small></div>
+        </div>
+        <p>Different environments. One standard: follow through.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="aj-story-visual-card aj-story-deep-visual">
+      <span className="aj-story-visual-kicker">FROM THOUGHT TO SOMETHING REAL</span>
+      <div className="aj-story-flow">
+        <div className="flow-step flow-speak"><span>01</span><b>Speak</b><small>The rough idea</small></div>
+        <i>→</i>
+        <div className="flow-step flow-wispr"><span>02</span><b>Wispr Flow</b><small>Voice to text</small></div>
+        <i>→</i>
+        <div className="flow-step flow-emergent"><span>03</span><b>Emergent</b><small>Shape the build</small></div>
+        <i>→</i>
+        <div className="flow-step flow-product"><span>04</span><b>Product</b><small>Test and refine</small></div>
+      </div>
+      <div className="aj-story-deep-note"><span>THE IMPORTANT PART</span><b>The tools help me move faster. I still own the decisions and the result.</b></div>
+    </div>
+  );
+}
 
 export function StoryPreview() {
   return (
@@ -83,17 +324,10 @@ export function StoryPreview() {
         <div className="aj-story-preview-copy">
           <p className="aj-eyebrow aj-eyebrow-accent">BEHIND THE PROJECTS</p>
           <h2>Explore my story<span>.</span></h2>
-          <p>Not a résumé in paragraph form. The route behind the work: what I studied, where I learned, what I made, and what I&apos;m figuring out next.</p>
-          <Link href="/story" className="aj-button aj-button-primary">Explore my story <span aria-hidden="true">→</span></Link>
+          <p>Not a résumé in paragraph form. Open a window into the experiments, wrong turns, nerves and small wins that shaped how I learn and build.</p>
+          <Link href="/story" className="aj-button aj-button-primary">Open the window <span aria-hidden="true">→</span></Link>
         </div>
-        <div className="aj-story-preview-map" aria-label="A quick map of the story">
-          <div className="aj-story-preview-line" aria-hidden="true" />
-          <div className="aj-story-preview-node"><span>01</span><div><strong>Learn</strong><small>Finance · analytics</small></div></div>
-          <div className="aj-story-preview-node"><span>02</span><div><strong>Explore</strong><small>Internships · experience</small></div></div>
-          <div className="aj-story-preview-node"><span>03</span><div><strong>Create</strong><small>100+ videos</small></div></div>
-          <div className="aj-story-preview-node"><span>04</span><div><strong>Build</strong><small>Products · experiments</small></div></div>
-          <div className="aj-story-preview-node"><span>05</span><div><strong>What&apos;s next</strong><small>Test · learn · repeat</small></div></div>
-        </div>
+        <StoryWindow />
       </div>
     </section>
   );
@@ -101,104 +335,79 @@ export function StoryPreview() {
 
 export function StoryExperience() {
   const [activeChapter, setActiveChapter] = useState(0);
-  const chapter = chapters[activeChapter];
+
+  useEffect(() => {
+    const scenes = Array.from(document.querySelectorAll<HTMLElement>(".aj-story-scene"));
+    if (!("IntersectionObserver" in window) || scenes.length === 0) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const scene = entry.target as HTMLElement;
+        scene.dataset.revealed = "true";
+        const nextChapter = Number(scene.dataset.chapterIndex ?? 0);
+        setActiveChapter(nextChapter);
+      }
+    }, { threshold: 0.25, rootMargin: "-12% 0px -28% 0px" });
+
+    scenes.forEach((scene) => observer.observe(scene));
+    if (scenes[0]) scenes[0].dataset.revealed = "true";
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <main id="main" className="aj-story-page">
-      <section className="aj-story-hero">
-        <div className="aj-container aj-story-hero-grid">
-          <div className="aj-story-hero-copy">
-            <p className="aj-eyebrow aj-eyebrow-accent">A WORK IN PROGRESS · IN THE BEST WAY</p>
-            <h1>Explore my <em>story.</em></h1>
-            <p className="aj-story-hero-lede">A little finance, a little making, a lot of curiosity. Here&apos;s how the pieces connect—and what I&apos;m trying to figure out next.</p>
-            <div className="aj-story-hero-actions">
-              <a className="aj-button aj-button-primary" href="#story-chapters">Start exploring <span aria-hidden="true">↓</span></a>
-              <Link className="aj-button aj-button-outline" href="/projects">See what I do</Link>
-            </div>
-            <div className="aj-story-hero-facts">
-              <span>CHRIST · BBA 2024–27</span>
-              <span>100+ videos</span>
-              <span>Building in public</span>
-            </div>
-          </div>
-          <div className="aj-story-hero-portrait">
-            <div className="aj-story-portrait-note">Still curious.<br />Still figuring it out. ↗</div>
-            <div className="aj-story-portrait-frame">
-              <Image src={profileImageSrc} alt="Portrait of Aman Jain" fill priority sizes="(max-width: 800px) 78vw, 420px" />
-            </div>
-            <span className="aj-story-portrait-caption">THE PERSON BEHIND THE SIDE QUESTS</span>
-          </div>
+    <main id="main" className="aj-story-page aj-story-journey">
+      <header className="aj-story-journey-intro">
+        <div className="aj-container aj-story-journey-intro-inner">
+          <p className="aj-eyebrow aj-eyebrow-accent">A WINDOW INTO HOW I THINK</p>
+          <h1>Not a straight line.<br /><em>A trail of experiments.</em></h1>
+          <p>This is the story behind the work: the things I tried, the things I got wrong, what I learned, and what I'm building towards. Scroll through it like a journey, not a résumé.</p>
+          <a className="aj-story-scroll-cue" href="#story-journey">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
         </div>
-      </section>
+      </header>
 
-      <section className="aj-story-chapters aj-section" id="story-chapters">
-        <div className="aj-container">
-          <div className="aj-story-heading">
-            <div>
-              <p className="aj-eyebrow aj-eyebrow-accent">THE STORY SO FAR</p>
-              <h2>Not a straight line.<br /><em>A trail of experiments.</em></h2>
-            </div>
-            <p>Choose a chapter. The story is organised around the things that changed how I think—not just a list of dates and job titles.</p>
-          </div>
+      <div className="aj-story-progress" aria-label="Story progress">
+        <span>THE JOURNEY</span>
+        <div className="aj-story-progress-track"><i style={{ transform: "scaleY(" + ((activeChapter + 1) / chapters.length) + ")" }} /></div>
+        <b aria-live="polite">{String(activeChapter + 1).padStart(2, "0")} <small>/ 09</small></b>
+      </div>
 
-          <div className="aj-story-explorer">
-            <div className="aj-story-chapter-list" role="tablist" aria-label="Story chapters">
-              {chapters.map((item, index) => (
-                <button
-                  className={"aj-story-chapter-tab" + (activeChapter === index ? " is-active" : "")}
-                  key={item.number}
-                  type="button"
-                  role="tab"
-                  id={"story-tab-" + item.number}
-                  aria-selected={activeChapter === index}
-                  aria-controls="story-chapter-panel"
-                  onClick={() => setActiveChapter(index)}
-                >
-                  <span>{item.number}</span>
-                  <span className="aj-story-tab-copy"><strong>{item.label}</strong><small>{item.period}</small></span>
-                  <span className="aj-story-tab-arrow" aria-hidden="true">↗</span>
-                </button>
-              ))}
-            </div>
-
-            <article className="aj-story-chapter-panel" id="story-chapter-panel" role="tabpanel" aria-labelledby={"story-tab-" + chapter.number} key={chapter.number}>
-              <div className="aj-story-chapter-topline"><span>CHAPTER {chapter.number}</span><span>{chapter.period}</span></div>
-              <p className="aj-story-chapter-label">{chapter.label}</p>
-              <h3>{chapter.title}</h3>
-              <p className="aj-story-chapter-intro">{chapter.intro}</p>
-              <div className="aj-story-chapter-body">
-                {chapter.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-              </div>
-              <div className="aj-story-proof">
-                <span className="aj-story-proof-label">THE RECEIPTS</span>
-                <div>{chapter.proof.map((item) => <span key={item}>{item}</span>)}</div>
-              </div>
-              <div className="aj-story-takeaway"><span>WHAT STUCK WITH ME</span><p>{chapter.takeaway}</p></div>
-              <div className="aj-story-panel-nav">
-                <span>{activeChapter + 1} / {chapters.length}</span>
-                <div>
-                  <button type="button" onClick={() => setActiveChapter((current) => Math.max(0, current - 1))} disabled={activeChapter === 0}>← Previous</button>
-                  <button type="button" onClick={() => setActiveChapter((current) => Math.min(chapters.length - 1, current + 1))} disabled={activeChapter === chapters.length - 1}>Next chapter →</button>
+      <section className="aj-story-journey-scenes" id="story-journey" aria-label="Aman's story, chapter by chapter">
+        <div className="aj-container aj-story-journey-container">
+          {chapters.map((chapter, index) => (
+            <section
+              className="aj-story-scene"
+              key={chapter.number}
+              data-chapter-index={index}
+              data-revealed={index === 0 ? "true" : "false"}
+              aria-labelledby={"story-heading-" + chapter.number}
+            >
+              <div className="aj-story-scene-inner">
+                <div className="aj-story-scene-copy">
+                  <div className="aj-story-scene-meta"><span>{chapter.number} / 09</span><i /> <span>{chapter.period}</span></div>
+                  <p className="aj-story-scene-label">{chapter.label}</p>
+                  <h2 id={"story-heading-" + chapter.number}>{chapter.title}</h2>
+                  <p className="aj-story-scene-intro">{chapter.intro}</p>
+                  <div className="aj-story-scene-paragraphs">
+                    {chapter.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                  </div>
+                  {chapter.caption && <p className="aj-story-scene-caption">{chapter.caption}</p>}
+                  <div className="aj-story-scene-proof">
+                    {chapter.proof.map((item) => <span key={item}>{item}</span>)}
+                  </div>
+                  <div className="aj-story-lesson">
+                    <span>WHAT STUCK WITH ME</span>
+                    <p>{chapter.takeaway}</p>
+                    <i />
+                  </div>
+                </div>
+                <div className="aj-story-scene-art">
+                  <StoryVisual visual={chapter.visual} />
                 </div>
               </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="aj-story-next-section">
-        <div className="aj-container aj-story-next-grid">
-          <div>
-            <p className="aj-eyebrow aj-eyebrow-accent">THE NEXT EXPERIMENT</p>
-            <h2>Make the idea.<br /><em>Meet the real world.</em></h2>
-            <p>My current direction is to connect finance, technology and communication through work that people can actually use. That means getting closer to users, testing the message, learning from the numbers and improving the product or campaign.</p>
-          </div>
-          <div className="aj-story-experiment-steps">
-            <div><span>01</span><strong>Find the friction</strong><p>What is confusing, slow or needlessly difficult for someone?</p></div>
-            <div><span>02</span><strong>Make a first version</strong><p>Build the smallest useful idea instead of waiting for a perfect plan.</p></div>
-            <div><span>03</span><strong>Put it in front of people</strong><p>Listen to what they do—not only what they say.</p></div>
-            <div><span>04</span><strong>Measure and adapt</strong><p>Keep what works, be honest about what doesn&apos;t, and try again.</p></div>
-          </div>
+            </section>
+          ))}
         </div>
       </section>
 
@@ -206,11 +415,12 @@ export function StoryExperience() {
         <div className="aj-container aj-story-outro-inner">
           <p className="aj-eyebrow aj-eyebrow-accent">STILL ADDING CHAPTERS</p>
           <h2>The best part of the story<br /><em>is what I do next.</em></h2>
-          <p>This page should keep getting more specific as I document the real decisions, unexpected turns and lessons behind the work. The point isn&apos;t to make the journey look perfect. It&apos;s to make the learning visible.</p>
+          <p>I don't want a polished story that pretends every step was planned. I want a body of work that shows what I tried, what changed, and what I learned along the way.</p>
           <div className="aj-story-outro-actions">
-            <Link href="/projects" className="aj-button aj-button-primary">See what I do <span aria-hidden="true">→</span></Link>
+            <Link href="/projects" className="aj-button aj-button-primary">See what I'm building <span aria-hidden="true">→</span></Link>
             <Link href="/contact" className="aj-button aj-button-outline">Start a conversation</Link>
           </div>
+          <p className="aj-story-outro-signoff">Tarika-varika sab seekh lenge. Bas rukna nahi hai.</p>
         </div>
       </section>
     </main>
