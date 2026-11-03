@@ -6,13 +6,11 @@ import "./globals.css";
 import "./motion.css";
 import "./curiosity-engine.css";
 import "./paper-pop-theme.css";
-import "./mini-aman.css";
 import { ScrollProgressBar } from "@/components/ui/scroll-progress";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { MotionRoot } from "@/components/motion/motion-root";
-import { MiniAman } from "@/components/motion/mini-aman";
 import { NewTabLinks } from "@/components/ui/new-tab-links";
 
 const newsreader = Newsreader({
@@ -92,7 +90,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <Navbar />
             <div className="site-main">{children}</div>
             <Footer />
-            <MiniAman />
           </MotionRoot>
         </SmoothScroll>
         <Analytics />
