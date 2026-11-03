@@ -20,7 +20,18 @@ async function runViewport(viewport) {
     reducedMotion: "no-preference",
   });
   const page = await context.newPage();
+  const storyAssetNetwork = [];
   page.on("pageerror", (error) => pageErrors.push(viewport.width + "px: " + error.message));
+  page.on("requestfailed", (request) => {
+    if (request.url().includes("aman-story-avatar.webp")) {
+      storyAssetNetwork.push({ type: "requestfailed", url: request.url(), error: request.failure()?.errorText });
+    }
+  });
+  page.on("response", (response) => {
+    if (response.url().includes("aman-story-avatar.webp")) {
+      storyAssetNetwork.push({ type: "response", url: response.url(), status: response.status() });
+    }
+  });
 
   try {
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
@@ -53,10 +64,23 @@ async function runViewport(viewport) {
     assert(await storyWindow.locator(".aj-story-cloud").count() === 3, "Moving-sky clouds are missing");
     assert(await storyWindow.locator(".aj-story-window-shutter").count() === 2, "The opening window needs two shutters");
     currentStage = "load transparent portrait inside My Story window";
+    const storyAvatarImage = page.locator(".aj-story-window-person img");
+    await storyAvatarImage.waitFor({ state: "attached" });
+    await storyAvatarImage.evaluate((image) => { image.loading = "eager"; });
     await page.waitForFunction(() => {
       const image = document.querySelector(".aj-story-window-person img");
       return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
-    }, null, { timeout: 15000 });
+    }, null, { timeout: 15000 }).catch(async () => {
+      const imageDetails = await storyAvatarImage.evaluate((image) => ({
+        src: image.getAttribute("src"),
+        currentSrc: image.currentSrc,
+        complete: image.complete,
+        naturalWidth: image.naturalWidth,
+        naturalHeight: image.naturalHeight,
+        loading: image.loading,
+      }));
+      throw new Error("Story portrait failed to load: " + JSON.stringify({ image: imageDetails, network: storyAssetNetwork }));
+    });
     currentStage = "open the My Story window when it enters view";
     await page.waitForFunction(
       () => document.querySelector(".aj-story-window-scene")?.getAttribute("data-window-open") === "true",
