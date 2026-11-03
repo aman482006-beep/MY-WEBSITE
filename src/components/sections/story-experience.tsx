@@ -205,6 +205,8 @@ function StoryWindow() {
 }
 
 function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }) {
+  const [postTapped, setPostTapped] = useState(false);
+  const [flippedBuildCards, setFlippedBuildCards] = useState<string[]>([]);
   if (visual === "portrait") {
     return (
       <div className="aj-story-visual-card aj-story-visual-portrait">
@@ -225,12 +227,17 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           <div className="aj-story-phone-speaker" />
           <div className="aj-story-phone-screen">
             <div className="aj-story-post-top"><span className="aj-story-post-avatar">AJ</span><span><b>Aman</b><small>One of my first posts</small></span><i>•••</i></div>
-            <div className="aj-story-post-art"><span>LEVEL I</span><strong>Cleared.</strong><small>A milestone worth sharing.</small></div>
+            <div className={"aj-story-post-art" + (postTapped ? " is-posted" : "")}><span>{postTapped ? "PUBLISHED" : "LEVEL I"}</span><strong>{postTapped ? "It's out." : "Cleared."}</strong><small>{postTapped ? "The next step is learning from it." : "A milestone worth sharing."}</small></div>
             <div className="aj-story-post-actions"><span>♡ Like</span><span>↗ Share</span></div>
             <div className="aj-story-post-line" /><div className="aj-story-post-line short" />
           </div>
         </div>
-        <div className="aj-story-post-note"><span>01</span><b>Post the milestone.</b><small>Then learn what comes next.</small></div>
+        <div className="aj-story-post-interaction">
+          <button type="button" className="aj-story-post-button" onClick={() => setPostTapped(true)} disabled={postTapped}>
+            {postTapped ? "POSTED ✓" : "POST"}
+          </button>
+          <p>{postTapped ? "A small first step. No numbers invented." : "Tap to replay the first-post moment."}</p>
+        </div>
       </div>
     );
   }
@@ -286,13 +293,33 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   }
 
   if (visual === "build") {
+    const cards = [
+      { id: "fokus", tag: "01 · PRODUCTIVITY", title: "Fokus", front: "An idea for making focused work easier.", back: "A productivity app with focus sessions, tasks and screen-time insights." },
+      { id: "finance", tag: "02 · FINANCE", title: "Finance tools", front: "A question about making numbers useful.", back: "Experiments in financial modelling, personal finance and quantitative workflows." },
+      { id: "web", tag: "03 · WEB", title: "Web projects", front: "A blank page and a rough plan.", back: "Build, test, fix the awkward bits, then improve the next version." }
+    ];
     return (
       <div className="aj-story-visual-card aj-story-build-visual">
-        <div className="aj-story-visual-kicker">IDEAS THAT LEFT THE NOTES APP</div>
+        <div className="aj-story-visual-kicker">IDEAS THAT LEFT THE NOTES APP · TAP TO FLIP</div>
         <div className="aj-story-build-stack">
-          <article className="aj-story-build-card build-fokus"><span>01 · PRODUCTIVITY</span><b>Fokus</b><small>Focus sessions · Tasks · Insights</small><i>↗</i></article>
-          <article className="aj-story-build-card build-finance"><span>02 · FINANCE</span><b>Finance tools</b><small>Experiments in making numbers useful</small><i>↗</i></article>
-          <article className="aj-story-build-card build-web"><span>03 · WEB</span><b>Web projects</b><small>Build · break · fix · improve</small><i>↗</i></article>
+          {cards.map((card, index) => {
+            const flipped = flippedBuildCards.includes(card.id);
+            return (
+              <button
+                className={"aj-story-build-flip-card build-" + card.id + (flipped ? " is-flipped" : "")}
+                key={card.id}
+                type="button"
+                aria-pressed={flipped}
+                onClick={() => setFlippedBuildCards((current) => flipped ? current.filter((id) => id !== card.id) : [...current, card.id])}
+                style={{ "--story-card-index": index } as CSSProperties}
+              >
+                <span className="aj-story-build-flip-inner">
+                  <span className="aj-story-build-flip-face is-front"><small>{card.tag}</small><b>{card.title}</b><span>{card.front}</span><i>Tap to turn ↗</i></span>
+                  <span className="aj-story-build-flip-face is-back"><small>WHAT I LEARNED BY BUILDING</small><b>{card.title}</b><span>{card.back}</span><i>Tap to flip back ↺</i></span>
+                </span>
+              </button>
+            );
+          })}
         </div>
         <p>First versions are allowed to be imperfect.</p>
       </div>
