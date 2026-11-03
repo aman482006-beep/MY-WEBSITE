@@ -184,7 +184,7 @@ async function runViewport(viewport) {
     // Verify a primary homepage CTA with a real touch, independently of the menu.
     await page.getByRole("link", { name: /See what I’ve built/ }).tap();
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
-    await page.getByRole("heading", { name: "Things I’ve built." }).waitFor();
+    await page.getByRole("heading", { name: "Things I've built." }).waitFor();
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
     await page.waitForFunction(
       () => document.documentElement.classList.contains("aj-motion-enabled"),
@@ -227,7 +227,7 @@ async function runViewport(viewport) {
 
     await page.locator('#primary-navigation a[data-nav-href="/projects"]').tap();
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
-    await page.getByRole("heading", { name: "Things I’ve built." }).waitFor();
+    await page.getByRole("heading", { name: "Things I've built." }).waitFor();
 
     const projectOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
@@ -263,7 +263,7 @@ async function runViewport(viewport) {
     assert(!storyOverflow, "Explore My Story has horizontal overflow at " + viewport.width + "px");
 
     await page.goto(base + "/projects/", { waitUntil: "domcontentloaded" });
-    await page.getByRole("heading", { name: "Things I’ve built." }).waitFor();
+    await page.getByRole("heading", { name: "Things I've built." }).waitFor();
 
     await page.locator(".aj-menu-toggle").tap();
     await page.waitForFunction(
