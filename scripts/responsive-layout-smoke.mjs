@@ -73,7 +73,7 @@ try {
           };
           const selectors = [
             ".aj-project-card", ".aj-story-chapter-panel", ".aj-story-visual-card",
-            ".aj-story-topic-track", ".aj-story-flow", ".aj-story-lesson", ".aj-contact-compose",
+            ".aj-story-flow", ".aj-story-lesson", ".aj-contact-compose",
             ".aj-contact-direct", ".aj-contact-social-card", ".aj-daily-newspaper",
             ".aj-resource-card", ".aj-resource-request", ".aj-creator-pillar",
             ".aj-video-card", ".aj-pillar", ".aj-sticky-note",
@@ -192,6 +192,31 @@ try {
             "Desktop navigation links overlap the CTA at " + viewport.width + "px");
           assert(metrics.nav.links.left >= -1 && metrics.nav.cta.right <= viewport.width + 1,
             "Desktop navigation extends beyond the viewport at " + viewport.width + "px");
+        }
+
+        if (route.path === "/story/" && viewport.width <= 620) {
+          const topicTrack = page.locator(".aj-story-topic-track");
+          const trackMetrics = await topicTrack.evaluate((element) => ({
+            overflowX: getComputedStyle(element).overflowX,
+            clientWidth: element.clientWidth,
+            scrollWidth: element.scrollWidth,
+          }));
+          assert(
+            trackMetrics.overflowX === "auto" && trackMetrics.scrollWidth > trackMetrics.clientWidth,
+            "The mobile story archive should be a contained, swipeable strip at " + viewport.width + "px: " +
+              JSON.stringify(trackMetrics)
+          );
+          await topicTrack.evaluate((element) => { element.scrollLeft = element.scrollWidth; });
+          const finalTopic = topicTrack.locator(".topic-final");
+          await finalTopic.waitFor({ state: "visible" });
+          const finalTopicVisibility = await finalTopic.evaluate((element) => {
+            const parent = element.parentElement;
+            if (!parent) return false;
+            const childRect = element.getBoundingClientRect();
+            const parentRect = parent.getBoundingClientRect();
+            return childRect.left >= parentRect.left - 1 && childRect.right <= parentRect.right + 1;
+          });
+          assert(finalTopicVisibility, "The final Finance for students archive card cannot be reached by swiping at " + viewport.width + "px");
         }
 
         if (route.path === "/projects/") {
