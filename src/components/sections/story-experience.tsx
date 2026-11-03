@@ -8,8 +8,8 @@ const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-story-face.jpg"
   : "/aman-story-face.jpg";
 const storyAvatarSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/aman-story-avatar.webp"
-  : "/aman-story-avatar.webp";
+  ? "/MY-WEBSITE/aman-story-face.jpg"
+  : "/aman-story-face.jpg";
 
 const chapters = [
   {
@@ -132,10 +132,10 @@ const chapters = [
     title: "A nervous speaker can still build with his voice.",
     intro: "For the next few years, I want to keep learning in public: explain more, build more and get closer to the people using what I make.",
     paragraphs: [
-      "This project brings that direction together. I wanted to use my own story as the brief, then turn it into something people can explore rather than another document full of claims.",
-      "The workflow is part of the experiment: speak an idea with Wispr Flow, shape it into a clear brief, use Emergent to help make it tangible, then test and refine the result. The tools can speed up the first version; judgement and ownership still belong to me."
+      "This is my story for the Wispr Flow competition. I wanted the format to match the idea behind it: take a personal thought, speak it, turn it into a clear brief, and make something people can explore rather than another document full of claims.",
+      "The workflow is part of the experiment: capture the rough idea with Wispr Flow, shape it into a clear brief, use Emergent Labs to help make it tangible, then test and refine the result. The tools can speed up the first version; judgement and ownership still belong to me."
     ],
-    proof: ["Speak", "Wispr Flow", "Emergent", "Build · test · improve"],
+    proof: ["Speak", "Wispr Flow", "Emergent Labs", "Build · test · improve"],
     takeaway: "Tarika-varika sab seekh lenge. Bas rukna nahi hai.",
     caption: "The next version starts with the next attempt.",
     visual: "deep-end"
@@ -360,7 +360,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
         <i>→</i>
         <div className="flow-step flow-wispr"><span>02</span><b>Wispr Flow</b><small>Voice to text</small></div>
         <i>→</i>
-        <div className="flow-step flow-emergent"><span>03</span><b>Emergent</b><small>Shape the build</small></div>
+        <div className="flow-step flow-emergent"><span>03</span><b>Emergent Labs</b><small>Shape the build</small></div>
         <i>→</i>
         <div className="flow-step flow-product"><span>04</span><b>Product</b><small>Test and refine</small></div>
       </div>
