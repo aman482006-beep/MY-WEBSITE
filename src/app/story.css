@@ -582,10 +582,10 @@
 .aj-story-deep-note span { display: block; color: #6D805F; font-size: 8px; font-weight: 950; letter-spacing: .15em; }
 .aj-story-deep-note b { display: block; margin-top: 5px; color: #394633; font-family: var(--font-display); font-size: 21px; font-weight: 550; line-height: 1.2; }
 
-.aj-story-scene[data-revealed="false"] .aj-story-scene-copy { opacity: .55; transform: translateX(-18px); }
-.aj-story-scene[data-revealed="false"] .aj-story-scene-art { opacity: .55; transform: translateX(18px); }
+html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-scene-copy { opacity: .55; transform: translateX(-18px); }
+html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-scene-art { opacity: .55; transform: translateX(18px); }
 .aj-story-scene-copy, .aj-story-scene-art { transition: opacity 700ms cubic-bezier(.22,1,.36,1), transform 700ms cubic-bezier(.22,1,.36,1); }
-.aj-story-scene[data-revealed="false"] .aj-story-lesson { opacity: .4; transform: translateY(16px); }
+html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-lesson { opacity: .4; transform: translateY(16px); }
 .aj-story-lesson { transition: opacity 550ms ease .18s, transform 550ms cubic-bezier(.22,1,.36,1) .18s; }
 .aj-story-lesson i { transform: scaleX(0); transition: transform 450ms ease .42s; }
 .aj-story-scene[data-revealed="true"] .aj-story-scene-copy,
