@@ -302,7 +302,7 @@
 .aj-story-window-shutter-left,
 .aj-story-window-shutter-right {
   transform: rotateY(0);
-  transition: transform 1.05s cubic-bezier(.2,.8,.2,1);
+  transition: transform 850ms cubic-bezier(.2,.8,.2,1);
 }
 .aj-story-window-scene[data-window-open="true"] .aj-story-window-shutter-left { transform: rotateY(-78deg); }
 .aj-story-window-scene[data-window-open="true"] .aj-story-window-shutter-right { transform: rotateY(78deg); }
@@ -520,7 +520,7 @@
 
 .aj-story-chart-visual { min-height: 410px; background: linear-gradient(145deg, #FAF8F1, #EDF2E9); }
 .aj-story-consistency-chart { display: block; width: 100%; height: auto; overflow: visible; }
-.aj-story-chart-extreme, .aj-story-chart-steady { stroke-dasharray: 560; stroke-dashoffset: 560; transition: stroke-dashoffset 1.2s ease; }
+.aj-story-chart-extreme, .aj-story-chart-steady { stroke-dasharray: 560; stroke-dashoffset: 560; transition: stroke-dashoffset 850ms ease; }
 .aj-story-scene[data-revealed="true"] .aj-story-chart-extreme { stroke-dashoffset: 0; transition-delay: .15s; }
 .aj-story-scene[data-revealed="true"] .aj-story-chart-steady { stroke-dashoffset: 0; transition-delay: .55s; }
 .aj-story-chart-legend { display: flex; justify-content: center; gap: 28px; margin-top: 7px; }
@@ -641,11 +641,27 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-less
   .aj-story-post-art strong { font-size: 39px; }
   .aj-story-post-note { right: 2%; bottom: 8%; }
   .aj-story-archive-visual { min-height: 335px; }
-  .aj-story-topic-track { gap: 4px; }
-  .aj-story-topic-card { min-height: 145px; padding: 8px 5px; }
-  .aj-story-topic-card b { font-size: clamp(10px, 3vw, 14px); }
+  .aj-story-topic-track {
+    display: flex;
+    gap: 8px;
+    max-width: 100%;
+    padding: 2px 2px 12px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .aj-story-topic-card {
+    flex: 0 0 106px;
+    min-height: 145px;
+    padding: 8px 7px;
+    scroll-snap-align: center;
+  }
+  .aj-story-topic-card b { font-size: 13px; }
   .aj-story-topic-card small { font-size: 7px; }
-  .aj-story-topic-card.topic-final span { font-size: 6px; }
+  .aj-story-topic-card.topic-final span { font-size: 7px; }
   .aj-story-archive-foot { margin-top: 18px; font-size: 18px; }
   .aj-story-chart-visual, .aj-story-stage-visual, .aj-story-build-visual, .aj-story-people-visual, .aj-story-work-visual, .aj-story-deep-visual { min-height: 330px; }
   .aj-story-stage-steps { gap: 6px; font-size: 9px; }
@@ -875,5 +891,7 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-buil
     animation: none !important;
   }
   .aj-story-build-flip-card.is-flipped .aj-story-build-flip-inner { transform: none; }
-  .aj-story-build-flip-face.is-back { display: none; }
+  .aj-story-build-flip-card.is-flipped .aj-story-build-flip-face.is-front { display: none; }
+  .aj-story-build-flip-face.is-back { transform: none; }
+  .aj-story-build-flip-card:not(.is-flipped) .aj-story-build-flip-face.is-back { display: none; }
 }
