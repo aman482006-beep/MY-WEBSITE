@@ -46,6 +46,20 @@ async function runViewport(viewport) {
     }
 
 
+    // The My Story preview uses a single, section-scoped window scene.
+    const storyWindow = page.locator(".aj-story-preview-window");
+    await storyWindow.scrollIntoViewIfNeeded();
+    assert(await storyWindow.count() === 1, "Homepage My Story window is missing");
+    assert(await storyWindow.locator(".aj-story-cloud").count() === 3, "Moving-sky clouds are missing");
+    assert(await storyWindow.locator(".aj-story-window-shutter").count() === 2, "The opening window needs two shutters");
+    await page.waitForFunction(() => {
+      const image = document.querySelector(".aj-story-window-person img");
+      return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
+    }, null, { timeout: 15000 });
+    const windowMotion = await storyWindow.locator(".aj-story-window-shutter-left").evaluate((element) => getComputedStyle(element).animationName);
+    assert(windowMotion.includes("aj-story-window-open"), "The My Story window opening animation is not active");
+    await page.evaluate(() => window.scrollTo(0, 0));
+
     // Check the global external-link policy: external websites open separately,
     // while routes inside this portfolio stay in the current tab.
     await page.evaluate(() => {
@@ -242,21 +256,22 @@ async function runViewport(viewport) {
       await page.getByRole("heading", { name: projectTitle, exact: true }).waitFor();
     }
 
-    // Verify that the new interactive story route is present and that its chapter
-    // navigation changes the content rather than rendering a static placeholder.
+    // Verify the nine-chapter story journey and its scroll-driven reveal states.
     await page.goto(base + "/story/", { waitUntil: "domcontentloaded" });
-    await page.locator(".aj-story-hero h1").waitFor({ state: "visible" });
-    assert(await page.locator(".aj-story-chapter-tab").count() === 5, "Explore My Story should contain five chapters");
-    await page.locator(".aj-story-chapter-tab").nth(2).tap();
-    assert(
-      (await page.locator(".aj-story-chapter-panel h3").textContent())?.includes("explaining what I was learning"),
-      "Story chapter navigation did not open the content-creation chapter",
+    await page.locator(".aj-story-journey-intro h1").waitFor({ state: "visible" });
+    assert(await page.locator(".aj-story-scene").count() === 9, "Explore My Story should contain nine chapters");
+    assert(await page.locator(".aj-story-progress").isVisible(), "Story progress indicator is missing");
+    await page.locator(".aj-story-scene").nth(1).scrollIntoViewIfNeeded();
+    await page.waitForFunction(
+      () => document.querySelectorAll('.aj-story-scene[data-revealed="true"]').length >= 2,
+      null,
+      { timeout: 8000 },
     );
-    await page.locator(".aj-story-chapter-tab").nth(4).tap();
     assert(
-      (await page.locator(".aj-story-chapter-panel h3").textContent())?.includes("More experiments"),
-      "Story chapter navigation did not open the next-chapter panel",
+      (await page.locator(".aj-story-scene").nth(1).locator("h2").textContent())?.includes("sharing one result"),
+      "The first-post chapter is missing its story copy",
     );
+    assert(await page.locator(".aj-story-flow .flow-step").count() === 4, "The Wispr Flow to Emergent story sequence is incomplete");
     const storyOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
     );
