@@ -3,12 +3,14 @@ import { chromium } from "playwright";
 const base = "http://127.0.0.1:4173/MY-WEBSITE";
 const failures = [];
 const pageErrors = [];
+let currentStage = "homepage initial load";
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
 async function runViewport(viewport) {
+  currentStage = "homepage initial load";
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     viewport,
@@ -18,7 +20,6 @@ async function runViewport(viewport) {
     reducedMotion: "no-preference",
   });
   const page = await context.newPage();
-  let currentStage = "homepage initial load";
   page.on("pageerror", (error) => pageErrors.push(viewport.width + "px: " + error.message));
 
   try {
