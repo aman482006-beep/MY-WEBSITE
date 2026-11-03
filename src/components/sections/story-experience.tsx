@@ -7,6 +7,9 @@ import { useEffect, useState, type CSSProperties } from "react";
 const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-profile-4k.avif"
   : "/aman-profile.webp";
+const storyAvatarSrc = process.env.GITHUB_ACTIONS === "true"
+  ? "/MY-WEBSITE/aman-story-avatar.webp"
+  : "/aman-story-avatar.webp";
 
 const chapters = [
   {
@@ -153,7 +156,7 @@ function StoryWindow() {
           <span className="aj-story-window-hill aj-story-window-hill-front" />
         </div>
         <div className="aj-story-window-person">
-          <Image src={profileImageSrc} alt="Aman smiling in a portrait" fill sizes="(max-width: 620px) 56vw, 220px" />
+          <Image src={storyAvatarSrc} alt="Aman smiling in a portrait" fill sizes="(max-width: 620px) 56vw, 220px" />
         </div>
         <svg className="aj-story-window-wave" viewBox="0 0 110 170" aria-hidden="true">
           <g className="aj-story-wave-arm">
