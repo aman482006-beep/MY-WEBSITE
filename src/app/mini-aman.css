@@ -1,0 +1,206 @@
+/* Mini Aman: small, scroll-aware character layer. It never changes document flow. */
+.mini-aman {
+  --mini-ink: #29262e;
+  --mini-orange: #e96a31;
+  position: fixed;
+  z-index: 420;
+  width: 72px;
+  height: 112px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  transition: left 760ms cubic-bezier(.2,.72,.18,1), right 760ms cubic-bezier(.2,.72,.18,1), top 760ms cubic-bezier(.2,.72,.18,1), opacity 380ms ease, transform 650ms cubic-bezier(.2,.72,.18,1);
+  contain: layout paint style;
+  will-change: left, right, top, transform;
+}
+.mini-aman[data-pose] { opacity: .98; transform: translate3d(0,0,0); }
+.mini-aman-character {
+  position: relative;
+  width: 72px;
+  height: 100px;
+  transform-origin: 50% 90%;
+  animation: mini-aman-idle 2.8s ease-in-out infinite;
+}
+.mini-aman-art {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: scaleX(var(--mini-facing, 1));
+  transform-origin: center;
+  filter: drop-shadow(0 3px 2px rgba(42, 32, 25, .12));
+}
+.mini-aman-side-right { --mini-facing: -1; }
+.mini-aman-side-left { --mini-facing: 1; }
+.mini-aman-shadow {
+  position: absolute;
+  z-index: -1;
+  left: 22%;
+  right: 22%;
+  bottom: 1px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(48, 39, 34, .17);
+  filter: blur(2px);
+  animation: mini-aman-shadow 2.8s ease-in-out infinite;
+}
+.mini-aman-trail {
+  position: absolute;
+  z-index: -2;
+  left: -35px;
+  bottom: 28px;
+  width: 34px;
+  height: 15px;
+  border-top: 2px dashed rgba(233, 106, 49, .7);
+  border-radius: 50%;
+  opacity: 0;
+  transform: rotate(-18deg) scaleX(.45);
+}
+.mini-aman-bubble {
+  position: absolute;
+  z-index: 3;
+  bottom: calc(100% - 2px);
+  left: 50%;
+  min-width: max-content;
+  max-width: 140px;
+  padding: 5px 9px;
+  border: 1px solid rgba(41, 38, 46, .16);
+  border-radius: 10px 10px 10px 3px;
+  color: var(--mini-ink);
+  background: rgba(255, 252, 247, .97);
+  box-shadow: 0 4px 14px rgba(42, 32, 25, .09);
+  font-family: var(--font-note, "Caveat", cursive);
+  font-size: 14px;
+  line-height: 1.05;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 5px) scale(.96);
+  transition: opacity 180ms ease, transform 240ms cubic-bezier(.2,.72,.18,1);
+}
+.mini-aman-bubble.is-visible { opacity: 1; transform: translate(-50%, 0) scale(1); }
+.mini-aman-transition-enter .mini-aman-character { animation: mini-aman-peek 720ms cubic-bezier(.2,.8,.2,1) both; }
+.mini-aman-transition-run .mini-aman-character { animation: mini-aman-run 420ms ease-in-out both; }
+.mini-aman-transition-run .mini-aman-trail { opacity: 1; transform: rotate(-18deg) scaleX(1); transition: opacity 150ms ease, transform 240ms ease; }
+.mini-aman-transition-jump .mini-aman-character { animation: mini-aman-jump 620ms cubic-bezier(.22,.8,.22,1) both; }
+.mini-aman-transition-jump .mini-aman-shadow { animation: mini-aman-shadow-jump 620ms ease-out both; }
+.mini-aman[data-pose="walk"] .mini-aman-leg-left { animation: mini-aman-step 420ms ease-in-out infinite alternate; transform-origin: 46px 94px; }
+.mini-aman[data-pose="walk"] .mini-aman-leg-right { animation: mini-aman-step 420ms ease-in-out infinite alternate-reverse; transform-origin: 70px 94px; }
+.mini-aman[data-pose="run"] .mini-aman-leg-left { animation: mini-aman-run-leg 240ms ease-in-out infinite alternate; transform-origin: 46px 94px; }
+.mini-aman[data-pose="run"] .mini-aman-leg-right { animation: mini-aman-run-leg 240ms ease-in-out infinite alternate-reverse; transform-origin: 70px 94px; }
+.mini-aman[data-pose="run"] .mini-aman-arm-left { animation: mini-aman-arm-swing 240ms ease-in-out infinite alternate; transform-origin: 38px 68px; }
+.mini-aman[data-pose="run"] .mini-aman-arm-right { animation: mini-aman-arm-swing 240ms ease-in-out infinite alternate-reverse; transform-origin: 74px 68px; }
+.mini-aman[data-pose="jump"] .mini-aman-character { animation: mini-aman-air-bob 620ms ease-out both; }
+.mini-aman[data-pose="celebrate"] .mini-aman-character { animation: mini-aman-celebrate 1.9s ease-in-out infinite; }
+.mini-aman[data-pose="think"] .mini-aman-character { animation: mini-aman-think 3.8s ease-in-out infinite; }
+.mini-aman[data-pose="work"] .mini-aman-character,
+.mini-aman[data-pose="read"] .mini-aman-character { animation: mini-aman-sit 2.7s ease-in-out infinite; }
+.mini-aman[data-pose="click"] .mini-aman-character { animation: mini-aman-tap 1.1s ease-in-out infinite; }
+.mini-aman[data-pose="inspect"] .mini-aman-character { animation: mini-aman-inspect 2.3s ease-in-out infinite; }
+.mini-aman-page-paused .mini-aman-character,
+.mini-aman-page-paused .mini-aman-shadow { animation-play-state: paused !important; }
+
+@keyframes mini-aman-idle {
+  0%,100% { transform: translateY(0) rotate(0); }
+  48% { transform: translateY(-2px) rotate(-.7deg); }
+  72% { transform: translateY(-1px) rotate(.4deg); }
+}
+@keyframes mini-aman-shadow {
+  0%,100% { transform: scaleX(1); opacity: .85; }
+  50% { transform: scaleX(.88); opacity: .66; }
+}
+@keyframes mini-aman-peek {
+  0% { transform: translateY(38px) scale(.82); opacity: 0; }
+  58% { transform: translateY(-7px) scale(1.04); opacity: 1; }
+  78% { transform: translateY(2px) scale(.98); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes mini-aman-run {
+  0% { transform: translateX(-9px) translateY(0) rotate(-4deg) scale(.96); }
+  35% { transform: translateX(3px) translateY(-4px) rotate(3deg) scale(1.02); }
+  70% { transform: translateX(9px) translateY(1px) rotate(-3deg) scale(.98); }
+  100% { transform: translateX(0) translateY(0) rotate(0) scale(1); }
+}
+@keyframes mini-aman-jump {
+  0% { transform: translateY(0) scale(1); }
+  22% { transform: translateY(5px) scaleX(1.05) scaleY(.9); }
+  50% { transform: translateY(-27px) scaleX(.96) scaleY(1.04); }
+  78% { transform: translateY(3px) scaleX(1.04) scaleY(.94); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes mini-aman-shadow-jump {
+  0%,100% { transform: scaleX(1); opacity: .8; }
+  50% { transform: scaleX(.58); opacity: .25; }
+}
+@keyframes mini-aman-air-bob {
+  0% { transform: translateY(0) rotate(-3deg); }
+  48% { transform: translateY(-13px) rotate(4deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+@keyframes mini-aman-step {
+  from { transform: rotate(-13deg); }
+  to { transform: rotate(13deg); }
+}
+@keyframes mini-aman-run-leg {
+  from { transform: rotate(-25deg) translateY(-1px); }
+  to { transform: rotate(25deg) translateY(1px); }
+}
+@keyframes mini-aman-arm-swing {
+  from { transform: rotate(-18deg); }
+  to { transform: rotate(22deg); }
+}
+@keyframes mini-aman-celebrate {
+  0%,100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-5px) rotate(1.4deg); }
+}
+@keyframes mini-aman-think {
+  0%,100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-2px) rotate(1.5deg); }
+}
+@keyframes mini-aman-sit {
+  0%,100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-1px) rotate(-.6deg); }
+}
+@keyframes mini-aman-tap {
+  0%,100% { transform: translateY(0) rotate(0); }
+  38% { transform: translateY(-2px) rotate(-2deg); }
+  62% { transform: translateY(1px) rotate(1.3deg); }
+}
+@keyframes mini-aman-inspect {
+  0%,100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(1px) rotate(2deg); }
+}
+
+@media (max-width: 1100px) {
+  .mini-aman { width: 58px; height: 88px; }
+  .mini-aman-character { width: 58px; height: 81px; }
+  .mini-aman-bubble { font-size: 13px; }
+}
+@media (max-width: 680px) {
+  .mini-aman {
+    width: 48px;
+    height: 70px;
+    top: auto !important;
+    bottom: 84px;
+    transform: translate3d(0, 5px, 0);
+  }
+  .mini-aman[data-pose] { transform: translate3d(0,0,0); }
+  .mini-aman-side-left { left: 2px !important; right: auto !important; }
+  .mini-aman-side-right { right: 2px !important; left: auto !important; }
+  .mini-aman-character { width: 48px; height: 66px; }
+  .mini-aman-bubble { max-width: 100px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mini-aman, .mini-aman * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .mini-aman { opacity: .88; transform: none; }
+  .mini-aman-bubble { display: none; }
+  .mini-aman-trail { display: none; }
+  .mini-aman-shadow { transform: none; }
+}
