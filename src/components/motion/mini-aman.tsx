@@ -25,7 +25,7 @@ const WAYPOINTS: Waypoint[] = [
   { selector: ".aj-footer", side: "left", top: "66vh", pose: "celebrate", message: "You made it. Nice." },
 ];
 
-const subscribeToMount = (_onStoreChange: () => void) => () => {};
+const subscribeToMount = () => () => {};
 const getClientMountSnapshot = () => true;
 const getServerMountSnapshot = () => false;
 
@@ -273,22 +273,29 @@ export function MiniAman() {
       transitionTimers.current.push(clearMessage);
     };
 
-    if (previous === -1 && sceneIndex === 0) {
-      setPose("peek");
-      setTransition("enter");
-      const timer = window.setTimeout(enterScene, 720);
-      transitionTimers.current.push(timer);
-    } else {
-      setPose("run");
-      setTransition("run");
-      const runTimer = window.setTimeout(() => {
-        setPose("jump");
-        setTransition("jump");
-        const landTimer = window.setTimeout(enterScene, 620);
-        transitionTimers.current.push(landTimer);
-      }, 420);
-      transitionTimers.current.push(runTimer);
-    }
+    // Defer scene-start state changes to a timer callback. This avoids
+    // synchronous state updates in the effect while preserving the choreography.
+    const startScene = () => {
+      if (previous === -1 && sceneIndex === 0) {
+        setPose("peek");
+        setTransition("enter");
+        const timer = window.setTimeout(enterScene, 720);
+        transitionTimers.current.push(timer);
+      } else {
+        setPose("run");
+        setTransition("run");
+        const runTimer = window.setTimeout(() => {
+          setPose("jump");
+          setTransition("jump");
+          const landTimer = window.setTimeout(enterScene, 620);
+          transitionTimers.current.push(landTimer);
+        }, 420);
+        transitionTimers.current.push(runTimer);
+      }
+    };
+
+    const startTimer = window.setTimeout(startScene, 0);
+    transitionTimers.current.push(startTimer);
 
     return () => {
       transitionTimers.current.forEach((timer) => window.clearTimeout(timer));
