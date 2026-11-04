@@ -407,10 +407,10 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   if (visual === "archive") {
     const archiveItems = [
       { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world.", video: storyShorts[1] },
-      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one." },
-      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles." },
+      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one.", video: null },
+      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles.", video: null },
       { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", video: storyShorts[2] },
-      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students." }
+      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", video: null }
     ] as const;
     return (
       <div className="aj-story-visual-card aj-story-archive-visual">
@@ -466,6 +466,11 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
     return (
       <div className="aj-story-visual-card aj-story-chart-visual">
         <div className="aj-story-visual-kicker">THE GYM LESSON · MY CHANGE OF APPROACH</div>
+        <div className="aj-story-consistency-comparison" aria-label="Extreme versus consistency">
+          <span><small>THE SHORTCUT</small><b>Extreme</b></span>
+          <i>vs</i>
+          <span><small>THE ANSWER</small><b>Consistency</b></span>
+        </div>
         <div key={consistencyStep} className={"aj-story-journey-chart stage-" + consistencyStep} data-stage={consistencyStep}>
           <svg className="aj-story-consistency-chart" viewBox="0 0 440 218" role="img" aria-label="My progress: an early fast rise, a slowdown, then a switch to steady upward progress">
             <path d="M28 20 V180 H420" fill="none" stroke="#DAD1C6" strokeWidth="1.5" />
