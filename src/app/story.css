@@ -4126,3 +4126,79 @@ body:has(.wispr-challenge) .site-main {
     transition: none;
   }
 }
+
+
+/* Final media fixes: real file-backed story photos and a correctly filled portrait. */
+.aj-story-window-person img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+.aj-story-memory-photo {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #E8DED0;
+  background-image: none !important;
+}
+.aj-story-memory-photo img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 320ms cubic-bezier(.2,.75,.2,1);
+}
+.aj-story-memory-card:hover .aj-story-memory-photo img {
+  transform: scale(1.045);
+}
+.aj-story-memory-large {
+  position: relative;
+  width: min(100%, 460px);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #E8DED0;
+  background-image: none !important;
+}
+.aj-story-memory-large img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.aj-story-memory-toggle > .aj-story-memory-toggle-preview {
+  position: relative;
+  display: block;
+  width: 38px;
+  height: 42px;
+  flex: 0 0 38px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: 8px;
+  background: #E8DED0;
+  background-image: none !important;
+}
+.aj-story-memory-toggle-preview img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (max-width: 380px) {
+  .aj-story-memory-toggle > .aj-story-memory-toggle-preview {
+    width: 32px;
+    height: 36px;
+    flex-basis: 32px;
+  }
+}
