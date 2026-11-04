@@ -124,21 +124,6 @@ const chapters = [
     proof: ["DAGAS · Finance Intern", "Nuvama Wealth · Finance Intern", "D. E. Shaw FinRes · Internship", "Unified Mentor · Data Analyst Intern"],
     takeaway: "Being useful matters more than looking impressive.",
     visual: "work"
-  },
-  {
-    number: "09",
-    label: "The deep end",
-    period: "What comes next",
-    title: "A nervous speaker can still build with his voice.",
-    intro: "For the next few years, I want to keep learning in public: explain more, build more and get closer to the people using what I make.",
-    paragraphs: [
-      "This is my story for the Wispr Flow competition. I wanted the format to match the idea behind it: take a personal thought, speak it, turn it into a clear brief, and make something people can explore rather than another document full of claims.",
-      "The workflow is part of the experiment: capture the rough idea with Wispr Flow, shape it into a clear brief, use Emergent Labs to help make it tangible, then test and refine the result. The tools can speed up the first version; judgement and ownership still belong to me."
-    ],
-    proof: ["Speak", "Wispr Flow", "Emergent Labs", "Build · test · improve"],
-    takeaway: "Tarika-varika sab seekh lenge. Bas rukna nahi hai.",
-    caption: "The next version starts with the next attempt.",
-    visual: "deep-end"
   }
 ] as const;
 
@@ -491,7 +476,7 @@ export function StoryExperience() {
       <div className="aj-story-progress" aria-label="Story progress">
         <span>THE JOURNEY</span>
         <div className="aj-story-progress-track"><i style={{ transform: "scaleY(" + ((activeChapter + 1) / chapters.length) + ")" }} /></div>
-        <b aria-live="polite">{String(activeChapter + 1).padStart(2, "0")} <small>/ 09</small></b>
+        <b aria-live="polite">{String(activeChapter + 1).padStart(2, "0")} <small>/ {String(chapters.length).padStart(2, "0")}</small></b>
       </div>
 
       <section className="aj-story-journey-scenes" id="story-journey" aria-label="Aman's story, chapter by chapter">
@@ -506,7 +491,7 @@ export function StoryExperience() {
             >
               <div className="aj-story-scene-inner">
                 <div className="aj-story-scene-copy">
-                  <div className="aj-story-scene-meta"><span>{chapter.number} / 09</span><i /> <span>{chapter.period}</span></div>
+                  <div className="aj-story-scene-meta"><span>{chapter.number} / {String(chapters.length).padStart(2, "0")}</span><i /> <span>{chapter.period}</span></div>
                   <p className="aj-story-scene-label">{chapter.label}</p>
                   <h2 id={"story-heading-" + chapter.number}>{chapter.title}</h2>
                   <p className="aj-story-scene-intro">{chapter.intro}</p>
