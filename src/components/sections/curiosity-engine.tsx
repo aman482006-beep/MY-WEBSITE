@@ -14,10 +14,11 @@ type TabId = "map" | "idea" | "journey" | "signal" | "desk";
 type Point = { x: number; y: number };
 type NoteId = "question" | "experiment" | "share";
 type SignalCase = {
-  category: string; title: string; context: string;
-  metrics: { label: string; value: string }[];
-  question: string; options: { title: string; detail: string }[];
-  correctIndex: number; explanation: string;
+  category: string;
+  title: string;
+  context: string;
+  prompt: string;
+  options: { title: string; responseTitle: string; response: string }[];
 };
 
 const INTERESTS: {
@@ -206,46 +207,68 @@ const IDEA_BANK: Record<string, { title: string; prompt: string; firstStep: stri
 
 const SIGNAL_CASES: SignalCase[] = [
   {
-    category: "FINTECH / UNIT ECONOMICS",
-    title: "The app is growing. Is the business?",
-    context: "A fictional payments app is celebrating a surge in activity. But one line in the update is moving much faster than the others.",
-    metrics: [{ label: "Active users", value: "+48%" }, { label: "Net revenue", value: "+19%" }, { label: "Variable costs", value: "+63%" }],
-    question: "What would you inspect before calling this healthy growth?",
+    category: "LOVE / RELATIONSHIPS",
+    title: "If you love her, does she love you back?",
+    context: "A question as old as time. Be honest, bro. This is a judgement-free zone.",
+    prompt: "So… what's the situation?",
     options: [
-      { title: "App downloads", detail: "A bigger top-of-funnel number would make the growth story look stronger." },
-      { title: "Contribution margin per active user", detail: "Check whether each active customer is becoming more or less profitable to serve." },
-      { title: "Press and social mentions", detail: "More attention can signal awareness, but it does not explain the economics." },
+      {
+        title: "Yes, obviously!",
+        responseTitle: "Lucky you, bro! ❤️",
+        response: "Don't mess this up. A good thing deserves a little effort.",
+      },
+      {
+        title: "No, I don't think so.",
+        responseTitle: "Have some faith, bro.",
+        response: "She does. (At least let us believe.)",
+      },
     ],
-    correctIndex: 1,
-    explanation: "Costs are accelerating faster than both users and revenue. Contribution margin per active user helps reveal whether growth is creating value or simply making the business more expensive to run. Cohort retention would be a useful next layer.",
   },
   {
-    category: "FINANCIALS / CASH FLOW",
-    title: "Revenue is up. Cash is down.",
-    context: "A fictional software company reports a strong quarter. The headline is upbeat, but its cash-flow statement tells a more complicated story.",
-    metrics: [{ label: "Revenue", value: "+32%" }, { label: "Operating cash flow", value: "−18%" }, { label: "Trade receivables", value: "+71%" }],
-    question: "Which clue deserves your first follow-up?",
+    category: "AMBITION / CONFIDENCE",
+    title: "What are the chances you'll actually succeed?",
+    context: "Big goals, uncertain outcomes. What are you telling yourself?",
+    prompt: "Pick the mindset you're bringing to the table.",
     options: [
-      { title: "Receivables ageing and collections", detail: "Find out whether reported sales are turning into cash, and how long customers are taking to pay." },
-      { title: "The share-price reaction", detail: "The market move shows sentiment, not whether customers have paid their invoices." },
-      { title: "The number of product features", detail: "Product breadth may matter strategically, but it does not explain this cash-flow gap." },
+      {
+        title: "100%. I'm built different.",
+        responseTitle: "That's the confidence we like.",
+        response: "Now back it up. Confidence is a start; consistent action does the heavy lifting.",
+      },
+      {
+        title: "50-50. Let's see what happens.",
+        responseTitle: "Bro, you're not betting on a coin toss.",
+        response: "Put in the work. Your odds improve when you give yourself more attempts.",
+      },
+      {
+        title: "Zero. I'm cooked.",
+        responseTitle: "You're not cooked yet.",
+        response: "The only guaranteed failure is giving up before trying. Get moving.",
+      },
     ],
-    correctIndex: 0,
-    explanation: "Receivables rising much faster than revenue is a reason to inspect collection quality, ageing and working-capital movements. It is not proof of a problem on its own—but it is the next question the numbers are asking.",
   },
   {
-    category: "CREATOR / AUDIENCE QUALITY",
-    title: "The reel went viral. Did it work?",
-    context: "A fictional finance creator has one breakout reel. The view count is spectacular, but the audience actions barely moved.",
-    metrics: [{ label: "Video views", value: "+210%" }, { label: "Profile visits", value: "+14%" }, { label: "New followers", value: "+2%" }],
-    question: "What would you test before repeating the format?",
+    category: "SELF / THE NEXT STEP",
+    title: "What's stopping you from becoming the person you want to be?",
+    context: "No perfect answers here. Just pick the thing that gets in your way most often.",
+    prompt: "What's the real blocker?",
     options: [
-      { title: "Make every next video longer", detail: "Length alone does not explain why attention failed to turn into interest." },
-      { title: "The profile-visit to follow journey", detail: "Check retention, profile clicks and follow conversion to find where curiosity drops off." },
-      { title: "Only chase the same view count", detail: "A repeatable reach number can still hide weak audience fit or low conversion." },
+      {
+        title: "Fear of failure.",
+        responseTitle: "You haven't failed yet.",
+        response: "Stop rejecting yourself before the world gets a chance. Take the shot.",
+      },
+      {
+        title: "Overthinking everything.",
+        responseTitle: "You've already imagined 47 outcomes.",
+        response: "Maybe try one actual action now. You can adjust after you start.",
+      },
+      {
+        title: "Waiting for the right time.",
+        responseTitle: "Breaking news: the perfect time isn't coming.",
+        response: "Start today. A messy first step beats a perfect plan that never leaves your head.",
+      },
     ],
-    correctIndex: 1,
-    explanation: "Reach is only the first step. The useful question is where viewers drop off: did the hook hold attention, did the topic attract the right people, and did the profile give them a reason to stay?",
   },
 ];
 
@@ -344,7 +367,6 @@ export function CuriosityEngine() {
   const [selectedStage, setSelectedStage] = useState(0);
   const [signalCaseIndex, setSignalCaseIndex] = useState(0);
   const [signalChoice, setSignalChoice] = useState<number | null>(null);
-  const [signalScore, setSignalScore] = useState(0);
   const [signalComplete, setSignalComplete] = useState(false);
 
   const deskRef = useRef<HTMLDivElement>(null);
@@ -425,7 +447,6 @@ export function CuriosityEngine() {
 
   const activeInterest = INTERESTS.find((item) => item.id === activeInterestId) ?? INTERESTS[0];
   const currentSignalCase = SIGNAL_CASES[signalCaseIndex];
-  const signalAnsweredCorrectly = signalChoice === currentSignalCase.correctIndex;
   const pairKey = [mixA, mixB].sort().join("|");
   const currentIdea = useMemo(() => {
     return IDEA_BANK[pairKey] ?? {
@@ -546,7 +567,6 @@ export function CuriosityEngine() {
   function answerSignal(choice: number) {
     if (signalChoice !== null) return;
     setSignalChoice(choice);
-    if (choice === currentSignalCase.correctIndex) setSignalScore((score) => score + 1);
   }
 
   function advanceSignal() {
@@ -560,7 +580,6 @@ export function CuriosityEngine() {
   function restartSignal() {
     setSignalCaseIndex(0);
     setSignalChoice(null);
-    setSignalScore(0);
     setSignalComplete(false);
   }
 
@@ -826,39 +845,35 @@ export function CuriosityEngine() {
               <div className="ce-signal-layout">
                 <div className="ce-signal-intro">
                   <span className="ce-card-index">04 / THE SIGNAL ROOM</span>
-                  <h3>Think beyond the <em>headline.</em></h3>
-                  <p>Three quick cases. One decision each. Read the clues, choose what you would investigate next, and see the thinking behind it.</p>
+                  <h3>Three questions.<br /><em>Zero judgement.</em></h3>
+                  <p>Love, ambition and the things that get in your way. Pick an answer, get your message, and keep moving.</p>
                   <div className="ce-signal-score">
-                    <span>YOUR SCORE</span>
-                    <strong>{signalScore}<small> / {SIGNAL_CASES.length}</small></strong>
-                    <p>{signalComplete ? "Round complete. Fancy another go?" : "Every answer unlocks the reasoning."}</p>
+                    <span>YOUR PROGRESS</span>
+                    <strong>{Math.min(signalCaseIndex + (signalChoice !== null ? 1 : 0), SIGNAL_CASES.length)}<small> / {String(SIGNAL_CASES.length).padStart(2, "0")}</small></strong>
+                    <p>{signalComplete ? "All three answered. Now go do your thing." : "No grades here. Just a little perspective."}</p>
                   </div>
-                  <p className="ce-signal-disclaimer">Fictional learning scenarios—not live market data or investment advice.</p>
+                  <p className="ce-signal-disclaimer">Pick what feels true. There are no wrong answers.</p>
                 </div>
                 <div className="ce-signal-card" data-reveal>
                   {signalComplete ? (
                     <div className="ce-signal-finish" aria-live="polite">
-                      <span className="ce-card-index">FIELD NOTES / SCORECARD</span>
+                      <span className="ce-card-index">FIELD NOTES / THAT'S A WRAP</span>
                       <div className="ce-signal-finish-mark" aria-hidden="true">✳</div>
-                      <h4>{signalScore === SIGNAL_CASES.length ? "Three clean reads." : signalScore === 2 ? "Good eye for the signal." : "Keep asking the next question."}</h4>
-                      <p>{signalScore === SIGNAL_CASES.length
-                        ? "You looked past the headline and found the metric that mattered in every case."
-                        : signalScore === 2
-                          ? "Two strong calls. The last step is getting comfortable with the follow-up question."
-                          : "The skill is not guessing the headline. It is knowing which evidence would make the story clearer."}</p>
+                      <h4>That's the signal, bro.</h4>
+                      <p>No score, no judgement. Keep a little faith, back yourself, and take the next step. The rest will sort itself out one move at a time.</p>
                       <div className="ce-signal-final-score">
-                        <strong>{signalScore}<small> / {SIGNAL_CASES.length}</small></strong>
-                        <span>YOUR SIGNAL SCORE</span>
+                        <strong>03<small> / 03</small></strong>
+                        <span>QUESTIONS ANSWERED</span>
                       </div>
                       <button type="button" className="ce-signal-next" onClick={restartSignal}>Run it back <span aria-hidden="true">↻</span></button>
                     </div>
                   ) : (
                     <>
                       <div className="ce-signal-card-top">
-                        <span className="ce-card-index">CASE {String(signalCaseIndex + 1).padStart(2, "0")} / 03</span>
+                        <span className="ce-card-index">QUESTION {String(signalCaseIndex + 1).padStart(2, "0")} / {String(SIGNAL_CASES.length).padStart(2, "0")}</span>
                         <span className="ce-signal-category">{currentSignalCase.category}</span>
                       </div>
-                      <div className="ce-signal-progress" aria-label={"Case " + (signalCaseIndex + 1) + " of " + SIGNAL_CASES.length}>
+                      <div className="ce-signal-progress" aria-label={"Question " + (signalCaseIndex + 1) + " of " + SIGNAL_CASES.length}>
                         {SIGNAL_CASES.map((item, index) => (
                           <span key={item.title} className={index < signalCaseIndex ? "is-done" : index === signalCaseIndex ? "is-current" : ""} />
                         ))}
@@ -867,47 +882,40 @@ export function CuriosityEngine() {
                         <h4>{currentSignalCase.title}</h4>
                         <p>{currentSignalCase.context}</p>
                       </div>
-                      <div className="ce-signal-metrics">
-                        {currentSignalCase.metrics.map((metric) => (
-                          <div key={metric.label}><small>{metric.label}</small><strong>{metric.value}</strong></div>
-                        ))}
-                      </div>
                       <div className="ce-signal-question">
                         <span>YOUR MOVE</span>
-                        <h5>{currentSignalCase.question}</h5>
+                        <h5>{currentSignalCase.prompt}</h5>
                       </div>
-                      <div className="ce-signal-options">
+                      <div className={"ce-signal-options" + (currentSignalCase.options.length === 2 ? " is-two" : "")}>
                         {currentSignalCase.options.map((option, index) => {
-                          const isCorrectOption = index === currentSignalCase.correctIndex;
                           const isSelected = signalChoice === index;
-                          const stateClass = signalChoice === null ? "" : isCorrectOption ? " is-correct" : isSelected ? " is-incorrect" : "";
                           return (
                             <button
                               key={option.title}
                               type="button"
-                              className={"ce-signal-option" + stateClass + (isSelected ? " is-selected" : "")}
+                              className={"ce-signal-option" + (isSelected ? " is-selected" : "")}
                               onClick={() => answerSignal(index)}
                               disabled={signalChoice !== null}
                               aria-pressed={isSelected}
                             >
                               <span className="ce-signal-option-letter">{String.fromCharCode(65 + index)}</span>
-                              <span className="ce-signal-option-copy"><strong>{option.title}</strong><small>{option.detail}</small></span>
-                              {signalChoice !== null && isCorrectOption && <span className="ce-signal-option-mark" aria-label="Correct answer">✓</span>}
+                              <span className="ce-signal-option-copy"><strong>{option.title}</strong></span>
+                              {isSelected && <span className="ce-signal-option-mark" aria-label="Selected answer">✓</span>}
                             </button>
                           );
                         })}
                       </div>
                       {signalChoice !== null && (
-                        <div className={"ce-signal-feedback" + (signalAnsweredCorrectly ? " is-correct" : " is-incorrect")} role="status">
-                          <strong>{signalAnsweredCorrectly ? "You found the signal." : "Not quite. Here is the signal."}</strong>
-                          <p>{currentSignalCase.explanation}</p>
+                        <div className="ce-signal-feedback is-reveal" role="status">
+                          <strong>{currentSignalCase.options[signalChoice].responseTitle}</strong>
+                          <p>{currentSignalCase.options[signalChoice].response}</p>
                         </div>
                       )}
                       <div className="ce-signal-card-footer">
-                        <span>{signalChoice === null ? "Choose the next question you would ask." : "Case " + (signalCaseIndex + 1) + " complete."}</span>
+                        <span>{signalChoice === null ? "Choose the answer that feels closest." : "That's your answer. Take it with you."}</span>
                         {signalChoice !== null && (
                           <button type="button" className="ce-signal-next" onClick={advanceSignal}>
-                            {signalCaseIndex === SIGNAL_CASES.length - 1 ? "See my score" : "Next case"} <span aria-hidden="true">→</span>
+                            {signalCaseIndex === SIGNAL_CASES.length - 1 ? "Finish" : "Next question"} <span aria-hidden="true">→</span>
                           </button>
                         )}
                       </div>
@@ -916,7 +924,7 @@ export function CuriosityEngine() {
                 </div>
               </div>
             )}
-
+            
             {activeTab === "desk" && (
               <div className="ce-desk-layout">
                 <div className="ce-desk-heading">
