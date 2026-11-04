@@ -10,6 +10,9 @@ const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
   ? "/MY-WEBSITE/aman-story-photo.png"
   : "/aman-story-photo.png";
 const storyAvatarSrc = profileImageSrc;
+const candidStoryImageSrc = process.env.GITHUB_ACTIONS === "true"
+  ? "/MY-WEBSITE/aman-story-candid.webp"
+  : "/aman-story-candid.webp";
 
 const chapters = [
   {
@@ -215,23 +218,16 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   const [deepStep, setDeepStep] = useState(0);
   if (visual === "portrait") {
     return (
-      <div className="aj-story-visual-card aj-story-visual-portrait">
-        <div className="aj-story-visual-kicker">A PERSON, NOT A PERFECT PLAN · TAP THE PORTRAIT</div>
-        <button
-          type="button"
-          className={"aj-story-portrait-large" + (portraitExpanded ? " is-expanded" : "")}
-          onClick={() => setPortraitExpanded((current) => !current)}
-          aria-expanded={portraitExpanded}
-          aria-label={portraitExpanded ? "Show portrait" : "Reveal more about Aman"}
-        >
-          <Image src={profileImageSrc} alt="Aman's portrait" fill sizes="(max-width: 850px) 80vw, 300px" />
-          <span>{portraitExpanded ? "STUDENT · CREATOR · BUILDER" : "TAP TO EXPLORE ↗"}</span>
-        </button>
-        <div className="aj-story-portrait-stamp">{portraitExpanded ? "IN PROGRESS" : <>STILL<br />LEARNING</>}</div>
-        <div className="aj-story-portrait-caption" aria-live="polite">
-          <b>{portraitExpanded ? "Three sides. One work in progress." : "Finance brain. Creator curiosity."}</b>
-          <p>{portraitExpanded ? "Studying finance, sharing what I learn, and building things to understand them better." : "A finance student figuring things out by learning, making and trying."}</p>
-        </div>
+      <div className="aj-story-visual-card aj-story-visual-portrait aj-story-candid-card">
+        <Image
+          src={candidStoryImageSrc}
+          alt="Aman relaxing with a playful smile against a warm sunset sky"
+          width={512}
+          height={512}
+          sizes="(max-width: 850px) 88vw, 520px"
+          style={{ display: "block", width: "100%", height: "auto" }}
+          priority
+        />
       </div>
     );
   }
