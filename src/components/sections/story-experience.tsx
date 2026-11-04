@@ -129,6 +129,62 @@ const chapters = [
     visual: "work"
   }
 ] as const;
+type SpokenPartKind = "keep" | "filler" | "false-start";
+type SpokenPart = { text: string; kind: SpokenPartKind };
+
+const spokenDrafts: Record<1 | 2, SpokenPart[]> = {
+  1: [
+    { text: "Okay,", kind: "filler" },
+    { text: "so", kind: "filler" },
+    { text: "I can value a company,", kind: "keep" },
+    { text: "right?", kind: "filler" },
+    { text: "No,", kind: "false-start" },
+    { text: "wait—I mean,", kind: "false-start" },
+    { text: "I can spend hours understanding one.", kind: "keep" },
+    { text: "But", kind: "false-start" },
+    { text: "a microphone?", kind: "keep" },
+    { text: "Yaar,", kind: "keep" },
+    { text: "mic ke saamne", kind: "keep" },
+    { text: "I still get nervous...", kind: "keep" },
+    { text: "my hands can shake.", kind: "keep" },
+  ],
+  2: [
+    { text: "So,", kind: "filler" },
+    { text: "um,", kind: "filler" },
+    { text: "my first post was about my CFA Level I result.", kind: "keep" },
+    { text: "Like,", kind: "filler" },
+    { text: "I just—", kind: "false-start" },
+    { text: "no, wait,", kind: "false-start" },
+    { text: "I shared it because I was proud.", kind: "keep" },
+    { text: "Koi big content plan nahi tha;", kind: "keep" },
+    { text: "I just put it out there.", kind: "keep" },
+  ],
+};
+
+function SpokenTranscript({ chapter }: { chapter: 1 | 2 }) {
+  const parts = spokenDrafts[chapter];
+  const transcript = parts.map((part) => part.text).join(" ");
+
+  return (
+    <div className="aj-spoken-rewrite" aria-label="Raw spoken transcript">
+      <div className="aj-spoken-rewrite-meta">
+        <span className="aj-spoken-live"><i aria-hidden="true" /> RAW TAKE</span>
+        <span className="aj-spoken-scroll-note">Scroll to clean it up</span>
+      </div>
+      <p className="aj-spoken-transcript" aria-label={transcript}>
+        {parts.map((part, index) => (
+          <span
+            className={"aj-spoken-fragment" + (part.kind === "keep" ? "" : part.kind === "filler" ? " is-filler" : " is-false-start")}
+            key={chapter + "-" + index}
+          >
+            {part.text}{index < parts.length - 1 ? " " : ""}
+          </span>
+        ))}
+      </p>
+    </div>
+  );
+}
+
 
 function StoryWindow() {
   const sceneRef = useRef<HTMLDivElement | null>(null);
@@ -505,24 +561,83 @@ export function StoryPreview() {
 
 export function StoryExperience() {
   const [activeChapter, setActiveChapter] = useState(0);
+  const progressTrackRef = useRef<HTMLElement | null>(null);
+  const micRef = useRef<HTMLDivElement | null>(null);
+  const activeChapterRef = useRef(0);
 
   useEffect(() => {
     const scenes = Array.from(document.querySelectorAll<HTMLElement>(".aj-story-scene"));
     if (scenes.length === 0) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-      scenes.forEach((scene) => { scene.dataset.revealed = "true"; });
-      const updateActiveChapter = () => {
-        const activationLine = window.innerHeight * 0.42;
-        let current = 0;
-        scenes.forEach((scene, index) => {
-          if (scene.getBoundingClientRect().top <= activationLine) current = index;
-        });
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.documentElement.classList.add("aj-story-motion-ready");
+    scenes.forEach((scene, index) => {
+      scene.dataset.revealed = reducedMotion || index === 0 ? "true" : "false";
+    });
+
+    let frame = 0;
+    const clamp = (value: number) => Math.max(0, Math.min(1, value));
+    const getProgress = (scene: HTMLElement, viewportHeight: number) => {
+      const rect = scene.getBoundingClientRect();
+      return reducedMotion
+        ? 1
+        : clamp((viewportHeight * 0.84 - rect.top) / (rect.height + viewportHeight * 0.84));
+    };
+
+    const update = () => {
+      frame = 0;
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      let current = 0;
+
+      scenes.forEach((scene, index) => {
+        const rect = scene.getBoundingClientRect();
+        if (rect.top <= viewportHeight * 0.42) current = index;
+        if (reducedMotion || rect.top < viewportHeight * 0.86) scene.dataset.revealed = "true";
+        if (index < 2) {
+          scene.style.setProperty("--speech-progress", getProgress(scene, viewportHeight).toFixed(3));
+        }
+      });
+
+      const currentProgress = getProgress(scenes[current], viewportHeight);
+      const overallProgress = clamp((current + currentProgress) / scenes.length);
+      progressTrackRef.current?.style.setProperty("--story-progress", overallProgress.toFixed(4));
+
+      const micTension = current === 0
+        ? 0.2 + (1 - currentProgress) * 0.8
+        : current === 1
+          ? 0.16 + (1 - currentProgress) * 0.42
+          : 0.14;
+      micRef.current?.style.setProperty("--mic-tension", micTension.toFixed(3));
+      if (micRef.current) micRef.current.dataset.chapter = String(current + 1);
+
+      if (current !== activeChapterRef.current) {
+        activeChapterRef.current = current;
         setActiveChapter(current);
-      };
-      window.addEventListener("scroll", updateActiveChapter, { passive: true });
-      window.addEventListener("resize", updateActiveChapter);
-      return () => {
+      }
+    };
+
+    const scheduleUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (frame) window.cancelAnimationFrame(frame);
+      document.documentElement.classList.remove("aj-story-motion-ready");
+      scenes.forEach((scene) => {
+        delete scene.dataset.revealed;
+        scene.style.removeProperty("--speech-progress");
+      });
+    };
+  }, []);
+
+  return () => {
         window.removeEventListener("scroll", updateActiveChapter);
         window.removeEventListener("resize", updateActiveChapter);
       };
@@ -558,14 +673,26 @@ export function StoryExperience() {
           <p className="aj-eyebrow aj-eyebrow-accent">A WINDOW INTO HOW I THINK</p>
           <h1>Not a straight line.<br /><em>A trail of experiments.</em></h1>
           <p>This is the story behind the work: the things I tried, the things I got wrong, what I learned, and what I&apos;m building towards. Scroll through it like a journey, not a résumé.</p>
-          <a className="aj-story-scroll-cue" href="#story-journey">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
+          <div className="aj-story-intro-actions">
+            <a className="aj-story-scroll-cue" href="#story-journey">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
+            <a className="aj-story-skip-option" href="#story-heading-03">SKIP TO THE REST ↗</a>
+          </div>
         </div>
       </header>
 
       <div className="aj-story-progress" aria-label="Story progress">
         <span>THE JOURNEY</span>
-        <div className="aj-story-progress-track"><i style={{ "--story-progress": String((activeChapter + 1) / chapters.length) } as CSSProperties} /></div>
+        <div className="aj-story-progress-track"><i ref={progressTrackRef} /></div>
         <b aria-live="polite">{String(activeChapter + 1).padStart(2, "0")} <small>/ {String(chapters.length).padStart(2, "0")}</small></b>
+      </div>
+
+      <div ref={micRef} className="aj-story-mic" data-chapter="1" role="img" aria-label="A live waveform that steadies as the story is cleaned up">
+        <span className="aj-story-mic-dot" />
+        <span className="aj-story-mic-label">MIC</span>
+        <span className="aj-story-mic-wave" aria-hidden="true">
+          <i /><i /><i /><i /><i /><i /><i /><i /><i />
+        </span>
+        <span className="aj-story-mic-status">LISTENING</span>
       </div>
 
       <section className="aj-story-journey-scenes" id="story-journey" aria-label="Aman's story, chapter by chapter">
@@ -573,6 +700,7 @@ export function StoryExperience() {
           {chapters.map((chapter, index) => (
             <section
               className="aj-story-scene"
+              id={"story-chapter-" + chapter.number}
               key={chapter.number}
               data-chapter-index={index}
               data-revealed={index === 0 ? "true" : "false"}
@@ -582,7 +710,17 @@ export function StoryExperience() {
                 <div className="aj-story-scene-copy">
                   <div className="aj-story-scene-meta"><span>{chapter.number} / {String(chapters.length).padStart(2, "0")}</span><i /> <span>{chapter.period}</span></div>
                   <p className="aj-story-scene-label">{chapter.label}</p>
-                  <h2 id={"story-heading-" + chapter.number}>{chapter.title}</h2>
+                  {index < 2 && <SpokenTranscript chapter={index === 0 ? 1 : 2} />}
+                  <h2
+                    id={"story-heading-" + chapter.number}
+                    className={index < 2 ? "aj-story-clean-headline" : undefined}
+                  >
+                    {index < 2
+                      ? chapter.title.split(" ").map((word, wordIndex) => (
+                          <span className="aj-story-clean-word" key={wordIndex}>{word}{wordIndex < chapter.title.split(" ").length - 1 ? " " : ""}</span>
+                        ))
+                      : chapter.title}
+                  </h2>
                   <p className="aj-story-scene-intro">{chapter.intro}</p>
                   <div className="aj-story-scene-paragraphs">
                     {chapter.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
