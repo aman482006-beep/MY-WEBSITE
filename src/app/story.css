@@ -2924,3 +2924,26 @@ body:has(.wispr-challenge) .site-main {
     transition: none !important;
   }
 }
+
+
+/* Gallery now uses five independent optimized WebP files for predictable image loading. */
+.aj-story-memory-photo {
+  position: relative;
+  overflow: hidden;
+  background-image: none;
+}
+.aj-story-memory-photo img {
+  object-fit: cover;
+  transition: transform 350ms cubic-bezier(.2,.75,.2,1);
+}
+.aj-story-memory-card:hover .aj-story-memory-photo img {
+  transform: scale(1.045);
+}
+.aj-story-memory-large {
+  position: relative;
+  overflow: hidden;
+  background-image: none;
+}
+.aj-story-memory-large img {
+  object-fit: contain;
+}
