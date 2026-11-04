@@ -439,15 +439,42 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
             </button>
           ))}
         </div>
-        <div className="aj-story-archive-detail" aria-live="polite">
-          <b>{archiveItems[archiveSelected].name}</b>
-          <p>{archiveItems[archiveSelected].detail}</p>
-        </div>
-        {archiveItems[archiveSelected].video && (
-          <div className="aj-story-archive-video-grid" aria-live="polite">
-            <StoryShortEmbed video={archiveItems[archiveSelected].video} />
+        <div
+          className={"aj-story-archive-detail" + (archiveItems[archiveSelected].video ? " has-video" : "")}
+          aria-live="polite"
+        >
+          <div className="aj-story-archive-detail-copy">
+            <b>{archiveItems[archiveSelected].name}</b>
+            <p>{archiveItems[archiveSelected].detail}</p>
+            {archiveItems[archiveSelected].video && (
+              <span className="aj-story-archive-video-label">
+                {archiveItems[archiveSelected].video.tag} · PLAY THE CLIP
+              </span>
+            )}
           </div>
-        )}
+          {archiveItems[archiveSelected].video && (
+            <div className="aj-story-archive-player-wrap">
+              <div className="aj-story-archive-player">
+                <iframe
+                  key={archiveItems[archiveSelected].video.id}
+                  src={"https://www.youtube-nocookie.com/embed/" + archiveItems[archiveSelected].video.id + "?rel=0"}
+                  title={archiveItems[archiveSelected].video.title}
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              </div>
+              <a
+                href={"https://youtube.com/shorts/" + archiveItems[archiveSelected].video.id}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open on YouTube ↗
+              </a>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
