@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: github-pages-nextjs-export
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
