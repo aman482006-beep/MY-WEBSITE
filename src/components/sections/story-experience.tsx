@@ -226,7 +226,6 @@ function StoryShortEmbed({ video }: { video: (typeof storyShorts)[number] }) {
         <small>{video.tag}</small>
         <b>{video.title}</b>
         <span>{video.note}</span>
-        <a href={url} target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a>
       </div>
     </article>
   );
@@ -363,7 +362,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
       { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one.", video: storyShorts[3] },
       { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles.", video: storyShorts[4] },
       { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", video: storyShorts[2] },
-      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", video: null }
+      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", video: storyShorts[5] }
     ] as const;
     const activeArchiveItem = archiveItems[archiveSelected];
     const activeArchiveVideo = activeArchiveItem.video;
@@ -411,13 +410,6 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
                   allowFullScreen
                 />
               </div>
-              <a
-                href={"https://youtube.com/shorts/" + activeArchiveVideo.id}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Open on YouTube ↗
-              </a>
             </div>
           )}
         </div>
@@ -713,6 +705,12 @@ const storyShorts = [
     title: "A reminder to keep going",
     note: "A motivational video for the days when momentum feels low.",
     tag: "MOTIVATION",
+  },
+  {
+    id: "U5kfmKOUBHY",
+    title: "Finance for students",
+    note: "Useful finance explained for students — the direction I kept returning to.",
+    tag: "FINANCE FOR STUDENTS",
   },
 ] as const;
 function StoryMemoryGallery() {
