@@ -637,35 +637,6 @@ export function StoryExperience() {
     };
   }, []);
 
-  return () => {
-        window.removeEventListener("scroll", updateActiveChapter);
-        window.removeEventListener("resize", updateActiveChapter);
-      };
-    }
-
-    document.documentElement.classList.add("aj-story-motion-ready");
-    scenes.forEach((scene) => { scene.dataset.revealed = "false"; });
-
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const scene = entry.target as HTMLElement;
-        scene.dataset.revealed = "true";
-        const nextChapter = Number(scene.dataset.chapterIndex ?? 0);
-        setActiveChapter(nextChapter);
-      }
-    }, { threshold: 0.25, rootMargin: "-12% 0px -28% 0px" });
-
-    scenes.forEach((scene) => observer.observe(scene));
-    if (scenes[0]) scenes[0].dataset.revealed = "true";
-
-    return () => {
-      observer.disconnect();
-      document.documentElement.classList.remove("aj-story-motion-ready");
-      scenes.forEach((scene) => { delete scene.dataset.revealed; });
-    };
-  }, []);
-
   return (
     <main id="main" className="aj-story-page aj-story-journey">
       <header className="aj-story-journey-intro">
