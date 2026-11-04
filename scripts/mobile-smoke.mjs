@@ -180,23 +180,33 @@ async function runViewport(viewport) {
       "Journey map did not change its selected stop");
     await page.locator("#ce-tab-signal").tap();
     const signalOptions = page.locator(".ce-signal-option");
+    assert(await signalOptions.count() === 2, "The first Signal Room question should have two answers");
     await signalOptions.nth(1).tap();
-    assert((await page.locator(".ce-signal-feedback > strong").textContent()) === "You found the signal.",
-      "Signal Room did not explain the fintech unit-economics answer");
+    assert(
+      (await page.locator(".ce-signal-feedback > strong").textContent()) === "Have some faith, bro.",
+      "The love question did not reveal the selected answer message",
+    );
     await page.locator(".ce-signal-card-footer button").tap();
+    await page.getByRole("heading", { name: "What are the chances you'll actually succeed?" }).waitFor();
     await signalOptions.nth(0).tap();
-    assert((await page.locator(".ce-signal-feedback > strong").textContent()) === "You found the signal.",
-      "Signal Room did not explain the cash-flow answer");
+    assert(
+      (await page.locator(".ce-signal-feedback > strong").textContent()) === "That's the confidence we like.",
+      "The success question did not reveal the selected answer message",
+    );
     await page.locator(".ce-signal-card-footer button").tap();
+    await page.getByRole("heading", { name: "What's stopping you from becoming the person you want to be?" }).waitFor();
     await signalOptions.nth(1).tap();
-    assert((await page.locator(".ce-signal-feedback > strong").textContent()) === "You found the signal.",
-      "Signal Room did not explain the creator-conversion answer");
+    assert(
+      (await page.locator(".ce-signal-feedback > strong").textContent()) === "You've already imagined 47 outcomes.",
+      "The final question did not reveal the selected answer message",
+    );
     await page.locator(".ce-signal-card-footer button").tap();
-    assert((await page.locator(".ce-signal-final-score > strong").textContent())?.includes("3"),
-      "Signal Room did not show the completed scorecard");
+    assert(
+      (await page.locator(".ce-signal-finish h4").textContent()) === "That's the signal, bro.",
+      "The Signal Room completion message is missing",
+    );
     await page.locator(".ce-signal-finish button").tap();
-    assert((await page.locator(".ce-signal-brief h4").textContent())?.includes("app is growing"),
-      "Signal Room restart did not reset to the first case");
+    await page.getByRole("heading", { name: "If you love her, does she love you back?" }).waitFor();
     await page.locator("#ce-tab-desk").tap();
     await page.getByRole("button", { name: "Shuffle the desk" }).tap();
     await page.getByRole("button", { name: "Open note details: Stay curious." }).tap();
