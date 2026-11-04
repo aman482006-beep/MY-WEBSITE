@@ -2947,3 +2947,178 @@ body:has(.wispr-challenge) .site-main {
 .aj-story-memory-large img {
   object-fit: contain;
 }
+
+
+/* My Story fixes: readable headline spacing, inline video evidence and live creator milestones. */
+.aj-story-scene-copy h2 {
+  letter-spacing: -.028em;
+  word-spacing: .025em;
+}
+.aj-story-clean-word:not(:last-child) {
+  margin-right: .21em;
+}
+.aj-story-video-visual {
+  width: min(100%, 420px);
+  justify-self: center;
+}
+.aj-story-video-feature {
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid rgba(208, 190, 168, .8);
+  border-radius: 14px;
+  background: rgba(255, 253, 249, .9);
+  box-shadow: 0 8px 24px rgba(49, 39, 29, .055);
+}
+.aj-story-video-frame {
+  position: relative;
+  width: min(100%, 246px);
+  aspect-ratio: 9 / 16;
+  margin-inline: auto;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #1B1D1B;
+}
+.aj-story-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.aj-story-video-copy {
+  display: grid;
+  gap: 4px;
+  padding: 9px 4px 3px;
+}
+.aj-story-video-copy small {
+  color: #A16B50;
+  font-size: 7px;
+  font-weight: 950;
+  letter-spacing: .13em;
+}
+.aj-story-video-copy b {
+  color: var(--aj-ink);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.12;
+}
+.aj-story-video-copy p {
+  margin: 0;
+  color: var(--aj-muted);
+  font-size: 9px;
+  line-height: 1.45;
+}
+.aj-story-video-copy a {
+  width: fit-content;
+  margin-top: 3px;
+  color: #965638;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.aj-story-video-copy a:hover { text-decoration: underline; }
+.aj-story-archive-visual {
+  align-items: stretch;
+  gap: 12px;
+}
+.aj-story-archive-video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  align-items: start;
+}
+.aj-story-archive-video-grid .aj-story-video-feature {
+  padding: 6px;
+  border-radius: 11px;
+}
+.aj-story-archive-video-grid .aj-story-video-frame {
+  width: 100%;
+  border-radius: 7px;
+}
+.aj-story-archive-video-grid .aj-story-video-copy {
+  padding: 7px 2px 2px;
+}
+.aj-story-archive-video-grid .aj-story-video-copy b {
+  font-size: 13px;
+}
+.aj-story-archive-video-grid .aj-story-video-copy p {
+  font-size: 8px;
+}
+.aj-story-creator-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 12px;
+  padding: 12px;
+  border: 1px solid rgba(197, 172, 144, .72);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,.94), rgba(246,237,224,.84));
+}
+.aj-story-creator-metric {
+  display: grid;
+  gap: 3px;
+}
+.aj-story-creator-metric strong {
+  color: #33443B;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 600;
+  letter-spacing: -.055em;
+  line-height: .95;
+  font-variant-numeric: tabular-nums;
+}
+.aj-story-creator-metric span {
+  color: #807469;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.aj-story-creator-milestones {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 8px;
+  color: #A17A61;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+.aj-story-creator-milestones i {
+  width: 22px;
+  height: 1px;
+  background: #D9BDA3;
+}
+.aj-story-creator-milestones b { color: #55745C; }
+.aj-story-creator-metrics > button {
+  grid-column: 1 / -1;
+  width: fit-content;
+  min-height: 28px;
+  padding: 5px 10px;
+  border: 1px solid rgba(185,108,78,.3);
+  border-radius: 999px;
+  color: #8D523B;
+  background: rgba(255,255,255,.7);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  cursor: pointer;
+}
+.aj-story-creator-metrics > button:hover {
+  border-color: rgba(185,108,78,.65);
+  background: #FFF;
+}
+@media (max-width: 700px) {
+  .aj-story-archive-video-grid { gap: 7px; }
+  .aj-story-archive-video-grid .aj-story-video-feature { padding: 5px; }
+  .aj-story-archive-video-grid .aj-story-video-copy b { font-size: 12px; }
+  .aj-story-video-frame { width: min(100%, 280px); }
+  .aj-story-creator-metrics { padding: 11px; }
+  .aj-story-creator-metric strong { font-size: 31px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-story-creator-metrics > button { transition: none !important; }
+}
