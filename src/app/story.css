@@ -3555,3 +3555,299 @@ body:has(.wispr-challenge) .site-main {
 @media (prefers-reduced-motion: reduce) {
   .aj-story-video-feature { transition: none !important; }
 }
+
+
+/* Story polish: cleaner Manrope typography, less visible copy, and journey-led video moments. */
+.aj-story-page {
+  font-family: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+}
+.aj-story-journey-intro h1,
+.aj-story-outro h2,
+.aj-story-scene-copy h2 {
+  font-family: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+  font-weight: 750;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+.aj-story-journey-intro h1 {
+  font-size: clamp(36px, 5.2vw, 62px);
+  line-height: 1.04;
+}
+.aj-story-journey-intro h1 em,
+.aj-story-outro h2 em {
+  font-family: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 750;
+  color: #A76549;
+}
+.aj-story-scene-copy h2 {
+  max-width: 660px;
+  font-size: clamp(31px, 4vw, 49px);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+  word-spacing: 0;
+  font-weight: 750;
+}
+.aj-story-scene-copy h2 em {
+  font-family: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 750;
+  color: #A76549;
+}
+.aj-story-scene-label,
+.aj-story-scene-meta,
+.aj-story-scene-intro,
+.aj-story-read-more,
+.aj-story-scene-proof,
+.aj-story-lesson,
+.aj-story-video-copy {
+  font-family: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+}
+.aj-story-scene-intro {
+  max-width: 560px;
+  margin: 13px 0 0;
+  color: #4F514D;
+  font-size: clamp(14px, 1.15vw, 15.5px);
+  font-weight: 550;
+  line-height: 1.58;
+}
+.aj-story-first-post-quote {
+  max-width: 560px;
+  margin: 14px 0 10px;
+  padding: 10px 14px;
+  font-family: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(14px, 1.2vw, 16px);
+  font-style: italic;
+  line-height: 1.48;
+}
+
+/* Keep the first read to headline + one short line. Expand supporting detail only on demand. */
+.aj-story-read-more {
+  max-width: 600px;
+  margin-top: 16px;
+}
+.aj-story-read-more > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  padding: 6px 0;
+  color: #925C43;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.aj-story-read-more > summary::-webkit-details-marker { display: none; }
+.aj-story-read-more > summary i {
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 21px;
+  border: 1px solid rgba(169,111,80,.44);
+  border-radius: 50%;
+  color: #925C43;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1;
+  transition: transform 180ms ease, background 180ms ease;
+}
+.aj-story-read-more[open] > summary i {
+  background: rgba(169,111,80,.09);
+  transform: rotate(45deg);
+}
+.aj-story-read-more-content {
+  padding: 5px 0 2px;
+  animation: aj-story-read-more-in 230ms ease both;
+}
+@keyframes aj-story-read-more-in {
+  from { opacity: 0; translate: 0 -5px; }
+  to { opacity: 1; translate: 0 0; }
+}
+.aj-story-scene-paragraphs {
+  gap: 9px;
+}
+.aj-story-scene-paragraphs p {
+  max-width: 570px;
+  margin: 0;
+  color: #696A65;
+  font-size: 14px;
+  line-height: 1.68;
+}
+.aj-story-scene-caption {
+  margin-top: 10px;
+  font-family: var(--font-caveat), cursive;
+  font-size: 19px;
+}
+.aj-story-scene-proof {
+  gap: 6px;
+  margin-top: 12px;
+}
+.aj-story-scene-proof span {
+  padding: 6px 9px;
+  font-size: 9px;
+}
+.aj-story-lesson {
+  margin-top: 13px;
+  padding: 11px 13px;
+}
+.aj-story-lesson p {
+  font-family: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+/* Use the exact supplied profile image in a reliable, clickable square avatar box. */
+.aj-story-instagram-avatar-ring {
+  display: block;
+}
+.aj-story-instagram-avatar-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.aj-story-instagram-avatar-ring img {
+  position: static !important;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.aj-story-instagram-avatar-link:focus-visible {
+  outline: 2px solid #7CA9FF;
+  outline-offset: 4px;
+}
+
+/* Lose the generic outline card. Let each clip sit like a still from the creator's timeline. */
+.aj-story-video-feature {
+  display: grid;
+  grid-template-columns: clamp(112px, 34%, 148px) minmax(0, 1fr);
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px dashed rgba(172,145,119,.45);
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  box-shadow: none;
+  text-decoration: none;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+.aj-story-video-feature:last-child {
+  border-bottom: 0;
+}
+.aj-story-video-feature:hover {
+  border-color: rgba(172,145,119,.45);
+  background: transparent;
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+.aj-story-video-thumb {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 11px;
+  background: #E9E0D5;
+  box-shadow: 0 8px 18px rgba(61,48,35,.12);
+  transform: rotate(-1deg);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.aj-story-video-feature:nth-child(even) .aj-story-video-thumb {
+  transform: rotate(1deg);
+}
+.aj-story-video-feature:hover .aj-story-video-thumb {
+  box-shadow: 0 10px 20px rgba(61,48,35,.16);
+  transform: rotate(0deg) scale(1.015);
+}
+.aj-story-video-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.aj-story-video-thumb > i {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255,255,255,.72);
+  background: rgba(25,28,25,.58);
+}
+.aj-story-video-copy {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+  padding: 0;
+}
+.aj-story-video-copy small {
+  color: #9B7158;
+  font-size: 8px;
+  letter-spacing: .14em;
+}
+.aj-story-video-copy b {
+  color: #333B34;
+  font-family: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(14px, 1.35vw, 17px);
+  font-weight: 750;
+  line-height: 1.22;
+  letter-spacing: -.025em;
+}
+.aj-story-video-copy > span {
+  color: #77756F;
+  font-size: 10px;
+  line-height: 1.48;
+}
+.aj-story-video-copy strong {
+  width: fit-content;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(153,94,66,.4);
+  color: #925C43;
+  font-size: 8px;
+  letter-spacing: .1em;
+}
+.aj-story-archive-video-grid {
+  max-width: 420px;
+  gap: 0;
+  margin-top: 6px;
+}
+
+/* Slightly airier on mobile without making the story longer. */
+@media (max-width: 700px) {
+  .aj-story-journey-intro h1 { font-size: clamp(34px, 8vw, 45px); }
+  .aj-story-scene-copy h2 {
+    font-size: clamp(29px, 7.4vw, 39px);
+    line-height: 1.1;
+    letter-spacing: -.04em;
+  }
+  .aj-story-scene-intro { font-size: 14px; line-height: 1.55; }
+  .aj-story-scene-paragraphs p { font-size: 13.5px; }
+  .aj-story-read-more { margin-top: 12px; }
+  .aj-story-read-more > summary { min-height: 32px; font-size: 10px; }
+  .aj-story-video-feature {
+    grid-template-columns: minmax(100px, 34%) minmax(0,1fr);
+    gap: 12px;
+    padding: 10px 0;
+  }
+  .aj-story-video-copy b { font-size: 14px; }
+  .aj-story-video-copy > span { font-size: 9px; }
+}
+@media (max-width: 390px) {
+  .aj-story-video-feature { grid-template-columns: 104px minmax(0,1fr); gap: 10px; }
+  .aj-story-video-thumb { border-radius: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-story-read-more-content { animation: none; }
+  .aj-story-read-more > summary i,
+  .aj-story-video-feature,
+  .aj-story-video-thumb { transition: none !important; }
+}
