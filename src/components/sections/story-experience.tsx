@@ -973,7 +973,7 @@ export function StoryExperience() {
                   >
                     {index === 0
                       ? chapter.title.split(" ").map((word, wordIndex) => (
-                          <span className="aj-story-clean-word" key={wordIndex}>{word}</span>
+                          <span className="aj-story-clean-word" key={wordIndex}>{word}</span>{wordIndex < chapter.title.split(" ").length - 1 ? " " : ""}
                         ))
                       : chapter.title}
                   </h2>
