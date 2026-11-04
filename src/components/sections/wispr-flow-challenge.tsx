@@ -353,12 +353,7 @@ export function WisprFlowChallenge() {
           <SpokenCleanup chapter={1} />
           <WordHeadline chapter={1} />
           <p className="wispr-one-line">Both can be true.</p>
-          <details className="wispr-read-more">
-            <summary>Read more</summary>
-            <p>I can spend hours understanding a company, but speaking in front of people can still make my hands shake. Both things are true.</p>
-            <p>I am not going to pretend the fear disappeared. I am learning not to let it make every decision for me.</p>
-          </details>
-        </div>
+          </div>
         <div className="wispr-visual">
           <div className="wispr-visual-card">
             <div className="wispr-visual-label">
@@ -377,7 +372,13 @@ export function WisprFlowChallenge() {
             </div>
           </div>
         </div>
-      </section>
+      
+        <details className="wispr-read-more">
+            <summary>Read more</summary>
+            <p>I can spend hours understanding a company, but speaking in front of people can still make my hands shake. Both things are true.</p>
+            <p>I am not going to pretend the fear disappeared. I am learning not to let it make every decision for me.</p>
+          </details>
+</section>
 
       <section className="wispr-screen" data-wispr-screen="2" data-screen-index="1" aria-labelledby="wispr-heading-2">
         <div className="wispr-copy">
@@ -389,60 +390,58 @@ export function WisprFlowChallenge() {
             ))}
           </h2>
           <p className="wispr-one-line">No content strategy. Just a first post.</p>
-          <details className="wispr-read-more">
+          </div>
+        <div className="wispr-visual">
+          <FirstPostVisual />
+        </div>
+      
+        <details className="wispr-read-more">
             <summary>Read more</summary>
             <p>There was no carefully planned niche or content calendar behind that first post. I had something I was proud of: clearing CFA Level I, and I decided to put it out there.</p>
             <p>I did not need a perfect creator identity before I could begin. I needed to publish, learn and try again.</p>
           </details>
-        </div>
-        <div className="wispr-visual">
-          <FirstPostVisual />
-        </div>
-      </section>
+</section>
 
       <section className="wispr-screen" data-wispr-screen="3" data-screen-index="2" aria-labelledby="wispr-heading-3">
         <div className="wispr-copy">
           <p className="wispr-kicker"><span>03</span> The experiment log</p>
           <h2 id="wispr-heading-3" className="wispr-headline">Five months in. Still finding what sticks.</h2>
           <p className="wispr-one-line">No big results yet. Still going.</p>
-          <details className="wispr-read-more">
+          </div>
+        <div className="wispr-visual">
+          <ExperimentVisual />
+        </div>
+      
+        <details className="wispr-read-more">
             <summary>Read more</summary>
             <p>I have been posting for five months. The account is at 640 Instagram followers and 150 YouTube subscribers. Those are the numbers today; they are not a breakout result.</p>
             <p>I tried finance news, running, motivation and daily-life videos. I kept coming back to explaining finance for students. The experiments were how I found the direction, not a neat strategy I had from day one.</p>
           </details>
-        </div>
-        <div className="wispr-visual">
-          <ExperimentVisual />
-        </div>
-      </section>
+</section>
 
       <section className="wispr-screen" data-wispr-screen="4" data-screen-index="3" aria-labelledby="wispr-heading-4">
         <div className="wispr-copy">
           <p className="wispr-kicker"><span>04</span> Stage fear</p>
           <h2 id="wispr-heading-4" className="wispr-headline">Still nervous. Still showing up.</h2>
           <p className="wispr-one-line">The nerves haven't disappeared. I'm still working on it.</p>
-          <details className="wispr-read-more">
+          </div>
+        <div className="wispr-visual">
+          <StageVisual />
+        </div>
+      
+        <details className="wispr-read-more">
             <summary>Read more</summary>
             <p>Recording a video gives me another take. A stage does not. I can know what I am talking about and still get nervous when all eyes are on me.</p>
             <p>I am not going to invent a moment where one event cured it. I am still working on it, and nervousness is not an automatic reason to say no.</p>
           </details>
-        </div>
-        <div className="wispr-visual">
-          <StageVisual />
-        </div>
-      </section>
+</section>
 
       <section className="wispr-screen" data-wispr-screen="5" data-screen-index="4" aria-labelledby="wispr-heading-5">
         <div className="wispr-copy">
           <p className="wispr-kicker"><span>05</span> What's next</p>
           <h2 id="wispr-heading-5" className="wispr-headline">Still learning. Still building. Still going.</h2>
           <p className="wispr-one-line">I want the next thing to be useful.</p>
-          <details className="wispr-read-more">
-            <summary>Read more</summary>
-            <p>I have more to learn about making content people actually want to spend time with. Five months in, I do not have a big-result story to tell yet.</p>
-            <p>What I do have is a willingness to keep testing, pay attention to what works, and make the next version better.</p>
-          </details>
-        </div>
+          </div>
         <div className="wispr-visual">
           <div className="wispr-visual-card wispr-next-card">
             <div>
@@ -463,7 +462,13 @@ export function WisprFlowChallenge() {
             </div>
           </div>
         </div>
-      </section>
+      
+        <details className="wispr-read-more">
+            <summary>Read more</summary>
+            <p>I have more to learn about making content people actually want to spend time with. Five months in, I do not have a big-result story to tell yet.</p>
+            <p>What I do have is a willingness to keep testing, pay attention to what works, and make the next version better.</p>
+          </details>
+</section>
     </main>
   );
 }
