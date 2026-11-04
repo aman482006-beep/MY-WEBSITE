@@ -206,15 +206,32 @@ function StoryWindow() {
 function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }) {
   const [postTapped, setPostTapped] = useState(false);
   const [flippedBuildCards, setFlippedBuildCards] = useState<string[]>([]);
+  const [consistencyStep, setConsistencyStep] = useState(0);
+  const [portraitExpanded, setPortraitExpanded] = useState(false);
+  const [archiveSelected, setArchiveSelected] = useState(4);
+  const [stageStep, setStageStep] = useState(0);
+  const [peopleFocus, setPeopleFocus] = useState(0);
+  const [workSelected, setWorkSelected] = useState(0);
+  const [deepStep, setDeepStep] = useState(0);
   if (visual === "portrait") {
     return (
       <div className="aj-story-visual-card aj-story-visual-portrait">
-        <div className="aj-story-visual-kicker">A PERSON, NOT A PERFECT PLAN</div>
-        <div className="aj-story-portrait-large">
-          <Image src={profileImageSrc} alt="Aman's portrait" fill sizes="(max-width: 850px) 80vw, 440px" />
+        <div className="aj-story-visual-kicker">A PERSON, NOT A PERFECT PLAN · TAP THE PORTRAIT</div>
+        <button
+          type="button"
+          className={"aj-story-portrait-large" + (portraitExpanded ? " is-expanded" : "")}
+          onClick={() => setPortraitExpanded((current) => !current)}
+          aria-expanded={portraitExpanded}
+          aria-label={portraitExpanded ? "Show portrait" : "Reveal more about Aman"}
+        >
+          <Image src={profileImageSrc} alt="Aman's portrait" fill sizes="(max-width: 850px) 80vw, 300px" />
+          <span>{portraitExpanded ? "STUDENT · CREATOR · BUILDER" : "TAP TO EXPLORE ↗"}</span>
+        </button>
+        <div className="aj-story-portrait-stamp">{portraitExpanded ? "IN PROGRESS" : <>STILL<br />LEARNING</>}</div>
+        <div className="aj-story-portrait-caption" aria-live="polite">
+          <b>{portraitExpanded ? "Three sides. One work in progress." : "Finance brain. Creator curiosity."}</b>
+          <p>{portraitExpanded ? "Studying finance, sharing what I learn, and building things to understand them better." : "A finance student figuring things out by learning, making and trying."}</p>
         </div>
-        <div className="aj-story-portrait-stamp">STILL<br />LEARNING</div>
-        <p>Finance brain. Creator curiosity. A work in progress.</p>
       </div>
     );
   }
@@ -232,61 +249,146 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           </div>
         </div>
         <div className="aj-story-post-interaction">
-          <button type="button" className="aj-story-post-button" onClick={() => setPostTapped(true)} disabled={postTapped}>
-            {postTapped ? "POSTED ✓" : "POST"}
+          <button type="button" className="aj-story-post-button" onClick={() => setPostTapped((current) => !current)}>
+            {postTapped ? "RESET ↺" : "POST"}
           </button>
-          <p>{postTapped ? "A small first step. No numbers invented." : "Tap to replay the first-post moment."}</p>
+          <p>{postTapped ? "Published. The next step was to learn and post again." : "Tap POST to replay that first step."}</p>
         </div>
       </div>
     );
   }
 
   if (visual === "archive") {
+    const archiveItems = [
+      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world." },
+      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one." },
+      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles." },
+      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create." },
+      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students." }
+    ] as const;
     return (
       <div className="aj-story-visual-card aj-story-archive-visual">
-        <span className="aj-story-archive-label">THE CONTENT EXPERIMENTS</span>
+        <span className="aj-story-archive-label">THE CONTENT EXPERIMENTS · PICK A CHAPTER</span>
         <div className="aj-story-topic-track">
-          <div className="aj-story-topic-card topic-one"><small>01</small><b>Finance<br />news</b><i /></div>
-          <div className="aj-story-topic-card topic-two"><small>02</small><b>Running</b><i /></div>
-          <div className="aj-story-topic-card topic-three"><small>03</small><b>Motivation</b><i /></div>
-          <div className="aj-story-topic-card topic-four"><small>04</small><b>Daily<br />life</b><i /></div>
-          <div className="aj-story-topic-card topic-final"><small>05</small><b>Finance for<br />students</b><span>FOUND MY WAY</span></div>
+          {archiveItems.map((item, index) => (
+            <button
+              type="button"
+              key={item.name}
+              className={"aj-story-topic-card topic-" + ["one", "two", "three", "four", "final"][index] + (archiveSelected === index ? " is-selected" : "")}
+              aria-pressed={archiveSelected === index}
+              onClick={() => setArchiveSelected(index)}
+            >
+              <small>0{index + 1}</small><b>{item.title}</b><i />
+              {index === 4 && <span>FOUND MY WAY</span>}
+            </button>
+          ))}
         </div>
-        <p className="aj-story-archive-foot">Not every experiment needs to become your identity.</p>
+        <div className="aj-story-archive-detail" aria-live="polite">
+          <b>{archiveItems[archiveSelected].name}</b>
+          <p>{archiveItems[archiveSelected].detail}</p>
+        </div>
       </div>
     );
   }
 
   if (visual === "consistency") {
+    const consistencyStages = [
+      {
+        label: "01 · THE FAST ROUTE",
+        title: "I wanted results. Fast.",
+        copy: "I went all in, chasing the quick spike and expecting progress to happen fast."
+      },
+      {
+        label: "02 · THE REALITY CHECK",
+        title: "The initial rush faded.",
+        copy: "That pace was difficult to sustain. The early jump was real, but it wasn't a process I could keep repeating."
+      },
+      {
+        label: "03 · THE SWITCH",
+        title: "I chose consistency.",
+        copy: "I stopped chasing another extreme burst. I kept going, just with a pace I could actually maintain."
+      }
+    ] as const;
+    const activeStage = consistencyStages[consistencyStep];
+
     return (
       <div className="aj-story-visual-card aj-story-chart-visual">
-        <div className="aj-story-visual-kicker">TWO WAYS TO APPROACH A GOAL</div>
-        <svg className="aj-story-consistency-chart" viewBox="0 0 440 270" role="img" aria-label="A conceptual chart comparing a quick extreme burst that falls away with a steady upward path">
-          <path d="M28 25 V230 H420" fill="none" stroke="#DAD1C6" strokeWidth="1.5" />
-          <path d="M28 180 H420 M28 125 H420 M28 70 H420" stroke="#EDE6DE" strokeDasharray="4 7" />
-          <path className="aj-story-chart-extreme" d="M30 212 C74 70 93 42 130 93 C160 132 180 203 240 208 C290 216 350 218 410 218" fill="none" stroke="#D36C57" strokeWidth="4" strokeLinecap="round" />
-          <path className="aj-story-chart-steady" d="M30 212 C80 198 106 183 150 167 S223 136 260 116 S337 77 410 38" fill="none" stroke="#718B67" strokeWidth="4" strokeLinecap="round" />
-          <circle cx="410" cy="38" r="6" fill="#718B67" />
-        </svg>
-        <div className="aj-story-chart-legend"><span><i className="is-extreme" />Extreme</span><span><i className="is-steady" />Consistent</span></div>
-        <p className="aj-story-chart-note">A conceptual lesson, not measured fitness data.</p>
+        <div className="aj-story-visual-kicker">THE GYM LESSON · MY CHANGE OF APPROACH</div>
+        <div className={"aj-story-journey-chart stage-" + consistencyStep} data-stage={consistencyStep}>
+          <svg className="aj-story-consistency-chart" viewBox="0 0 440 218" role="img" aria-label="My progress: an early fast rise, a slowdown, then a switch to steady upward progress">
+            <path d="M28 20 V180 H420" fill="none" stroke="#DAD1C6" strokeWidth="1.5" />
+            <path d="M28 140 H420 M28 90 H420 M28 45 H420" stroke="#EDE6DE" strokeDasharray="4 7" />
+            <path className="aj-story-chart-extreme-rise" d="M30 164 C66 93 91 35 125 49 C143 56 153 79 165 99" fill="none" stroke="#D36C57" strokeWidth="4" strokeLinecap="round" />
+            <path className="aj-story-chart-extreme-tail" d="M165 99 C190 137 207 160 244 164 C294 171 350 171 410 171" fill="none" stroke="#D36C57" strokeWidth="4" strokeLinecap="round" />
+            <path className="aj-story-chart-steady" d="M244 164 C293 148 326 120 355 93 S396 51 410 27" fill="none" stroke="#718B67" strokeWidth="4" strokeLinecap="round" />
+            <line className="aj-story-chart-switch-guide" x1="244" y1="164" x2="244" y2="181" stroke="#718B67" strokeDasharray="3 4" />
+            <circle className="aj-story-chart-switch-dot" cx="244" cy="164" r="5" fill="#718B67" />
+            <circle className="aj-story-chart-marker" cx={consistencyStep === 0 ? 165 : consistencyStep === 1 ? 244 : 410} cy={consistencyStep === 0 ? 99 : consistencyStep === 1 ? 164 : 27} r="6" fill={consistencyStep === 2 ? "#718B67" : "#D36C57"} stroke="#FAF8F1" strokeWidth="2" />
+            <text x="30" y="202" fill="#91877B" fontSize="9">START</text>
+            <text x="410" y="202" textAnchor="end" fill="#91877B" fontSize="9">TIME →</text>
+            <text className="aj-story-chart-switch-label" x="244" y="194" textAnchor="middle" fill="#718B67" fontSize="9" fontWeight="700">THE SWITCH</text>
+          </svg>
+        </div>
+        <div className="aj-story-chart-legend">
+          <span><i className="is-extreme" />Fast start</span>
+          <span><i className="is-steady" />Consistent</span>
+        </div>
+        <div className="aj-story-chart-story" aria-live="polite">
+          <span>{activeStage.label}</span>
+          <b>{activeStage.title}</b>
+          <p>{activeStage.copy}</p>
+        </div>
+        <div className="aj-story-chart-controls">
+          <div className="aj-story-chart-pips" aria-label="Choose a story stage">
+            {consistencyStages.map((stage, index) => (
+              <button
+                key={stage.label}
+                type="button"
+                className={index === consistencyStep ? "is-active" : ""}
+                aria-label={"Show stage " + (index + 1) + ": " + stage.title}
+                aria-pressed={index === consistencyStep}
+                onClick={() => setConsistencyStep(index)}
+              />
+            ))}
+          </div>
+          <div className="aj-story-chart-buttons">
+            <button type="button" onClick={() => setConsistencyStep((current) => Math.max(0, current - 1))} disabled={consistencyStep === 0}>←</button>
+            <button type="button" className="is-next" onClick={() => setConsistencyStep((current) => current === 2 ? 0 : current + 1)}>
+              {consistencyStep === 2 ? "Replay ↻" : "Next →"}
+            </button>
+          </div>
+        </div>
+        <p className="aj-story-chart-note">A personal lesson, not measured fitness data.</p>
       </div>
     );
   }
 
   if (visual === "stage") {
+    const stageMoments = [
+      { tab: "BEFORE", title: "The nerves arrive early.", detail: "I can know my material and still feel anxious before speaking. Preparation helps, but it doesn't magically switch the nerves off.", angle: -28, center: "Before" },
+      { tab: "IN THE MOMENT", title: "I show up anyway.", detail: "My voice can change or my mind can go blank for a second. The goal is to stay with the moment instead of letting nerves make the decision.", angle: 2, center: "Present" },
+      { tab: "AFTER", title: "Reflect. Adjust. Repeat.", detail: "One event doesn't cure stage fear. I take what I learned and give myself another chance to get better.", angle: 27, center: "Again" }
+    ] as const;
+    const moment = stageMoments[stageStep];
     return (
       <div className="aj-story-visual-card aj-story-stage-visual">
-        <span className="aj-story-visual-kicker">THE NERVES DON&apos;T GO TO ZERO</span>
-        <svg viewBox="0 0 360 205" className="aj-story-stage-gauge" role="img" aria-label="A gauge showing that nervousness can remain while you continue to show up">
-          <path d="M48 166 A132 132 0 0 1 312 166" fill="none" stroke="#EFE5D9" strokeWidth="17" strokeLinecap="round" />
-          <path d="M48 166 A132 132 0 0 1 276 72" fill="none" stroke="#E2A47B" strokeWidth="17" strokeLinecap="round" />
-          <path d="M48 166 A132 132 0 0 1 112 59" fill="none" stroke="#D36C57" strokeWidth="17" strokeLinecap="round" opacity=".7" />
-          <g className="aj-story-stage-needle"><path d="M180 166 L95 105" stroke="#34343A" strokeWidth="4" strokeLinecap="round" /><circle cx="180" cy="166" r="9" fill="#34343A" /></g>
-          <text x="48" y="194" fill="#8B6C5A" fontSize="10">NERVOUS</text><text x="312" y="194" fill="#718B67" fontSize="10" textAnchor="end">SHOWING UP</text>
-          <text x="180" y="130" fill="#34343A" fontFamily="Georgia,serif" fontSize="26" textAnchor="middle">Still here.</text>
+        <span className="aj-story-visual-kicker">THE NERVES DON&apos;T GO TO ZERO · TAP A MOMENT</span>
+        <svg viewBox="0 0 360 185" className="aj-story-stage-gauge" role="img" aria-label={"Stage fear journey: " + moment.tab.toLowerCase()}>
+          <path d="M48 151 A132 132 0 0 1 312 151" fill="none" stroke="#EFE5D9" strokeWidth="17" strokeLinecap="round" />
+          <path d="M48 151 A132 132 0 0 1 276 57" fill="none" stroke="#E2A47B" strokeWidth="17" strokeLinecap="round" />
+          <path d="M48 151 A132 132 0 0 1 112 44" fill="none" stroke="#D36C57" strokeWidth="17" strokeLinecap="round" opacity=".7" />
+          <g className="aj-story-stage-needle" style={{ transform: "rotate(" + moment.angle + "deg)" }}>
+            <path d="M180 151 L95 90" stroke="#34343A" strokeWidth="4" strokeLinecap="round" /><circle cx="180" cy="151" r="9" fill="#34343A" />
+          </g>
+          <text x="48" y="179" fill="#8B6C5A" fontSize="10">NERVOUS</text><text x="312" y="179" fill="#718B67" fontSize="10" textAnchor="end">SHOWING UP</text>
+          <text x="180" y="116" fill="#34343A" fontFamily="Georgia,serif" fontSize="22" textAnchor="middle">{moment.center}</text>
         </svg>
-        <div className="aj-story-stage-steps"><span>Feel it</span><b>→</b><span>Go anyway</span><b>→</b><span>Repeat</span></div>
+        <div className="aj-story-stage-tabs" role="group" aria-label="Explore the stage fear journey">
+          {stageMoments.map((item, index) => (
+            <button type="button" key={item.tab} className={stageStep === index ? "is-active" : ""} aria-pressed={stageStep === index} onClick={() => setStageStep(index)}>{item.tab}</button>
+          ))}
+        </div>
+        <div className="aj-story-stage-insight" aria-live="polite"><b>{moment.title}</b><p>{moment.detail}</p></div>
       </div>
     );
   }
@@ -326,44 +428,65 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   }
 
   if (visual === "people") {
+    const audienceNeeds = [
+      { tab: "NEW TO FINANCE", label: "START WITH THE BASICS", title: "Make the first step less intimidating.", copy: "Explain the core idea without assuming someone already knows the vocabulary." },
+      { tab: "LOST IN JARGON", label: "MAKE IT CLICK", title: "Translate complexity into clarity.", copy: "Use examples and plain language without pretending the subject has no nuance." },
+      { tab: "READY TO GO DEEPER", label: "GIVE THE NEXT STEP", title: "Help curiosity turn into action.", copy: "Point people towards a useful next concept, resource or practical exercise." }
+    ] as const;
+    const audience = audienceNeeds[peopleFocus];
     return (
       <div className="aj-story-visual-card aj-story-people-visual">
-        <span className="aj-story-visual-kicker">ONE IDEA AT A TIME</span>
-        <div className="aj-story-people-grid" aria-hidden="true">{Array.from({ length: 48 }, (_, index) => <i key={index} style={{ "--dot-index": index } as CSSProperties} />)}</div>
-        <div className="aj-story-people-message"><span>THE GOAL</span><b>Make the unfamiliar feel approachable.</b></div>
-        <p>Less about the number under a post. More about what someone understands after it.</p>
+        <span className="aj-story-visual-kicker">WHO I WANT TO MAKE FINANCE EASIER FOR</span>
+        <div className="aj-story-people-grid" aria-hidden="true">{Array.from({ length: 32 }, (_, index) => <i key={index} style={{ "--dot-index": index } as CSSProperties} />)}</div>
+        <div className="aj-story-people-tabs" role="group" aria-label="Choose a learner">
+          {audienceNeeds.map((item, index) => <button type="button" key={item.tab} className={peopleFocus === index ? "is-active" : ""} aria-pressed={peopleFocus === index} onClick={() => setPeopleFocus(index)}>{item.tab}</button>)}
+        </div>
+        <div className="aj-story-people-message" aria-live="polite"><span>{audience.label}</span><b>{audience.title}</b><p>{audience.copy}</p></div>
       </div>
     );
   }
 
   if (visual === "work") {
+    const experiences = [
+      { name: "DAGAS", role: "Finance Intern · Apr–Jul 2026", detail: "An operating-business finance internship that gave me exposure to work beyond classroom examples." },
+      { name: "Nuvama Wealth", role: "Finance Intern · Jul–Aug 2026", detail: "A closer look at wealth management and the financial-services environment." },
+      { name: "D. E. Shaw FinRes", role: "Finance research internship", detail: "Earlier exposure to financial research and structured analytical work." },
+      { name: "Unified Mentor", role: "Data Analyst Intern", detail: "Remote data-analysis experience that strengthened my comfort with working through datasets." }
+    ] as const;
+    const experience = experiences[workSelected];
     return (
       <div className="aj-story-visual-card aj-story-work-visual">
-        <span className="aj-story-visual-kicker">LEARNING IN REAL TEAMS</span>
+        <span className="aj-story-visual-kicker">LEARNING IN REAL TEAMS · SELECT AN EXPERIENCE</span>
         <div className="aj-story-work-list">
-          <div><span>01</span><b>DAGAS</b><small>Finance Intern · Apr–Jul 2026</small></div>
-          <div><span>02</span><b>Nuvama Wealth</b><small>Finance Intern · Jul–Aug 2026</small></div>
-          <div><span>03</span><b>D. E. Shaw FinRes</b><small>Internship</small></div>
-          <div><span>04</span><b>Unified Mentor</b><small>Data Analyst Intern</small></div>
+          {experiences.map((item, index) => (
+            <button type="button" key={item.name} className={workSelected === index ? "is-selected" : ""} aria-pressed={workSelected === index} onClick={() => setWorkSelected(index)}>
+              <span>0{index + 1}</span><b>{item.name}</b><small>{item.role}</small><i aria-hidden="true">↗</i>
+            </button>
+          ))}
         </div>
-        <p>Different environments. One standard: follow through.</p>
+        <div className="aj-story-work-detail" aria-live="polite"><b>{experience.name}</b><p>{experience.detail}</p></div>
       </div>
     );
   }
 
+  const deepStages = [
+    { label: "01 · CAPTURE", title: "Start with the rough idea.", detail: "Get the thought out of your head before worrying about making it perfect." },
+    { label: "02 · SHAPE", title: "Turn the idea into something workable.", detail: "Use tools to organise the thinking and turn a rough direction into a plan." },
+    { label: "03 · BUILD", title: "Make a first version.", detail: "Build something real enough to test instead of endlessly polishing the idea." },
+    { label: "04 · REFINE", title: "Test, learn and improve.", detail: "The tools speed up parts of the process. I still own the decisions and the result." }
+  ] as const;
+  const activeDeepStage = deepStages[deepStep];
   return (
     <div className="aj-story-visual-card aj-story-deep-visual">
-      <span className="aj-story-visual-kicker">FROM THOUGHT TO SOMETHING REAL</span>
+      <span className="aj-story-visual-kicker">FROM THOUGHT TO SOMETHING REAL · FOLLOW THE FLOW</span>
       <div className="aj-story-flow">
-        <div className="flow-step flow-speak"><span>01</span><b>Speak</b><small>The rough idea</small></div>
-        <i>→</i>
-        <div className="flow-step flow-wispr"><span>02</span><b>Wispr Flow</b><small>Voice to text</small></div>
-        <i>→</i>
-        <div className="flow-step flow-emergent"><span>03</span><b>Emergent Labs</b><small>Shape the build</small></div>
-        <i>→</i>
-        <div className="flow-step flow-product"><span>04</span><b>Product</b><small>Test and refine</small></div>
+        {deepStages.map((item, index) => (
+          <button type="button" key={item.label} className={"flow-step flow-step-" + index + (deepStep === index ? " is-active" : "")} aria-pressed={deepStep === index} onClick={() => setDeepStep(index)}>
+            <span>0{index + 1}</span><b>{["Speak", "Shape", "Build", "Refine"][index]}</b><small>{["The rough idea", "Organise it", "Make a version", "Test and improve"][index]}</small>
+          </button>
+        ))}
       </div>
-      <div className="aj-story-deep-note"><span>THE IMPORTANT PART</span><b>The tools help me move faster. I still own the decisions and the result.</b></div>
+      <div className="aj-story-deep-note" aria-live="polite"><span>{activeDeepStage.label}</span><b>{activeDeepStage.title}</b><p>{activeDeepStage.detail}</p></div>
     </div>
   );
 }
