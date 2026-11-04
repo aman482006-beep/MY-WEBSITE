@@ -1438,11 +1438,995 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-buil
   .aj-story-progress > b { font-size: 10px; white-space: nowrap; }
   .aj-story-progress > b small { display: inline; font-size: 8px; }
 }
-@media (max-width: 380px) {
-  .aj-story-progress { display: none; }
-}
+/* Keep the compact chapter progress visible at 360px and below. */
 
 
 /* Candid Chapter 01 image: retain the portrait selector used by mobile smoke tests. */
 .aj-story-candid-card { display: block; min-height: 0; width: 100%; aspect-ratio: 1 / 1; padding: 0; overflow: hidden; border-radius: 18px; }
 .aj-story-candid-card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+
+/* --------------------------------------------------------------------------
+   Wispr Flow application pass — spoken-to-clean Chapters 01–02.
+   Existing site tokens, typography, chapter copy and later chapter styling
+   remain intact. Scroll progress is written by a passive rAF scroll listener.
+   -------------------------------------------------------------------------- */
+
+.aj-story-intro-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px 24px;
+}
+.aj-story-skip-option {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  color: var(--aj-muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-decoration: none;
+  transition: color .18s ease;
+}
+.aj-story-skip-option:hover { color: var(--aj-orange-dark); }
+.aj-story-skip-option:focus-visible { outline: 2px solid var(--aj-orange); outline-offset: 4px; border-radius: 3px; }
+
+/* The floating mic stays in view and follows the chapter's scroll tension. */
+.aj-story-mic {
+  --mic-tension: .7;
+  position: fixed;
+  z-index: 310;
+  top: 88px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(190, 113, 78, .24);
+  border-radius: 999px;
+  color: #75432F;
+  background: rgba(255, 250, 244, .92);
+  box-shadow: 0 7px 22px rgba(63, 44, 31, .08);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+.aj-story-mic-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: #D36C57;
+  box-shadow: 0 0 calc(3px + 5px * var(--mic-tension)) rgba(211,108,87,.45);
+}
+.aj-story-mic-label,
+.aj-story-mic-status {
+  color: #8E3B1D;
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: .13em;
+}
+.aj-story-mic-status { color: #8A8177; font-size: 7px; }
+.aj-story-mic-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 29px;
+  height: 18px;
+  transform-origin: center;
+}
+.aj-story-mic-wave i {
+  display: block;
+  width: 2px;
+  height: var(--bar-height, 8px);
+  border-radius: 3px;
+  background: #D36C57;
+  transform: scaleY(calc(.24 + var(--mic-tension) * .76));
+  transform-origin: center;
+  transition: transform 80ms linear;
+}
+.aj-story-mic-wave i:nth-child(1), .aj-story-mic-wave i:nth-child(9) { --bar-height: 5px; }
+.aj-story-mic-wave i:nth-child(2), .aj-story-mic-wave i:nth-child(8) { --bar-height: 9px; }
+.aj-story-mic-wave i:nth-child(3), .aj-story-mic-wave i:nth-child(7) { --bar-height: 13px; }
+.aj-story-mic-wave i:nth-child(4), .aj-story-mic-wave i:nth-child(6) { --bar-height: 7px; }
+.aj-story-mic-wave i:nth-child(5) { --bar-height: 16px; }
+.aj-story-mic[data-chapter="1"] .aj-story-mic-wave {
+  animation: aj-story-mic-tremble 170ms steps(2, end) infinite;
+}
+.aj-story-mic[data-chapter="2"] .aj-story-mic-wave {
+  animation: aj-story-mic-tremble 330ms ease-in-out infinite;
+}
+@keyframes aj-story-mic-tremble {
+  0%, 100% { translate: calc(var(--mic-tension) * -1.3px) 0; rotate: calc(var(--mic-tension) * -1.1deg); }
+  50% { translate: calc(var(--mic-tension) * 1.3px) 0; rotate: calc(var(--mic-tension) * 1.1deg); }
+}
+
+/* Raw words are real text. Only the marked fillers / false starts are crossed out.
+   The remaining phrases compress and move toward the final headline as it opens. */
+.aj-spoken-rewrite {
+  position: relative;
+  margin: 15px 0 13px;
+  padding: 12px 14px 13px;
+  border: 1px solid rgba(190, 113, 78, .22);
+  border-radius: 11px;
+  background: linear-gradient(125deg, rgba(255,245,235,.9), rgba(255,255,255,.78));
+  transform-origin: left top;
+}
+.aj-spoken-rewrite-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 13px;
+}
+.aj-spoken-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #A64B2C;
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: .16em;
+}
+.aj-spoken-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #D36C57;
+  box-shadow: 0 0 0 3px rgba(211,108,87,.13);
+}
+.aj-spoken-scroll-note {
+  color: #9A8A7D;
+  font-size: 8px;
+  font-weight: 750;
+  letter-spacing: .04em;
+}
+.aj-spoken-transcript {
+  margin: 9px 0 0;
+  color: #4B4D53;
+  font-size: clamp(13px, 1.08vw, 15px);
+  font-weight: 560;
+  line-height: 1.72;
+  transform: translate3d(0, calc(var(--speech-progress) * -9px), 0)
+    scaleX(calc(1 - var(--speech-progress) * .12))
+    scaleY(calc(1 - var(--speech-progress) * .14));
+  transform-origin: left top;
+  opacity: calc(1 - var(--speech-progress) * .76);
+}
+.aj-spoken-fragment {
+  display: inline-block;
+  transform-origin: left center;
+}
+.aj-spoken-fragment:not(.is-filler):not(.is-false-start) {
+  transform: translate3d(0, calc(var(--speech-progress) * -3px), 0)
+    scaleX(calc(1 - var(--speech-progress) * .13))
+    scaleY(calc(1 - var(--speech-progress) * .07));
+  letter-spacing: calc(var(--speech-progress) * -.012em);
+}
+.aj-spoken-fragment.is-filler,
+.aj-spoken-fragment.is-false-start {
+  color: #8B695B;
+  text-decoration-line: line-through;
+  text-decoration-color: rgba(177, 73, 43, calc(.15 + var(--speech-progress) * .85));
+  text-decoration-thickness: calc(var(--speech-progress) * 1.7px);
+  text-decoration-skip-ink: none;
+  transform: translateY(calc(var(--speech-progress) * -2px))
+    scaleX(calc(1 - var(--speech-progress) * .2));
+  transform-origin: left center;
+}
+.aj-story-clean-headline {
+  transform: translateY(calc((1 - var(--speech-progress, 0)) * 7px))
+    scaleX(calc(.93 + var(--speech-progress, 0) * .07))
+    scaleY(calc(.95 + var(--speech-progress, 0) * .05));
+  transform-origin: left center;
+}
+.aj-story-clean-word {
+  display: inline-block;
+  transform: translateY(calc((1 - var(--speech-progress, 0)) * 5px))
+    scaleX(calc(.86 + var(--speech-progress, 0) * .14));
+  transform-origin: left center;
+  transition: none;
+}
+
+/* Keep the first two chapters readable without relying on animation support. */
+.aj-story-progress-track i { transition: none; }
+
+@media (max-width: 700px) {
+  .aj-story-intro-actions { gap: 11px 18px; }
+  .aj-story-skip-option { min-height: 34px; font-size: 8px; }
+  .aj-story-mic {
+    top: auto;
+    right: auto;
+    bottom: 14px;
+    left: 12px;
+    min-height: 34px;
+    gap: 7px;
+    padding: 0 10px;
+  }
+  .aj-story-mic-status { display: none; }
+  .aj-spoken-rewrite {
+    margin: 13px 0 11px;
+    padding: 10px 11px 11px;
+    border-radius: 9px;
+  }
+  .aj-spoken-transcript { font-size: 13px; line-height: 1.65; }
+}
+@media (max-width: 380px) {
+  .aj-story-mic { bottom: 12px; left: 10px; }
+  .aj-spoken-scroll-note { font-size: 7px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-spoken-rewrite { display: none !important; }
+  .aj-story-clean-headline,
+  .aj-story-clean-word {
+    transform: none !important;
+    filter: none !important;
+  }
+  .aj-story-mic-wave,
+  .aj-story-mic[data-chapter="1"] .aj-story-mic-wave,
+  .aj-story-mic[data-chapter="2"] .aj-story-mic-wave {
+    animation: none !important;
+    translate: none !important;
+    rotate: none !important;
+  }
+  .aj-story-mic-wave i { transform: scaleY(.55); transition: none; }
+  .aj-story-skip-option,
+  .aj-story-clean-word { transition: none !important; }
+}
+
+
+/* --------------------------------------------------------------------------
+   Wispr Flow hiring challenge — standalone, five-screen story.
+   This route reuses the portfolio's voice waveform and spoken-word cleanup
+   primitives while keeping all page-specific styling scoped to its root.
+   -------------------------------------------------------------------------- */
+body:has(.wispr-challenge) {
+  background: #FBF8F2;
+}
+body:has(.wispr-challenge) .aj-site-header,
+body:has(.wispr-challenge) .aj-footer {
+  display: none !important;
+}
+body:has(.wispr-challenge) .site-main {
+  padding-top: 0 !important;
+}
+.wispr-challenge {
+  --wispr-ink: #252A2D;
+  --wispr-muted: #77746D;
+  --wispr-paper: #FBF8F2;
+  --wispr-card: #FFFDF9;
+  --wispr-line: #E8E0D5;
+  --wispr-orange: #D36C57;
+  --wispr-green: #788B70;
+  --wispr-progress: 0;
+  position: relative;
+  min-height: 100vh;
+  overflow: clip;
+  color: var(--wispr-ink);
+  background:
+    radial-gradient(ellipse at 84% 14%, rgba(244, 221, 200, .42), transparent 31rem),
+    var(--wispr-paper);
+  font-family: var(--font-manrope), sans-serif;
+}
+.wispr-progress {
+  position: fixed;
+  z-index: 340;
+  inset: 0 0 auto;
+  height: 4px;
+  background: rgba(120, 139, 112, .15);
+  pointer-events: none;
+}
+.wispr-progress::after {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--wispr-orange);
+  content: "";
+  transform: scaleX(var(--wispr-progress));
+  transform-origin: left center;
+}
+.wispr-topline {
+  position: absolute;
+  top: 24px;
+  left: max(22px, calc((100vw - 1180px) / 2));
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #A15D45;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+.wispr-topline::before {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--wispr-orange);
+  box-shadow: 0 0 0 4px rgba(211,108,87,.12);
+  content: "";
+}
+.wispr-challenge .aj-story-mic {
+  top: 15px;
+  right: max(18px, calc((100vw - 1180px) / 2));
+  bottom: auto;
+  left: auto;
+  z-index: 350;
+  min-height: 34px;
+  padding-inline: 11px;
+}
+.wispr-challenge .aj-story-mic-status {
+  display: inline;
+}
+.wispr-challenge .aj-story-mic-wave i {
+  transition: transform 90ms linear;
+}
+.wispr-screen {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, .96fr) minmax(360px, 1.04fr);
+  align-items: center;
+  gap: clamp(28px, 6vw, 88px);
+  width: min(1180px, 100%);
+  min-height: 100svh;
+  margin-inline: auto;
+  padding: 96px 34px 78px;
+  border-bottom: 1px solid rgba(215, 204, 190, .72);
+  scroll-margin-top: 12px;
+}
+.wispr-copy {
+  min-width: 0;
+  max-width: 570px;
+}
+.wispr-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 17px;
+  color: #A15D45;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+.wispr-kicker span {
+  color: #A69A8A;
+  font-variant-numeric: tabular-nums;
+}
+.wispr-headline {
+  max-width: 620px;
+  margin: 0;
+  color: var(--wispr-ink);
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: clamp(38px, 5vw, 67px);
+  font-weight: 500;
+  letter-spacing: -.052em;
+  line-height: .99;
+  text-wrap: balance;
+}
+.wispr-headline em {
+  color: #9B694F;
+  font-weight: 400;
+}
+.wispr-one-line {
+  max-width: 470px;
+  margin: 17px 0 0;
+  color: #6B6962;
+  font-size: 13px;
+  font-weight: 580;
+  line-height: 1.55;
+}
+.wispr-read-more {
+  margin-top: 22px;
+  color: #6D6A63;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.wispr-read-more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  color: #A15D45;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  cursor: pointer;
+  list-style: none;
+}
+.wispr-read-more summary::-webkit-details-marker {
+  display: none;
+}
+.wispr-read-more summary::after {
+  content: "+";
+  font-size: 15px;
+  font-weight: 500;
+  transition: transform 180ms ease;
+}
+.wispr-read-more[open] summary::after {
+  transform: rotate(45deg);
+}
+.wispr-read-more p {
+  max-width: 520px;
+  margin: 7px 0 0;
+}
+.wispr-read-more p + p {
+  margin-top: 9px;
+}
+.wispr-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 390px;
+}
+.wispr-visual-card {
+  position: relative;
+  width: min(100%, 510px);
+  min-height: 350px;
+  padding: clamp(21px, 3vw, 34px);
+  overflow: hidden;
+  border: 1px solid rgba(223, 211, 197, .92);
+  border-radius: 24px;
+  background: rgba(255, 253, 249, .88);
+  box-shadow: 0 20px 56px rgba(73, 54, 37, .075);
+}
+.wispr-visual-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #A18F7C;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+.wispr-visual-label strong {
+  color: #A15D45;
+  font-weight: 900;
+}
+.wispr-voice-art {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 250px;
+  padding-top: 10px;
+}
+.wispr-voice-symbol {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 28px;
+  border: 1px solid #EADBD0;
+  border-radius: 18px;
+  color: #A15D45;
+  background: #FFF6EF;
+}
+.wispr-voice-symbol svg {
+  width: 23px;
+  height: 23px;
+}
+.wispr-wave-bars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 76px;
+}
+.wispr-wave-bars i {
+  display: block;
+  width: 4px;
+  height: var(--bar-height, 24px);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #D9876F, #788B70);
+  transform: scaleY(calc(.42 + var(--mic-tension, .7) * .58));
+  transform-origin: center;
+}
+.wispr-wave-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 19px;
+  color: #847E73;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .11em;
+}
+.wispr-wave-caption b {
+  color: #A15D45;
+  font-weight: 900;
+}
+.wispr-post-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 275px;
+  margin-top: 25px;
+  padding: 20px;
+  border: 1px solid #EEE5DC;
+  border-radius: 16px;
+  background: #FFF;
+  box-shadow: 0 11px 28px rgba(54, 47, 40, .055);
+}
+.wispr-post-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #2C3130;
+  font-size: 11px;
+  font-weight: 850;
+}
+.wispr-post-avatar {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  color: #FFF;
+  background: #73866B;
+  font-size: 10px;
+}
+.wispr-post-author small {
+  display: block;
+  margin-top: 2px;
+  color: #9A938A;
+  font-size: 8px;
+  font-weight: 650;
+}
+.wispr-post-main {
+  padding: 19px 0 14px;
+}
+.wispr-post-main span {
+  color: #A15D45;
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: .14em;
+}
+.wispr-post-main h3 {
+  margin: 7px 0 2px;
+  color: #2D3233;
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: 46px;
+  font-weight: 500;
+  letter-spacing: -.045em;
+  line-height: 1;
+}
+.wispr-post-main p {
+  margin: 7px 0 0;
+  color: #8A847A;
+  font-size: 10px;
+}
+.wispr-post-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid #F0EAE3;
+}
+.wispr-post-controls small {
+  color: #968F85;
+  font-size: 8px;
+}
+.wispr-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 37px;
+  padding: 0 14px;
+  border: 1px solid #D8B6A3;
+  border-radius: 999px;
+  color: #8E4E37;
+  background: #FFF8F2;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+}
+.wispr-action:hover {
+  color: #FFF;
+  background: #A15D45;
+  transform: translateY(-2px);
+}
+.wispr-experiment-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 350px;
+}
+.wispr-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 23px;
+}
+.wispr-metric {
+  min-width: 0;
+  padding: 13px 10px 12px;
+  border: 1px solid #EDE5DB;
+  border-radius: 12px;
+  background: #FFFEFC;
+}
+.wispr-metric b {
+  display: block;
+  color: #303536;
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: clamp(23px, 3vw, 35px);
+  font-weight: 500;
+  letter-spacing: -.045em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+.wispr-metric span {
+  display: block;
+  margin-top: 5px;
+  color: #8D8579;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+.wispr-results-note {
+  margin-top: 14px;
+  padding: 11px 13px;
+  border-left: 3px solid #D9876F;
+  border-radius: 0 8px 8px 0;
+  color: #786F65;
+  background: #FFF6EE;
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 1.5;
+}
+.wispr-log-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 24px 0 9px;
+  color: #A18F7C;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .13em;
+}
+.wispr-experiment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.wispr-experiment-tags button {
+  min-height: 30px;
+  padding: 0 11px;
+  border: 1px solid #E4DAD0;
+  border-radius: 999px;
+  color: #756D62;
+  background: #FFF;
+  font-size: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.wispr-experiment-tags button[aria-pressed="true"] {
+  border-color: #829477;
+  color: #4F644C;
+  background: #F3F6EF;
+}
+.wispr-experiment-result {
+  min-height: 44px;
+  margin: 10px 0 0;
+  color: #81786D;
+  font-size: 9px;
+  line-height: 1.55;
+}
+.wispr-stage-card {
+  display: grid;
+  place-items: center;
+  min-height: 350px;
+  background:
+    radial-gradient(ellipse at 50% 22%, rgba(255, 242, 214, .98), rgba(255, 247, 234, .4) 40%, transparent 72%),
+    #F6EFE6;
+}
+.wispr-stage-svg {
+  width: min(100%, 390px);
+  height: auto;
+  overflow: visible;
+}
+.wispr-stage-beam {
+  transform-origin: 190px 18px;
+  animation: wispr-stage-light 5.5s ease-in-out infinite alternate;
+}
+.wispr-stage-line {
+  fill: none;
+  stroke: #C67B61;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 4 10;
+  animation: wispr-stage-dash 3.5s linear infinite;
+}
+@keyframes wispr-stage-light {
+  from { opacity: .43; transform: rotate(-3deg) scaleX(.94); }
+  to { opacity: .77; transform: rotate(3deg) scaleX(1.04); }
+}
+@keyframes wispr-stage-dash {
+  to { stroke-dashoffset: -56; }
+}
+.wispr-stage-caption {
+  margin: 5px 0 0;
+  color: #7E7468;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .13em;
+  text-align: center;
+}
+.wispr-next-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 350px;
+  background:
+    radial-gradient(ellipse at 90% 8%, rgba(225, 237, 219, .8), transparent 55%),
+    #FFFCF7;
+}
+.wispr-next-visual {
+  display: grid;
+  gap: 11px;
+  padding: 24px 0 22px;
+}
+.wispr-next-line {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 13px;
+  border: 1px solid #ECE4D9;
+  border-radius: 12px;
+  color: #625E57;
+  background: rgba(255,255,255,.82);
+  font-size: 10px;
+  font-weight: 800;
+}
+.wispr-next-line > span {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  border-radius: 50%;
+  color: #58704F;
+  background: #EDF3E8;
+}
+.wispr-cta-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wispr-cta-links .wispr-action-primary {
+  border-color: #788B70;
+  color: white;
+  background: #788B70;
+}
+.wispr-cta-links .wispr-action-primary:hover {
+  background: #5E7457;
+}
+.wispr-cta-links .wispr-action-secondary {
+  border-color: #E3D9CF;
+  color: #6A625A;
+  background: rgba(255,255,255,.85);
+}
+.wispr-video-embeds {
+  display: grid;
+  gap: 10px;
+  margin-top: 13px;
+}
+.wispr-video-embeds iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 12px;
+  background: #E9E3DB;
+}
+.wispr-screen-count {
+  position: fixed;
+  z-index: 330;
+  right: max(18px, calc((100vw - 1180px) / 2));
+  bottom: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  border: 1px solid rgba(213, 201, 186, .8);
+  border-radius: 999px;
+  color: #837B71;
+  background: rgba(255, 253, 249, .94);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  box-shadow: 0 5px 15px rgba(68, 49, 34, .05);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+.wispr-screen-count b {
+  color: #A15D45;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.wispr-screen-count span {
+  color: #B5AA9B;
+}
+.wispr-challenge .aj-spoken-rewrite {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-radius: 13px;
+  box-shadow: 0 8px 22px rgba(65, 48, 34, .045);
+}
+.wispr-challenge .aj-spoken-rewrite-meta {
+  margin-bottom: 1px;
+}
+.wispr-challenge .aj-spoken-scroll-note {
+  white-space: nowrap;
+}
+.wispr-challenge .aj-spoken-transcript {
+  font-size: 12px;
+  line-height: 1.63;
+}
+.wispr-challenge .aj-spoken-fragment {
+  transition: none;
+}
+.wispr-challenge .aj-story-clean-headline {
+  transform: translateY(calc((1 - var(--speech-progress, 0)) * 5px))
+    scaleX(calc(.96 + var(--speech-progress, 0) * .04));
+}
+.wispr-challenge .aj-story-clean-word {
+  transform: translateY(calc((1 - var(--speech-progress, 0)) * 4px))
+    scaleX(calc(.9 + var(--speech-progress, 0) * .1));
+}
+.wispr-challenge .wispr-screen[data-screen-index="0"] .wispr-visual-card,
+.wispr-challenge .wispr-screen[data-screen-index="1"] .wispr-visual-card {
+  transform: translateY(calc((1 - var(--speech-progress, 0)) * 5px));
+}
+@media (max-width: 900px) {
+  .wispr-screen {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 25px;
+    min-height: 0;
+    padding: 96px 26px 78px;
+  }
+  .wispr-copy {
+    max-width: 710px;
+  }
+  .wispr-visual {
+    min-height: 0;
+  }
+  .wispr-visual-card {
+    width: min(100%, 710px);
+  }
+}
+@media (max-width: 620px) {
+  .wispr-topline {
+    top: 18px;
+    left: 18px;
+    font-size: 8px;
+  }
+  .wispr-challenge .aj-story-mic {
+    top: 11px;
+    right: 12px;
+    min-height: 31px;
+    gap: 6px;
+    padding-inline: 9px;
+  }
+  .wispr-challenge .aj-story-mic-label {
+    font-size: 7px;
+  }
+  .wispr-challenge .aj-story-mic-status {
+    display: inline;
+    font-size: 7px;
+  }
+  .wispr-screen {
+    gap: 19px;
+    padding: 88px 18px 76px;
+  }
+  .wispr-kicker {
+    margin-bottom: 14px;
+    font-size: 8px;
+  }
+  .wispr-headline {
+    font-size: clamp(36px, 10vw, 51px);
+    line-height: 1;
+  }
+  .wispr-one-line {
+    margin-top: 12px;
+    font-size: 12px;
+  }
+  .wispr-read-more {
+    margin-top: 14px;
+  }
+  .wispr-visual-card {
+    min-height: 0;
+    padding: 19px 16px;
+    border-radius: 19px;
+  }
+  .wispr-voice-art {
+    min-height: 202px;
+  }
+  .wispr-post-card {
+    min-height: 238px;
+    margin-top: 17px;
+    padding: 16px;
+  }
+  .wispr-post-main h3 {
+    font-size: 40px;
+  }
+  .wispr-metric {
+    padding: 11px 8px 10px;
+  }
+  .wispr-metric b {
+    font-size: clamp(22px, 7vw, 30px);
+  }
+  .wispr-metric span {
+    font-size: 7px;
+    letter-spacing: .05em;
+  }
+  .wispr-experiment-card,
+  .wispr-stage-card,
+  .wispr-next-card {
+    min-height: 0;
+  }
+  .wispr-screen-count {
+    right: 10px;
+    bottom: 10px;
+    padding: 7px 9px;
+    font-size: 7px;
+  }
+}
+@media (max-width: 370px) {
+  .wispr-screen {
+    padding-inline: 14px;
+  }
+  .wispr-challenge .aj-story-mic {
+    right: 8px;
+    padding-inline: 7px;
+  }
+  .wispr-topline {
+    left: 14px;
+    font-size: 7px;
+    letter-spacing: .12em;
+  }
+  .wispr-challenge .aj-story-mic-status {
+    font-size: 6px;
+  }
+  .wispr-metrics {
+    gap: 5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wispr-stage-beam,
+  .wispr-stage-line {
+    animation: none !important;
+  }
+  .wispr-action,
+  .wispr-read-more summary::after,
+  .wispr-wave-bars i,
+  .wispr-challenge .aj-story-mic-wave i {
+    transition: none !important;
+  }
+  .wispr-challenge .aj-story-clean-headline,
+  .wispr-challenge .aj-story-clean-word,
+  .wispr-challenge .wispr-visual-card {
+    transform: none !important;
+  }
+}
+
+
+/* Keep every disclosure after the visual, especially in the single-column mobile layout. */
+.wispr-screen { row-gap: 26px; }
+.wispr-screen > .wispr-read-more {
+  grid-column: 1 / -1;
+  max-width: 650px;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .wispr-screen { row-gap: 17px; }
+}
