@@ -316,31 +316,62 @@ async function runViewport(viewport) {
       await page.getByRole("heading", { name: projectTitle, exact: true }).waitFor();
     }
 
-    // Verify the nine-chapter story journey and its scroll-driven reveal states.
+    // Verify the seven-chapter story journey, real media and creator milestones.
     await page.goto(base + "/story/", { waitUntil: "domcontentloaded" });
     await page.locator(".aj-story-journey-intro h1").waitFor({ state: "visible" });
-    assert(await page.locator(".aj-story-scene").count() === 8, "Explore My Story should contain eight chapters");
+    assert(await page.locator(".aj-story-scene").count() === 7, "Explore My Story should contain seven chapters");
     assert(await page.locator(".aj-story-progress").isVisible(), "Story progress indicator is missing");
-    const chapterPortrait = page.locator(".aj-story-portrait-large img");
-    await chapterPortrait.evaluate((image) => { image.loading = "eager"; });
+
+    const firstPost = page.locator(".aj-story-scene").nth(0);
+    const firstPostPortrait = page.locator(".aj-story-first-video-context img");
+    await firstPostPortrait.evaluate((image) => { image.loading = "eager"; });
     await page.waitForFunction(() => {
-      const image = document.querySelector(".aj-story-portrait-large img");
+      const image = document.querySelector(".aj-story-first-video-context img");
       return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
     }, null, { timeout: 10000 });
-    await page.locator(".aj-story-scene").nth(1).scrollIntoViewIfNeeded();
-    await page.waitForFunction(
-      () => document.querySelectorAll('.aj-story-scene[data-revealed="true"]').length >= 2,
-      null,
-      { timeout: 8000 },
+    assert(
+      (await firstPost.locator("h2").textContent())?.includes("sharing one result"),
+      "The first-post chapter is missing its headline",
     );
     assert(
-      (await page.locator(".aj-story-scene").nth(1).locator("h2").textContent())?.includes("sharing one result"),
-      "The first-post chapter is missing its story copy",
+      (await firstPost.locator(".aj-story-scene-intro").textContent())?.includes("CFA Level I result"),
+      "The first-post chapter is missing the CFA Level I context",
     );
-    const postButton = page.locator(".aj-story-post-button");
-    await postButton.scrollIntoViewIfNeeded();
-    await postButton.tap();
-    assert((await postButton.textContent())?.includes("POSTED"), "The first-post interaction did not update its state");
+    const firstVideo = firstPost.locator("iframe");
+    assert(
+      (await firstVideo.getAttribute("src") || "").includes("cZmWuFLi7XI"),
+      "The first CFA video is not embedded beside the first-post chapter",
+    );
+
+    const experimentChapter = page.locator(".aj-story-scene").nth(1);
+    await experimentChapter.scrollIntoViewIfNeeded();
+    assert(
+      await experimentChapter.locator("iframe").count() === 2,
+      "The finance-news and day-in-the-life videos are missing from the experiment chapter",
+    );
+    const experimentVideoSources = await experimentChapter.locator("iframe").evaluateAll((frames) =>
+      frames.map((frame) => frame.getAttribute("src") || ""),
+    );
+    assert(
+      experimentVideoSources.some((src) => src.includes("SG_CkTR15IQ")) &&
+      experimentVideoSources.some((src) => src.includes("Syf-ChVSyu4")),
+      "The experiment videos do not point to the supplied Shorts",
+    );
+
+    const metrics = page.locator(".aj-story-creator-metrics");
+    await metrics.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => {
+      const values = Array.from(document.querySelectorAll(".aj-story-creator-metric strong"))
+        .map((node) => node.textContent?.trim());
+      return values.includes("100+") && values.includes("645");
+    }, null, { timeout: 10000 });
+    assert(await metrics.getByRole("button", { name: /Replay the climb/i }).isVisible(), "The creator counter replay control is missing");
+
+    const gymChapter = page.locator(".aj-story-scene").nth(2);
+    assert(
+      (await gymChapter.locator("h2").textContent())?.includes("Consistency was the answer"),
+      "The gym and consistency chapter headline is missing",
+    );
 
     const buildFlipCard = page.locator(".aj-story-build-flip-card").first();
     await buildFlipCard.scrollIntoViewIfNeeded();
@@ -349,13 +380,13 @@ async function runViewport(viewport) {
     await buildFlipCard.tap();
     assert(await buildFlipCard.getAttribute("aria-pressed") === "false", "The build card did not flip back when tapped");
 
-    const finalChapter = page.locator(".aj-story-scene").nth(7);
+    const finalChapter = page.locator(".aj-story-scene").nth(6);
     await finalChapter.scrollIntoViewIfNeeded();
     assert(
       (await finalChapter.locator(".aj-story-lesson p").textContent())?.includes("Being useful matters more than looking impressive."),
-      "The eighth and final chapter is missing its takeaway",
+      "The seventh and final chapter is missing its takeaway",
     );
-    assert(await page.locator(".aj-story-scene").count() === 8, "An extra story chapter is still rendered");
+    assert(await page.locator(".aj-story-scene").count() === 7, "An extra story chapter is still rendered");
     const storyOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
     );
