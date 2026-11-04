@@ -309,7 +309,7 @@ async function runViewport(viewport) {
     // Verify the nine-chapter story journey and its scroll-driven reveal states.
     await page.goto(base + "/story/", { waitUntil: "domcontentloaded" });
     await page.locator(".aj-story-journey-intro h1").waitFor({ state: "visible" });
-    assert(await page.locator(".aj-story-scene").count() === 9, "Explore My Story should contain nine chapters");
+    assert(await page.locator(".aj-story-scene").count() === 8, "Explore My Story should contain eight chapters");
     assert(await page.locator(".aj-story-progress").isVisible(), "Story progress indicator is missing");
     const chapterPortrait = page.locator(".aj-story-portrait-large img");
     await chapterPortrait.evaluate((image) => { image.loading = "eager"; });
@@ -339,15 +339,13 @@ async function runViewport(viewport) {
     await buildFlipCard.tap();
     assert(await buildFlipCard.getAttribute("aria-pressed") === "false", "The build card did not flip back when tapped");
 
-    assert(await page.locator(".aj-story-flow .flow-step").count() === 4, "The Wispr Flow to Emergent story sequence is incomplete");
-    const finalStoryLine = "Tarika-varika sab seekh lenge. Bas rukna nahi hai.";
-    const finalStoryLineNode = page.locator(".aj-story-scene").nth(8).locator(".aj-story-lesson p");
-    await finalStoryLineNode.scrollIntoViewIfNeeded();
-    await page.waitForFunction(
-      (expected) => document.querySelectorAll(".aj-story-scene .aj-story-lesson p")[8]?.textContent === expected,
-      finalStoryLine,
-      { timeout: 8000 },
+    const finalChapter = page.locator(".aj-story-scene").nth(7);
+    await finalChapter.scrollIntoViewIfNeeded();
+    assert(
+      (await finalChapter.locator(".aj-story-lesson p").textContent())?.includes("Being useful matters more than looking impressive."),
+      "The eighth and final chapter is missing its takeaway",
     );
+    assert(await page.locator(".aj-story-scene").count() === 8, "An extra story chapter is still rendered");
     const storyOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
     );
