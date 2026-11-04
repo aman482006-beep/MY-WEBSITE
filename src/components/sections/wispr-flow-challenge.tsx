@@ -172,7 +172,7 @@ function ExperimentVisual() {
       <div>
         <div className="wispr-visual-label">
           <strong>THE EXPERIMENT LOG</strong>
-          <span>WHAT'S TRUE SO FAR</span>
+          <span>WHAT&apos;S TRUE SO FAR</span>
         </div>
         <div className="wispr-metrics">
           <div className="wispr-metric"><b>5</b><span>Months posting</span></div>
@@ -357,7 +357,7 @@ export function WisprFlowChallenge() {
         <div className="wispr-visual">
           <div className="wispr-visual-card">
             <div className="wispr-visual-label">
-              <strong>WHAT'S IN MY HEAD</strong>
+              <strong>WHAT&apos;S IN MY HEAD</strong>
               <span>THE VOICE NOTE</span>
             </div>
             <div className="wispr-voice-art">
@@ -423,7 +423,7 @@ export function WisprFlowChallenge() {
         <div className="wispr-copy">
           <p className="wispr-kicker"><span>04</span> Stage fear</p>
           <h2 id="wispr-heading-4" className="wispr-headline">Still nervous. Still showing up.</h2>
-          <p className="wispr-one-line">The nerves haven't disappeared. I'm still working on it.</p>
+          <p className="wispr-one-line">The nerves haven&apos;t disappeared. I&apos;m still working on it.</p>
           </div>
         <div className="wispr-visual">
           <StageVisual />
@@ -438,7 +438,7 @@ export function WisprFlowChallenge() {
 
       <section className="wispr-screen" data-wispr-screen="5" data-screen-index="4" aria-labelledby="wispr-heading-5">
         <div className="wispr-copy">
-          <p className="wispr-kicker"><span>05</span> What's next</p>
+          <p className="wispr-kicker"><span>05</span> What&apos;s next</p>
           <h2 id="wispr-heading-5" className="wispr-headline">Still learning. Still building. Still going.</h2>
           <p className="wispr-one-line">I want the next thing to be useful.</p>
           </div>
