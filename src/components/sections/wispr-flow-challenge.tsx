@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
 
 type SpokenKind = "keep" | "filler" | "false-start";
 type SpokenPart = { text: string; kind: SpokenKind };
@@ -85,17 +85,14 @@ function SpokenCleanup({ chapter }: { chapter: 1 | 2 }) {
           </span>
         ))}
       </p>
-      <span className="wispr-clean-output" aria-hidden="true">
-        {headline}
-      </span>
-    </div>
+          </div>
   );
 }
 
 function WordHeadline({ chapter }: { chapter: 1 | 2 }) {
   const words = cleanHeadlines[chapter].split(" ");
   return (
-    <h1 className="wispr-headline aj-story-clean-headline">
+    <h1 id="wispr-heading-1" className="wispr-headline aj-story-clean-headline">
       {words.map((word, index) => (
         <span className="aj-story-clean-word" key={index}>
           {word}{index < words.length - 1 ? " " : ""}
@@ -119,7 +116,7 @@ function VoiceBars({ count = 25 }: { count?: number }) {
   );
 }
 
-function VoiceStatus({ voiceRef }: { voiceRef: React.RefObject<HTMLDivElement | null> }) {
+function VoiceStatus({ voiceRef }: { voiceRef: RefObject<HTMLDivElement | null> }) {
   return (
     <div
       ref={voiceRef}
@@ -293,7 +290,6 @@ export function WisprFlowChallenge() {
 
       let nearestIndex = 0;
       let nearestDistance = Number.POSITIVE_INFINITY;
-      let activeProgress = 0;
 
       screens.forEach((screen, index) => {
         const rect = screen.getBoundingClientRect();
@@ -305,8 +301,10 @@ export function WisprFlowChallenge() {
 
         const cleanupProgress = clamp((-rect.top) / Math.max(1, rect.height * 0.54));
         screen.style.setProperty("--speech-progress", cleanupProgress.toFixed(4));
-        if (index === nearestIndex) activeProgress = cleanupProgress;
       });
+
+      const activeRect = screens[nearestIndex].getBoundingClientRect();
+      const activeProgress = clamp((-activeRect.top) / Math.max(1, activeRect.height * 0.54));
 
       setActiveScreen((current) => current === nearestIndex ? current : nearestIndex);
 
