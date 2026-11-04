@@ -663,7 +663,7 @@ export function StoryExperience() {
         <span className="aj-story-mic-wave" aria-hidden="true">
           <i /><i /><i /><i /><i /><i /><i /><i /><i />
         </span>
-        <span className="aj-story-mic-status">LISTENING</span>
+        <span className="aj-story-mic-status">VOICE</span>
       </div>
 
       <section className="aj-story-journey-scenes" id="story-journey" aria-label="Aman's story, chapter by chapter">
