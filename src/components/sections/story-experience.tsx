@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Fragment, useEffect, useRef, useState, type CSSProperties } from "react";
 
 // next.config.ts injects NEXT_PUBLIC_BASE_PATH for GitHub Pages builds.
 // Unlike GITHUB_ACTIONS, this value is intentionally exposed to client components.
@@ -973,7 +973,7 @@ export function StoryExperience() {
                   >
                     {index === 0
                       ? chapter.title.split(" ").map((word, wordIndex) => (
-                          <span className="aj-story-clean-word" key={wordIndex}>{word}</span>{wordIndex < chapter.title.split(" ").length - 1 ? " " : ""}
+                          <Fragment key={wordIndex}><span className="aj-story-clean-word">{word}</span>{wordIndex < chapter.title.split(" ").length - 1 ? " " : ""}</Fragment>
                         ))
                       : chapter.title}
                   </h2>
