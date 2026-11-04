@@ -314,13 +314,13 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
     return (
       <div className="aj-story-visual-card aj-story-chart-visual">
         <div className="aj-story-visual-kicker">THE GYM LESSON · MY CHANGE OF APPROACH</div>
-        <div className={"aj-story-journey-chart stage-" + consistencyStep} data-stage={consistencyStep}>
+        <div key={consistencyStep} className={"aj-story-journey-chart stage-" + consistencyStep} data-stage={consistencyStep}>
           <svg className="aj-story-consistency-chart" viewBox="0 0 440 218" role="img" aria-label="My progress: an early fast rise, a slowdown, then a switch to steady upward progress">
             <path d="M28 20 V180 H420" fill="none" stroke="#DAD1C6" strokeWidth="1.5" />
             <path d="M28 140 H420 M28 90 H420 M28 45 H420" stroke="#EDE6DE" strokeDasharray="4 7" />
-            <path className="aj-story-chart-extreme-rise" d="M30 164 C66 93 91 35 125 49 C143 56 153 79 165 99" fill="none" stroke="#D36C57" strokeWidth="4" strokeLinecap="round" />
-            <path className="aj-story-chart-extreme-tail" d="M165 99 C190 137 207 160 244 164 C294 171 350 171 410 171" fill="none" stroke="#D36C57" strokeWidth="4" strokeLinecap="round" />
-            <path className="aj-story-chart-steady" d="M244 164 C293 148 326 120 355 93 S396 51 410 27" fill="none" stroke="#718B67" strokeWidth="4" strokeLinecap="round" />
+            <path pathLength={1} className="aj-story-chart-extreme-rise" d="M30 164 C66 93 91 35 125 49 C143 56 153 79 165 99" fill="none" stroke="#D36C57" strokeWidth="4" strokeLinecap="round" />
+            <path pathLength={1} className="aj-story-chart-extreme-tail" d="M165 99 C190 137 207 160 244 164 C294 171 350 171 410 171" fill="none" stroke="#D36C57" strokeWidth="4" strokeLinecap="round" />
+            <path pathLength={1} className="aj-story-chart-steady" d="M244 164 C293 148 326 120 355 93 S396 51 410 27" fill="none" stroke="#718B67" strokeWidth="4" strokeLinecap="round" />
             <line className="aj-story-chart-switch-guide" x1="244" y1="164" x2="244" y2="181" stroke="#718B67" strokeDasharray="3 4" />
             <circle className="aj-story-chart-switch-dot" cx="244" cy="164" r="5" fill="#718B67" />
             <circle className="aj-story-chart-marker" cx={consistencyStep === 0 ? 165 : consistencyStep === 1 ? 244 : 410} cy={consistencyStep === 0 ? 99 : consistencyStep === 1 ? 164 : 27} r="6" fill={consistencyStep === 2 ? "#718B67" : "#D36C57"} stroke="#FAF8F1" strokeWidth="2" />
