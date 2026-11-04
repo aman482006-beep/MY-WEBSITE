@@ -3178,3 +3178,380 @@ body:has(.wispr-challenge) .site-main {
     padding-left: 8px;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   Story revision: Instagram profile recreation, clean headline rhythm,
+   and clickable video evidence placed in the chapter it documents.
+   -------------------------------------------------------------------------- */
+
+.aj-story-scene-copy h2 {
+  max-width: 690px;
+  letter-spacing: -.035em;
+  word-spacing: .055em;
+  line-height: 1.075;
+  text-wrap: balance;
+}
+.aj-story-scene-copy h2 em {
+  display: inline-block;
+  margin-top: .12em;
+  color: #9B6147;
+  font-style: italic;
+}
+.aj-story-first-post-quote {
+  max-width: 620px;
+  margin: 18px 0 13px;
+  padding: 13px 17px;
+  border-left: 3px solid #C87555;
+  border-radius: 0 10px 10px 0;
+  color: #4E4238;
+  background: linear-gradient(90deg, rgba(239,226,210,.78), rgba(249,245,238,.45));
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.7vw, 21px);
+  font-style: italic;
+  line-height: 1.35;
+}
+.aj-story-scene-intro {
+  margin-top: 12px;
+}
+
+/* Instagram: match the supplied screenshot, not the cream editorial theme. */
+.aj-story-instagram-card {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: clamp(14px, 2vw, 20px);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 19px;
+  color: #F5F5F6;
+  background: #0C1014;
+  box-shadow: 0 18px 42px rgba(14, 16, 18, .18);
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: left;
+}
+.aj-story-instagram-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+.aj-story-instagram-topbar a {
+  color: #FAFAFA;
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: -.025em;
+  text-decoration: none;
+}
+.aj-story-instagram-topbar span {
+  color: #E9E9EB;
+  font-size: 20px;
+  letter-spacing: .1em;
+}
+.aj-story-instagram-main {
+  display: grid;
+  grid-template-columns: clamp(82px, 23%, 120px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(12px, 3.5%, 20px);
+}
+.aj-story-instagram-avatar-ring {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #D9AD45;
+  box-shadow: 0 0 0 2px #E5C14B;
+}
+.aj-story-instagram-avatar-ring img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.aj-story-instagram-details {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+}
+.aj-story-instagram-display-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 5px;
+  row-gap: 2px;
+  color: #F6F6F7;
+  font-size: clamp(10px, 1.25vw, 13px);
+  line-height: 1.25;
+}
+.aj-story-instagram-display-name b {
+  font-size: clamp(11px, 1.4vw, 14px);
+  font-weight: 750;
+}
+.aj-story-instagram-display-name span {
+  font-weight: 500;
+}
+.aj-story-instagram-display-name small {
+  color: #A6A6AD;
+  font-size: 9px;
+}
+.aj-story-instagram-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.aj-story-instagram-stats > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+.aj-story-instagram-stats strong {
+  color: #FFF;
+  font-size: clamp(15px, 2.1vw, 22px);
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.035em;
+  line-height: 1;
+}
+.aj-story-instagram-stats span {
+  color: #E0E0E3;
+  font-size: clamp(8px, .95vw, 11px);
+  line-height: 1.15;
+}
+.aj-story-instagram-bio {
+  display: grid;
+  gap: 4px;
+  margin-top: 14px;
+  padding-left: 2px;
+}
+.aj-story-instagram-category {
+  color: #A6A6AD;
+  font-size: 10px;
+}
+.aj-story-instagram-bio p {
+  margin: 0;
+  color: #F0F0F2;
+  font-size: clamp(10px, 1.1vw, 12px);
+  line-height: 1.5;
+}
+.aj-story-instagram-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 13px;
+  margin-top: 3px;
+}
+.aj-story-instagram-links a {
+  color: #77A9FF;
+  font-size: clamp(9px, 1vw, 11px);
+  font-weight: 650;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.aj-story-instagram-links a:hover {
+  text-decoration: underline;
+}
+
+/* Real creator clips: a lightweight poster link, not an eager iframe. */
+.aj-story-video-feature {
+  display: grid;
+  grid-template-columns: minmax(104px, .88fr) minmax(0, 1.12fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid rgba(208, 190, 168, .82);
+  border-radius: 13px;
+  color: inherit;
+  background: rgba(255,253,249,.95);
+  box-shadow: 0 7px 20px rgba(49,39,29,.055);
+  text-decoration: none;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.aj-story-video-feature:hover {
+  border-color: rgba(185,108,78,.6);
+  box-shadow: 0 12px 25px rgba(49,39,29,.1);
+  transform: translateY(-2px);
+}
+.aj-story-video-thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #242424;
+}
+.aj-story-video-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.aj-story-video-thumb > i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding-left: 2px;
+  border: 1px solid rgba(255,255,255,.82);
+  border-radius: 50%;
+  color: #FFF;
+  background: rgba(14,16,18,.64);
+  font-size: 11px;
+  font-style: normal;
+  transform: translate(-50%, -50%);
+}
+.aj-story-video-copy {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+  padding: 4px 4px 4px 0;
+}
+.aj-story-video-copy small {
+  color: #A16B50;
+  font-size: 7px;
+  font-weight: 950;
+  letter-spacing: .12em;
+}
+.aj-story-video-copy b {
+  color: #31332F;
+  font-family: var(--font-display);
+  font-size: clamp(14px, 1.45vw, 18px);
+  font-weight: 600;
+  line-height: 1.13;
+}
+.aj-story-video-copy > span {
+  color: #77736E;
+  font-size: 9px;
+  line-height: 1.4;
+}
+.aj-story-video-copy strong {
+  margin-top: 2px;
+  color: #965638;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.aj-story-video-visual {
+  width: min(100%, 440px);
+  gap: 12px;
+}
+.aj-story-first-video-context {
+  width: 100%;
+}
+.aj-story-archive-visual {
+  align-items: stretch;
+  gap: 12px;
+}
+.aj-story-archive-video-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 400px;
+  margin-inline: auto;
+}
+.aj-story-archive-video-grid .aj-story-video-feature {
+  grid-template-columns: minmax(110px, .75fr) minmax(0, 1.25fr);
+}
+
+/* The gym lesson gets an explicit visual contrast before the animated path. */
+.aj-story-consistency-comparison {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: min(100%, 360px);
+  margin: 15px auto 5px;
+  padding: 11px 14px;
+  border: 1px solid rgba(203,188,167,.64);
+  border-radius: 12px;
+  background: rgba(255,255,255,.66);
+}
+.aj-story-consistency-comparison > span {
+  display: grid;
+  gap: 3px;
+}
+.aj-story-consistency-comparison small {
+  color: #9A8170;
+  font-size: 7px;
+  font-weight: 950;
+  letter-spacing: .1em;
+}
+.aj-story-consistency-comparison b {
+  color: #3A3C36;
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 600;
+}
+.aj-story-consistency-comparison > span:last-child b {
+  color: #55745C;
+}
+.aj-story-consistency-comparison > i {
+  color: #B9A895;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+  .aj-story-scene-copy h2 {
+    letter-spacing: -.025em;
+    word-spacing: .035em;
+    line-height: 1.1;
+  }
+  .aj-story-first-post-quote {
+    margin-top: 14px;
+    padding: 11px 13px;
+    font-size: 17px;
+  }
+  .aj-story-instagram-card {
+    padding: 13px;
+    border-radius: 15px;
+  }
+  .aj-story-instagram-topbar {
+    margin-bottom: 12px;
+  }
+  .aj-story-instagram-topbar a { font-size: 16px; }
+  .aj-story-instagram-main {
+    grid-template-columns: 82px minmax(0,1fr);
+    gap: 11px;
+  }
+  .aj-story-instagram-details { gap: 10px; }
+  .aj-story-instagram-display-name { font-size: 9px; }
+  .aj-story-instagram-display-name b { font-size: 11px; }
+  .aj-story-instagram-display-name small { font-size: 8px; }
+  .aj-story-instagram-stats { gap: 4px; }
+  .aj-story-instagram-stats strong { font-size: 16px; }
+  .aj-story-instagram-stats span { font-size: 8px; }
+  .aj-story-instagram-bio { margin-top: 12px; }
+  .aj-story-instagram-bio p { font-size: 10px; }
+  .aj-story-instagram-links { gap: 5px 9px; }
+  .aj-story-instagram-links a { font-size: 9px; }
+  .aj-story-video-feature { grid-template-columns: minmax(102px,.82fr) minmax(0,1.18fr); gap: 9px; padding: 7px; }
+  .aj-story-video-copy b { font-size: 14px; }
+  .aj-story-video-copy > span { font-size: 8px; }
+  .aj-story-video-copy strong { font-size: 7px; }
+  .aj-story-archive-video-grid { max-width: 100%; }
+  .aj-story-consistency-comparison { margin-top: 12px; }
+}
+@media (max-width: 390px) {
+  .aj-story-instagram-card { padding: 10px; }
+  .aj-story-instagram-main { grid-template-columns: 72px minmax(0,1fr); gap: 9px; }
+  .aj-story-instagram-display-name { column-gap: 4px; font-size: 8px; }
+  .aj-story-instagram-display-name b { font-size: 10px; }
+  .aj-story-instagram-stats strong { font-size: 14px; }
+  .aj-story-instagram-stats span { font-size: 7px; }
+  .aj-story-instagram-bio p { font-size: 9px; }
+  .aj-story-instagram-links a { font-size: 8px; }
+  .aj-story-video-feature { grid-template-columns: minmax(90px,.78fr) minmax(0,1.22fr); gap: 7px; }
+  .aj-story-video-copy b { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-story-video-feature { transition: none !important; }
+}
