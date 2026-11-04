@@ -218,9 +218,8 @@ async function runViewport(viewport) {
     await page.waitForTimeout(350);
 
     // Verify a primary homepage CTA with a real touch, independently of the menu.
-    await page.getByRole("link", { name: /See what I’ve built/ }).tap();
     currentStage = "navigate to Projects from the home-page button";
-    currentStage = "navigate to Projects from the mobile menu";
+    await page.getByRole("link", { name: /See what I’ve built/ }).tap();
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
     await page.getByRole("heading", { name: "Things I've built." }).waitFor();
     await page.goto(base + "/", { waitUntil: "domcontentloaded" });
@@ -238,6 +237,7 @@ async function runViewport(viewport) {
         }, true);
       }
     });
+    currentStage = "open the mobile navigation menu";
     await menuButton.tap();
     await page.waitForTimeout(250);
     const menuEvidence = await page.evaluate(() => {
@@ -259,6 +259,7 @@ async function runViewport(viewport) {
     assert(menuEvidence.expanded === "true" && menuEvidence.navClass?.includes("is-open"),
       "Mobile navigation did not open: " + JSON.stringify(menuEvidence));
 
+    currentStage = "navigate to Projects from the mobile menu";
     await page.locator('#primary-navigation a[data-nav-href="/projects"]').tap();
     await page.waitForURL(/\/MY-WEBSITE\/projects\/$/, { timeout: 15000 });
     await page.getByRole("heading", { name: "Things I've built." }).waitFor();
@@ -276,7 +277,8 @@ async function runViewport(viewport) {
       await page.getByRole("heading", { name: projectTitle, exact: true }).waitFor();
     }
 
-    // Verify the seven-chapter story journey, Instagram profile, linked Shorts and gym visual.
+    // Verify the seven-chapter story journey, embedded Shorts, Instagram profile and gym visual.
+    currentStage = "verify inline Story video embeds";
     await page.goto(base + "/story/", { waitUntil: "domcontentloaded" });
     await page.locator(".aj-story-journey-intro h1").waitFor({ state: "visible" });
     assert(await page.locator(".aj-story-scene").count() === 7, "Explore My Story should contain seven chapters");
@@ -301,17 +303,17 @@ async function runViewport(viewport) {
     await readMore.locator("summary").tap();
     assert(await readMore.evaluate((node) => node.open), "Read more did not expand the chapter details");
 
-    const firstVideo = firstPost.locator("a.aj-story-video-feature");
+    const firstVideo = firstPost.locator(".aj-story-video-embed iframe");
+    assert(await firstVideo.count() === 1, "The first CFA video player is missing from the first-post chapter");
+    const firstVideoSource = await firstVideo.getAttribute("src");
     assert(
-      (await firstVideo.getAttribute("href") || "").includes("cZmWuFLi7XI"),
-      "The first CFA video is not linked beside the first-post chapter",
+      firstVideoSource?.includes("/embed/cZmWuFLi7XI"),
+      "The first CFA Short is not embedded inline in the first-post chapter",
     );
-    const firstThumb = firstVideo.locator("img");
-    await firstThumb.evaluate((image) => { image.loading = "eager"; });
-    await page.waitForFunction(() => {
-      const image = document.querySelector(".aj-story-scene:first-of-type .aj-story-video-feature img");
-      return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
-    }, null, { timeout: 10000 });
+    assert(
+      await firstPost.locator("a.aj-story-video-feature").count() === 0,
+      "The first CFA Short should play inline, not navigate away to YouTube",
+    );
 
     const experimentChapter = page.locator(".aj-story-scene").nth(1);
     await experimentChapter.scrollIntoViewIfNeeded();
@@ -338,16 +340,33 @@ async function runViewport(viewport) {
       return stats.includes("149") && stats.includes("645") && stats.includes("31");
     }, null, { timeout: 10000 });
 
-    const financeNewsVideo = experimentChapter.locator("a.aj-story-video-feature");
+    const archiveVideoChecks = [
+      { topicIndex: 0, id: "SG_CkTR15IQ", label: "finance-news" },
+      { topicIndex: 1, id: "Q0PoQ0u6Lb4", label: "running" },
+      { topicIndex: 2, id: "-cHr2vD9bLc", label: "motivation" },
+      { topicIndex: 3, id: "Syf-ChVSyu4", label: "day-in-the-life" },
+      { topicIndex: 4, id: "U5kfmKOUBHY", label: "finance-for-students" },
+    ];
+    const archivePlayer = experimentChapter.locator(".aj-story-archive-player iframe");
+    for (const video of archiveVideoChecks) {
+      await experimentChapter.locator(".aj-story-topic-card").nth(video.topicIndex).tap();
+      await page.waitForFunction(
+        (videoId) => {
+          const player = document.querySelector(".aj-story-archive-player iframe");
+          return player instanceof HTMLIFrameElement && player.getAttribute("src")?.includes("/embed/" + videoId);
+        },
+        video.id,
+        { timeout: 5000 },
+      );
+      const source = await archivePlayer.getAttribute("src");
+      assert(
+        source?.includes("/embed/" + video.id),
+        "The " + video.label + " Short is not playing in the inline Story archive player",
+      );
+    }
     assert(
-      (await financeNewsVideo.getAttribute("href") || "").includes("SG_CkTR15IQ"),
-      "The finance-news Short is not shown with its experiment tab",
-    );
-    await experimentChapter.locator(".aj-story-topic-card").nth(3).tap();
-    const dayInLifeVideo = experimentChapter.locator("a.aj-story-video-feature");
-    assert(
-      (await dayInLifeVideo.getAttribute("href") || "").includes("Syf-ChVSyu4"),
-      "The day-in-the-life Short does not switch in with the Daily Life tab",
+      await experimentChapter.locator("a.aj-story-video-feature").count() === 0,
+      "Story archive Shorts should play inline rather than navigate away to YouTube",
     );
 
     const gymChapter = page.locator(".aj-story-scene").nth(2);

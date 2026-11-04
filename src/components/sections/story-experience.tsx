@@ -209,7 +209,6 @@ function StoryWindow() {
 }
 
 function StoryShortEmbed({ video }: { video: (typeof storyShorts)[number] }) {
-  const url = "https://youtube.com/shorts/" + video.id + "?feature=share";
   return (
     <article className="aj-story-video-embed">
       <div className="aj-story-video-embed-player">

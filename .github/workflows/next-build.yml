@@ -11,9 +11,11 @@ on:
 permissions:
   contents: read
 
+# Keep the active publish alive. GitHub retains only the newest pending run
+# within each ref group, so rapid commits cannot cancel an in-flight deployment.
 concurrency:
-  group: github-pages-nextjs-export
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
