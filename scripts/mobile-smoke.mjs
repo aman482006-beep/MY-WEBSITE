@@ -316,61 +316,78 @@ async function runViewport(viewport) {
       await page.getByRole("heading", { name: projectTitle, exact: true }).waitFor();
     }
 
-    // Verify the seven-chapter story journey, real media and creator milestones.
+    // Verify the seven-chapter story journey, Instagram profile, linked Shorts and gym visual.
     await page.goto(base + "/story/", { waitUntil: "domcontentloaded" });
     await page.locator(".aj-story-journey-intro h1").waitFor({ state: "visible" });
     assert(await page.locator(".aj-story-scene").count() === 7, "Explore My Story should contain seven chapters");
     assert(await page.locator(".aj-story-progress").isVisible(), "Story progress indicator is missing");
 
     const firstPost = page.locator(".aj-story-scene").nth(0);
-    const firstPostPortrait = page.locator(".aj-story-first-video-context img");
-    await firstPostPortrait.evaluate((image) => { image.loading = "eager"; });
+    assert(
+      (await firstPost.locator("h2").textContent())?.includes("I had a CFA Level I result."),
+      "The first-post headline is missing its CFA Level I result line",
+    );
+    assert(
+      (await firstPost.locator("h2").textContent())?.includes("So I made my first post."),
+      "The first-post headline is missing its second visual beat",
+    );
+    assert(
+      (await firstPost.locator(".aj-story-first-post-quote").textContent())?.includes("My first instinct? Talk about the CFA Level I result."),
+      "The first-instinct CFA quote is missing",
+    );
+
+    const firstVideo = firstPost.locator("a.aj-story-video-feature");
+    assert(
+      (await firstVideo.getAttribute("href") || "").includes("cZmWuFLi7XI"),
+      "The first CFA video is not linked beside the first-post chapter",
+    );
+    const firstThumb = firstVideo.locator("img");
+    await firstThumb.evaluate((image) => { image.loading = "eager"; });
     await page.waitForFunction(() => {
-      const image = document.querySelector(".aj-story-first-video-context img");
+      const image = document.querySelector(".aj-story-scene:first-of-type .aj-story-video-feature img");
       return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
     }, null, { timeout: 10000 });
-    assert(
-      (await firstPost.locator("h2").textContent())?.includes("sharing one result"),
-      "The first-post chapter is missing its headline",
-    );
-    assert(
-      (await firstPost.locator(".aj-story-scene-intro").textContent())?.includes("CFA Level I result"),
-      "The first-post chapter is missing the CFA Level I context",
-    );
-    const firstVideo = firstPost.locator("iframe");
-    assert(
-      (await firstVideo.getAttribute("src") || "").includes("cZmWuFLi7XI"),
-      "The first CFA video is not embedded beside the first-post chapter",
-    );
 
     const experimentChapter = page.locator(".aj-story-scene").nth(1);
     await experimentChapter.scrollIntoViewIfNeeded();
     assert(
-      await experimentChapter.locator("iframe").count() === 2,
-      "The finance-news and day-in-the-life videos are missing from the experiment chapter",
+      (await experimentChapter.locator("h2").textContent())?.includes("Finance kept pulling me back."),
+      "The experiment headline is not split into two clear beats",
     );
-    const experimentVideoSources = await experimentChapter.locator("iframe").evaluateAll((frames) =>
-      frames.map((frame) => frame.getAttribute("src") || ""),
-    );
-    assert(
-      experimentVideoSources.some((src) => src.includes("SG_CkTR15IQ")) &&
-      experimentVideoSources.some((src) => src.includes("Syf-ChVSyu4")),
-      "The experiment videos do not point to the supplied Shorts",
-    );
-
-    const metrics = page.locator(".aj-story-creator-metrics");
-    await metrics.scrollIntoViewIfNeeded();
+    const instagram = experimentChapter.locator(".aj-story-instagram-card");
+    const instagramAvatar = instagram.locator(".aj-story-instagram-avatar-ring img");
+    await instagramAvatar.evaluate((image) => { image.loading = "eager"; });
     await page.waitForFunction(() => {
-      const values = Array.from(document.querySelectorAll(".aj-story-creator-metric strong"))
-        .map((node) => node.textContent?.trim());
-      return values.includes("100+") && values.includes("645");
+      const image = document.querySelector(".aj-story-instagram-avatar-ring img");
+      return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
     }, null, { timeout: 10000 });
-    assert(await metrics.getByRole("button", { name: /Replay the climb/i }).isVisible(), "The creator counter replay control is missing");
+    await instagram.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => {
+      const stats = Array.from(document.querySelectorAll(".aj-story-instagram-stats strong"))
+        .map((node) => node.textContent?.trim());
+      return stats.includes("149") && stats.includes("645") && stats.includes("31");
+    }, null, { timeout: 10000 });
+
+    const financeNewsVideo = experimentChapter.locator("a.aj-story-video-feature");
+    assert(
+      (await financeNewsVideo.getAttribute("href") || "").includes("SG_CkTR15IQ"),
+      "The finance-news Short is not shown with its experiment tab",
+    );
+    await experimentChapter.locator(".aj-story-topic-card").nth(3).tap();
+    const dayInLifeVideo = experimentChapter.locator("a.aj-story-video-feature");
+    assert(
+      (await dayInLifeVideo.getAttribute("href") || "").includes("Syf-ChVSyu4"),
+      "The day-in-the-life Short does not switch in with the Daily Life tab",
+    );
 
     const gymChapter = page.locator(".aj-story-scene").nth(2);
     assert(
       (await gymChapter.locator("h2").textContent())?.includes("Consistency was the answer"),
       "The gym and consistency chapter headline is missing",
+    );
+    assert(
+      await gymChapter.locator(".aj-story-consistency-comparison").isVisible(),
+      "The extreme-versus-consistency visual is missing",
     );
 
     const buildFlipCard = page.locator(".aj-story-build-flip-card").first();
