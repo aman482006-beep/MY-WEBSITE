@@ -2,39 +2,25 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Fragment, useEffect, useRef, useState, type CSSProperties } from "react";
 
-// The same clean transparent portrait is used for the My Story window
-// and the chapter-one portrait card. GitHub Pages needs the repository base path.
-const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/aman-story-photo.png"
-  : "/aman-story-photo.png";
+// next.config.ts injects NEXT_PUBLIC_BASE_PATH for GitHub Pages builds.
+// Unlike GITHUB_ACTIONS, this value is intentionally exposed to client components.
+const publicAsset = (path: string) => {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  return basePath + "/" + path.replace(/^\/+/, "");
+};
+const profileImageSrc = publicAsset("aman-story-photo.png");
 const storyAvatarSrc = profileImageSrc;
-const candidStoryImageSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/aman-story-candid.webp"
-  : "/aman-story-candid.webp";
+const candidStoryImageSrc = publicAsset("aman-story-candid.webp");
 
 const chapters = [
   {
     number: "01",
-    label: "The contradiction",
-    period: "Where it starts",
-    title: "I can value a company. A microphone can still make me nervous.",
-    intro: "I'm Aman — a finance student, creator and builder who is learning that confidence doesn't arrive all at once.",
-    paragraphs: [
-      "I'm pursuing a BBA in Finance & Marketing Analytics at CHRIST University, Bengaluru. I cleared CFA Level I through self-study and I'm now a Level II candidate.",
-      "I can spend hours understanding a company, but speaking in front of people can still make my hands shake. Both things are true. This isn't a story about pretending the fear disappeared; it's about not letting it make every decision."
-    ],
-    proof: ["CHRIST · BBA Finance & Marketing Analytics", "CFA Level I cleared", "CFA Level II candidate"],
-    takeaway: "Being capable at one thing doesn't mean feeling fearless at everything.",
-    visual: "portrait"
-  },
-  {
-    number: "02",
     label: "The first post",
     period: "A first attempt",
     title: "I started by sharing one result.",
-    intro: "My first instinct was to talk about the CFA Level I result because it felt like the biggest milestone I'd reached.",
+    intro: "“My first instinct was to talk about the CFA Level I result.” It was the first milestone I was proud enough to put out there.",
     paragraphs: [
       "There wasn't a carefully planned niche or a content calendar behind that first post. I had something I was proud of, and I decided to put it out there.",
       "That first step mattered because it made the next one easier to imagine. I didn't need a perfect creator identity before I could begin; I needed to publish, learn and try again."
@@ -44,7 +30,7 @@ const chapters = [
     visual: "post"
   },
   {
-    number: "03",
+    number: "02",
     label: "The cringe archive",
     period: "Trying things out",
     title: "Finance news. Running. Motivation. Daily life. Back to finance.",
@@ -59,7 +45,7 @@ const chapters = [
     visual: "archive"
   },
   {
-    number: "04",
+    number: "03",
     label: "The gym lesson",
     period: "A useful reset",
     title: "I thought extreme was the shortcut. Consistency was the answer.",
@@ -73,7 +59,7 @@ const chapters = [
     visual: "consistency"
   },
   {
-    number: "05",
+    number: "04",
     label: "Stage fear",
     period: "Still showing up",
     title: "Still shaky. Still showing up.",
@@ -87,7 +73,7 @@ const chapters = [
     visual: "stage"
   },
   {
-    number: "06",
+    number: "05",
     label: "Hands dirty",
     period: "Learning by building",
     title: "I stopped leaving every idea in a tab.",
@@ -101,7 +87,7 @@ const chapters = [
     visual: "build"
   },
   {
-    number: "07",
+    number: "06",
     label: "The people part",
     period: "Why I explain",
     title: "I remember what it felt like not to know where to start.",
@@ -115,7 +101,7 @@ const chapters = [
     visual: "people"
   },
   {
-    number: "08",
+    number: "07",
     label: "Internships",
     period: "Real work, real deadlines",
     title: "The spreadsheet eventually leaves the classroom.",
@@ -262,8 +248,114 @@ function StoryWindow() {
   );
 }
 
+function StoryShortEmbed({ video }: { video: (typeof storyShorts)[number] }) {
+  return (
+    <article className="aj-story-video-feature">
+      <div className="aj-story-video-frame">
+        <iframe
+          src={"https://www.youtube-nocookie.com/embed/" + video.id + "?rel=0"}
+          title={video.title}
+          loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      </div>
+      <div className="aj-story-video-copy">
+        <small>{video.tag}</small>
+        <b>{video.title}</b>
+        <p>{video.note}</p>
+        <a href={"https://youtube.com/shorts/" + video.id + "?feature=share"} target="_blank" rel="noopener noreferrer">
+          Watch on YouTube <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </article>
+  );
+}
+
+function StoryCreatorMetrics() {
+  const metricRef = useRef<HTMLDivElement | null>(null);
+  const [posts, setPosts] = useState(0);
+  const [followers, setFollowers] = useState(100);
+  const [replay, setReplay] = useState(0);
+
+  useEffect(() => {
+    const node = metricRef.current;
+    if (!node) return;
+
+    let frame = 0;
+    let observer: IntersectionObserver | null = null;
+    let started = false;
+    const easeOut = (value: number) => 1 - Math.pow(1 - value, 3);
+    const finish = () => {
+      setPosts(100);
+      setFollowers(645);
+    };
+    const animate = () => {
+      if (started) return;
+      started = true;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        finish();
+        return;
+      }
+
+      setPosts(0);
+      setFollowers(100);
+      const start = performance.now();
+      const duration = 2400;
+      const tick = (now: number) => {
+        const progress = Math.min(1, (now - start) / duration);
+        const postValue = Math.round(100 * easeOut(progress));
+        const followerValue = progress < 0.5
+          ? Math.round(100 + 300 * easeOut(progress * 2))
+          : Math.round(400 + 245 * easeOut((progress - 0.5) * 2));
+        setPosts(postValue);
+        setFollowers(followerValue);
+        if (progress < 1) frame = window.requestAnimationFrame(tick);
+        else finish();
+      };
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          animate();
+          observer?.disconnect();
+        }
+      }, { threshold: 0.28 });
+      observer.observe(node);
+    } else {
+      animate();
+    }
+
+    return () => {
+      observer?.disconnect();
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [replay]);
+
+  return (
+    <div className="aj-story-creator-metrics" ref={metricRef} aria-label="Posting and Instagram follower milestones">
+      <div className="aj-story-creator-metric">
+        <strong>{posts >= 100 ? "100+" : posts}</strong>
+        <span>posts shared</span>
+      </div>
+      <div className="aj-story-creator-metric">
+        <strong>{followers.toLocaleString("en-IN")}</strong>
+        <span>Instagram followers</span>
+      </div>
+      <div className="aj-story-creator-milestones">
+        <span>100</span><i /><span>400</span><i /><b>645 · NOW</b>
+      </div>
+      <button type="button" onClick={() => setReplay((value) => value + 1)}>
+        Replay the climb <span aria-hidden="true">↻</span>
+      </button>
+    </div>
+  );
+}
+
 function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }) {
-  const [postTapped, setPostTapped] = useState(false);
   const [flippedBuildCards, setFlippedBuildCards] = useState<string[]>([]);
   const [consistencyStep, setConsistencyStep] = useState(0);
   const [archiveSelected, setArchiveSelected] = useState(4);
@@ -271,40 +363,23 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   const [peopleFocus, setPeopleFocus] = useState(0);
   const [workSelected, setWorkSelected] = useState(0);
   const [deepStep, setDeepStep] = useState(0);
-  if (visual === "portrait") {
-    return (
-      <div className="aj-story-visual-card aj-story-visual-portrait aj-story-candid-card aj-story-portrait-large">
-        <Image
-          src={candidStoryImageSrc}
-          alt="Aman relaxing with a playful smile against a warm sunset sky"
-          width={512}
-          height={512}
-          sizes="(max-width: 850px) 88vw, 520px"
-          style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
-          priority
-        />
-      </div>
-    );
-  }
-
   if (visual === "post") {
     return (
-      <div className="aj-story-visual-card aj-story-post-visual">
-        <div className="aj-story-phone">
-          <div className="aj-story-phone-speaker" />
-          <div className="aj-story-phone-screen">
-            <div className="aj-story-post-top"><span className="aj-story-post-avatar">AJ</span><span><b>Aman</b><small>One of my first posts</small></span><i>•••</i></div>
-            <div className={"aj-story-post-art" + (postTapped ? " is-posted" : "")}><span>{postTapped ? "PUBLISHED" : "LEVEL I"}</span><strong>{postTapped ? "It's out." : "Cleared."}</strong><small>{postTapped ? "The next step is learning from it." : "A milestone worth sharing."}</small></div>
-            <div className="aj-story-post-actions"><span>♡ Like</span><span>↗ Share</span></div>
-            <div className="aj-story-post-line" /><div className="aj-story-post-line short" />
+      <div className="aj-story-visual-card aj-story-post-visual aj-story-video-visual">
+        <div className="aj-story-first-video-context">
+          <Image
+            src={candidStoryImageSrc}
+            alt="Aman smiling in a casual outdoor portrait"
+            width={120}
+            height={120}
+            sizes="88px"
+          />
+          <div>
+            <small>BEFORE THE FIRST UPLOAD</small>
+            <b>One CFA result. One camera. No playbook.</b>
           </div>
         </div>
-        <div className="aj-story-post-interaction">
-          <button type="button" className="aj-story-post-button" onClick={() => setPostTapped(true)} disabled={postTapped}>
-            {postTapped ? "POSTED ✓" : "POST"}
-          </button>
-          <p>{postTapped ? "Published. The next step was to learn and post again." : "Tap POST to mark that first step as published."}</p>
-        </div>
+        <StoryShortEmbed video={storyShorts[0]} />
       </div>
     );
   }
@@ -319,6 +394,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
     ] as const;
     return (
       <div className="aj-story-visual-card aj-story-archive-visual">
+        <StoryCreatorMetrics />
         <span className="aj-story-archive-label">THE CONTENT EXPERIMENTS · PICK A CHAPTER</span>
         <div className="aj-story-topic-track">
           {archiveItems.map((item, index) => (
@@ -337,6 +413,10 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
         <div className="aj-story-archive-detail" aria-live="polite">
           <b>{archiveItems[archiveSelected].name}</b>
           <p>{archiveItems[archiveSelected].detail}</p>
+        </div>
+        <div className="aj-story-archive-video-grid">
+          <StoryShortEmbed video={storyShorts[1]} />
+          <StoryShortEmbed video={storyShorts[2]} />
         </div>
       </div>
     );
@@ -549,7 +629,7 @@ export function StoryPreview() {
         <div className="aj-story-preview-copy">
           <p className="aj-eyebrow aj-eyebrow-accent">BEHIND THE PROJECTS</p>
           <h2>Explore my story<span>.</span></h2>
-          <p>Not a résumé in paragraph form. Open a window into the experiments, wrong turns, nerves and small wins that shaped how I learn and build.</p>
+          <p>I can spend hours understanding a company. A microphone can still make me nervous. This is the story of what I tried, what I learned and why I kept going.</p>
           <Link href="/story" className="aj-button aj-button-primary">Open the window <span aria-hidden="true">→</span></Link>
         </div>
         <StoryWindow />
@@ -560,9 +640,7 @@ export function StoryPreview() {
 
 
 
-const storyAsset = (filename: string) => process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/story-gallery/" + filename
-  : "/story-gallery/" + filename;
+const storyAsset = (filename: string) => publicAsset("story-gallery/" + filename);
 
 const storyMemories = [
   {
@@ -701,44 +779,6 @@ function StoryMemoryGallery() {
               ))}
             </div>
 
-            <div className="aj-story-shorts">
-              <div className="aj-story-shorts-heading">
-                <div>
-                  <p className="aj-eyebrow">THE FIRST UPLOADS</p>
-                  <h3>Three little time capsules.</h3>
-                </div>
-                <span>YOUTUBE SHORTS · OPENS IN A NEW TAB</span>
-              </div>
-              <div className="aj-story-shorts-grid">
-                {storyShorts.map((video) => (
-                  <a
-                    key={video.id}
-                    className="aj-story-short-card"
-                    href={"https://youtube.com/shorts/" + video.id + "?feature=share"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={"Watch " + video.title + " on YouTube"}
-                  >
-                    <span className="aj-story-short-thumb">
-                      <Image
-                        src={"https://i.ytimg.com/vi/" + video.id + "/hqdefault.jpg"}
-                        alt=""
-                        width={480}
-                        height={360}
-                        sizes="(max-width: 700px) 78vw, 30vw"
-                        loading="lazy"
-                      />
-                      <i aria-hidden="true">▶</i>
-                    </span>
-                    <span className="aj-story-short-copy">
-                      <small>{video.tag}</small>
-                      <b>{video.title}</b>
-                      <span>{video.note}</span>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
           </div>
         )}
       </div>
@@ -838,7 +878,7 @@ export function StoryExperience() {
         const rect = scene.getBoundingClientRect();
         if (rect.top <= viewportHeight * 0.42) current = index;
         if (reducedMotion || rect.top < viewportHeight * 0.86) scene.dataset.revealed = "true";
-        if (index < 2) {
+        if (index === 0) {
           scene.style.setProperty("--speech-progress", getProgress(scene, viewportHeight).toFixed(3));
         }
       });
@@ -926,14 +966,14 @@ export function StoryExperience() {
                 <div className="aj-story-scene-copy">
                   <div className="aj-story-scene-meta"><span>{chapter.number} / {String(chapters.length).padStart(2, "0")}</span><i /> <span>{chapter.period}</span></div>
                   <p className="aj-story-scene-label">{chapter.label}</p>
-                  {index < 2 && <SpokenTranscript chapter={index === 0 ? 1 : 2} />}
+                  {index === 0 && <SpokenTranscript chapter={2} />}
                   <h2
                     id={"story-heading-" + chapter.number}
-                    className={index < 2 ? "aj-story-clean-headline" : undefined}
+                    className={index === 0 ? "aj-story-clean-headline" : undefined}
                   >
-                    {index < 2
+                    {index === 0
                       ? chapter.title.split(" ").map((word, wordIndex) => (
-                          <span className="aj-story-clean-word" key={wordIndex}>{word}{wordIndex < chapter.title.split(" ").length - 1 ? " " : ""}</span>
+                          <Fragment key={wordIndex}><span className="aj-story-clean-word">{word}</span>{wordIndex < chapter.title.split(" ").length - 1 ? " " : ""}</Fragment>
                         ))
                       : chapter.title}
                   </h2>
