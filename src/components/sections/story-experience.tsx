@@ -421,6 +421,8 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
       { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", video: storyShorts[2] },
       { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", video: null }
     ] as const;
+    const activeArchiveItem = archiveItems[archiveSelected];
+    const activeArchiveVideo = activeArchiveItem.video;
     return (
       <div className="aj-story-visual-card aj-story-archive-visual">
         <InstagramProfilePreview />
@@ -440,15 +442,15 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           ))}
         </div>
         <div
-          className={"aj-story-archive-detail" + (archiveItems[archiveSelected].video ? " has-video" : "")}
+          className={"aj-story-archive-detail" + (activeArchiveVideo ? " has-video" : "")}
           aria-live="polite"
         >
           <div className="aj-story-archive-detail-copy">
-            <b>{archiveItems[archiveSelected].name}</b>
-            <p>{archiveItems[archiveSelected].detail}</p>
-            {archiveItems[archiveSelected].video && (
+            <b>{activeArchiveItem.name}</b>
+            <p>{activeArchiveItem.detail}</p>
+            {activeArchiveVideo && (
               <span className="aj-story-archive-video-label">
-                {archiveItems[archiveSelected].video.tag} · PLAY THE CLIP
+                {activeArchiveVideo.tag} · PLAY THE CLIP
               </span>
             )}
           </div>
@@ -456,9 +458,9 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
             <div className="aj-story-archive-player-wrap">
               <div className="aj-story-archive-player">
                 <iframe
-                  key={archiveItems[archiveSelected].video.id}
-                  src={"https://www.youtube-nocookie.com/embed/" + archiveItems[archiveSelected].video.id + "?rel=0"}
-                  title={archiveItems[archiveSelected].video.title}
+                  key={activeArchiveVideo.id}
+                  src={"https://www.youtube-nocookie.com/embed/" + activeArchiveVideo.id + "?rel=0"}
+                  title={activeArchiveVideo.title}
                   loading="lazy"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
@@ -466,7 +468,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
                 />
               </div>
               <a
-                href={"https://youtube.com/shorts/" + archiveItems[archiveSelected].video.id}
+                href={"https://youtube.com/shorts/" + activeArchiveVideo.id}
                 target="_blank"
                 rel="noopener noreferrer"
               >
