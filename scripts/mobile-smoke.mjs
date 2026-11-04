@@ -284,7 +284,7 @@ async function runViewport(viewport) {
 
     const firstPost = page.locator(".aj-story-scene").nth(0);
     assert(
-      (await firstPost.locator("h2").textContent())?.includes("I had a CFA Level I result."),
+      (await firstPost.locator("h2").textContent())?.includes("One CFA result. One first post."),
       "The first-post headline is missing its CFA Level I result line",
     );
     assert(
