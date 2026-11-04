@@ -559,6 +559,251 @@ export function StoryPreview() {
 }
 
 
+
+const storyMemorySpriteSrc = process.env.GITHUB_ACTIONS === "true"
+  ? "/MY-WEBSITE/story-gallery/story-gallery-sprite.webp"
+  : "/story-gallery/story-gallery-sprite.webp";
+
+const storyMemories = [
+  {
+    title: "The moustache era",
+    note: "A 2016 trip to Bengaluru. The commitment to the bit was already there.",
+    position: "0% 0%",
+    year: "2016",
+  },
+  {
+    title: "Built-in teammate",
+    note: "Me and my brother, school-uniform era.",
+    position: "50% 0%",
+    year: "THEN",
+  },
+  {
+    title: "The family frame",
+    note: "A family photo from the camera roll.",
+    position: "100% 0%",
+    year: "FAMILY",
+  },
+  {
+    title: "A moment with Nithin Kamath",
+    note: "One conversation worth keeping.",
+    position: "0% 100%",
+    year: "A GOOD ONE",
+  },
+  {
+    title: "The friends chapter",
+    note: "Good people. Better memories.",
+    position: "50% 100%",
+    year: "THE CREW",
+  },
+] as const;
+
+const storyShorts = [
+  {
+    id: "cZmWuFLi7XI",
+    title: "My first video",
+    note: "CFA prep, before I had a content playbook.",
+    tag: "FIRST UPLOAD",
+  },
+  {
+    id: "SG_CkTR15IQ",
+    title: "The finance-news experiment",
+    note: "Trying to make finance news a format.",
+    tag: "A FORMAT I TRIED",
+  },
+  {
+    id: "Syf-ChVSyu4",
+    title: "A day in my life",
+    note: "A little more of the day-to-day.",
+    tag: "DAY IN THE LIFE",
+  },
+] as const;
+
+function StoryMemoryGallery() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activePhoto, setActivePhoto] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (activePhoto === null) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setActivePhoto(null);
+      if (event.key === "ArrowLeft") {
+        setActivePhoto((current) => current === null
+          ? null
+          : (current + storyMemories.length - 1) % storyMemories.length);
+      }
+      if (event.key === "ArrowRight") {
+        setActivePhoto((current) => current === null
+          ? null
+          : (current + 1) % storyMemories.length);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [activePhoto]);
+
+  const selectedMemory = activePhoto === null ? null : storyMemories[activePhoto];
+
+  return (
+    <section className="aj-story-memory-section" aria-labelledby="aj-story-memory-heading">
+      <div className="aj-container aj-story-memory-inner">
+        <div className="aj-story-memory-heading">
+          <div>
+            <p className="aj-eyebrow aj-eyebrow-accent">OFF THE RECORD</p>
+            <h2 id="aj-story-memory-heading">Before all the tabs, there was this camera roll<span>.</span></h2>
+            <p>A few throwbacks, my favourite people, and the first videos I ever put out.</p>
+          </div>
+          <button
+            type="button"
+            className="aj-story-memory-toggle"
+            aria-expanded={isOpen}
+            aria-controls="aj-story-memory-content"
+            onClick={() => setIsOpen((open) => !open)}
+          >
+            {isOpen ? "Close the camera roll" : "Explore my gallery"}
+            <span aria-hidden="true">{isOpen ? "−" : "↗"}</span>
+          </button>
+        </div>
+
+        {isOpen && (
+          <div className="aj-story-memory-content" id="aj-story-memory-content">
+            <div className="aj-story-memory-grid" aria-label="Photo memories">
+              {storyMemories.map((photo, index) => (
+                <button
+                  type="button"
+                  key={photo.title}
+                  className={"aj-story-memory-card" + (index === 0 ? " is-featured" : "")}
+                  onClick={() => setActivePhoto(index)}
+                  aria-label={"Open photo: " + photo.title}
+                >
+                  <span
+                    className="aj-story-memory-photo"
+                    role="img"
+                    aria-label={photo.title}
+                    style={{
+                      backgroundImage: 'url("' + storyMemorySpriteSrc + '")',
+                      backgroundPosition: photo.position,
+                    }}
+                  />
+                  <span className="aj-story-memory-card-meta">
+                    <span>{photo.year}</span>
+                    <b>{photo.title}</b>
+                    <i aria-hidden="true">↗</i>
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <div className="aj-story-shorts">
+              <div className="aj-story-shorts-heading">
+                <div>
+                  <p className="aj-eyebrow">THE FIRST UPLOADS</p>
+                  <h3>Three little time capsules.</h3>
+                </div>
+                <span>YOUTUBE SHORTS · OPENS IN A NEW TAB</span>
+              </div>
+              <div className="aj-story-shorts-grid">
+                {storyShorts.map((video) => (
+                  <a
+                    key={video.id}
+                    className="aj-story-short-card"
+                    href={"https://youtube.com/shorts/" + video.id + "?feature=share"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={"Watch " + video.title + " on YouTube"}
+                  >
+                    <span className="aj-story-short-thumb">
+                      <Image
+                        src={"https://i.ytimg.com/vi/" + video.id + "/hqdefault.jpg"}
+                        alt=""
+                        width={480}
+                        height={360}
+                        sizes="(max-width: 700px) 78vw, 30vw"
+                        loading="lazy"
+                      />
+                      <i aria-hidden="true">▶</i>
+                    </span>
+                    <span className="aj-story-short-copy">
+                      <small>{video.tag}</small>
+                      <b>{video.title}</b>
+                      <span>{video.note}</span>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {selectedMemory && activePhoto !== null && (
+        <div
+          className="aj-story-memory-lightbox"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setActivePhoto(null);
+          }}
+        >
+          <div
+            className="aj-story-memory-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="aj-story-memory-dialog-title"
+          >
+            <button
+              type="button"
+              className="aj-story-memory-close"
+              onClick={() => setActivePhoto(null)}
+              aria-label="Close photo"
+            >
+              ×
+            </button>
+            <div
+              className="aj-story-memory-large"
+              role="img"
+              aria-label={selectedMemory.title}
+              style={{
+                backgroundImage: 'url("' + storyMemorySpriteSrc + '")',
+                backgroundPosition: selectedMemory.position,
+              }}
+            />
+            <div className="aj-story-memory-dialog-footer">
+              <div>
+                <small>{selectedMemory.year} · {String(activePhoto + 1).padStart(2, "0")} / 05</small>
+                <h3 id="aj-story-memory-dialog-title">{selectedMemory.title}</h3>
+                <p>{selectedMemory.note}</p>
+              </div>
+              <div className="aj-story-memory-nav">
+                <button
+                  type="button"
+                  onClick={() => setActivePhoto((activePhoto + storyMemories.length - 1) % storyMemories.length)}
+                  aria-label="Previous photo"
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActivePhoto((activePhoto + 1) % storyMemories.length)}
+                  aria-label="Next photo"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export function StoryExperience() {
   const [activeChapter, setActiveChapter] = useState(0);
   const progressTrackRef = useRef<HTMLElement | null>(null);
@@ -714,6 +959,8 @@ export function StoryExperience() {
           ))}
         </div>
       </section>
+
+      <StoryMemoryGallery />
 
       <section className="aj-story-outro aj-section">
         <div className="aj-container aj-story-outro-inner">
