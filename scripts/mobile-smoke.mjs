@@ -66,6 +66,11 @@ async function runViewport(viewport) {
     currentStage = "load transparent portrait inside My Story window";
     const storyAvatarImage = page.locator(".aj-story-window-person img");
     await storyAvatarImage.waitFor({ state: "attached" });
+    const storyAvatarSource = await storyAvatarImage.getAttribute("src");
+    assert(
+      storyAvatarSource?.includes("aman-story-photo.png"),
+      "My Story window is not using the transparent photo cut-out: " + storyAvatarSource,
+    );
     await storyAvatarImage.evaluate((image) => { image.loading = "eager"; });
     await page.waitForFunction(() => {
       const image = document.querySelector(".aj-story-window-person img");
@@ -81,6 +86,15 @@ async function runViewport(viewport) {
       }));
       throw new Error("Story portrait failed to load: " + JSON.stringify({ image: imageDetails, network: storyAssetNetwork }));
     });
+    const wavingArm = storyWindow.locator(".aj-story-wave-arm");
+    const firstWaveTransform = await wavingArm.evaluate((element) => getComputedStyle(element).transform);
+    await page.waitForTimeout(420);
+    const secondWaveTransform = await wavingArm.evaluate((element) => getComputedStyle(element).transform);
+    assert(
+      firstWaveTransform !== secondWaveTransform,
+      "The photo-based character's arm is not continuously waving",
+    );
+
     currentStage = "open the My Story window when it enters view";
     await page.waitForFunction(
       () => document.querySelector(".aj-story-window-scene")?.getAttribute("data-window-open") === "true",
@@ -297,6 +311,12 @@ async function runViewport(viewport) {
     await page.locator(".aj-story-journey-intro h1").waitFor({ state: "visible" });
     assert(await page.locator(".aj-story-scene").count() === 9, "Explore My Story should contain nine chapters");
     assert(await page.locator(".aj-story-progress").isVisible(), "Story progress indicator is missing");
+    const chapterPortrait = page.locator(".aj-story-portrait-large img");
+    await chapterPortrait.evaluate((image) => { image.loading = "eager"; });
+    await page.waitForFunction(() => {
+      const image = document.querySelector(".aj-story-portrait-large img");
+      return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
+    }, null, { timeout: 10000 });
     await page.locator(".aj-story-scene").nth(1).scrollIntoViewIfNeeded();
     await page.waitForFunction(
       () => document.querySelectorAll('.aj-story-scene[data-revealed="true"]').length >= 2,
