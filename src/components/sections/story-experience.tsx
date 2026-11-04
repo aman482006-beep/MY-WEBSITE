@@ -382,6 +382,19 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   if (visual === "post") {
     return (
       <div className="aj-story-visual-card aj-story-post-visual aj-story-video-visual">
+        <div className="aj-story-first-video-context">
+          <Image
+            src={candidStoryImageSrc}
+            alt="Aman smiling in a casual outdoor portrait"
+            width={120}
+            height={120}
+            sizes="88px"
+          />
+          <div>
+            <small>BEFORE THE FIRST UPLOAD</small>
+            <b>One CFA result. One camera. No playbook.</b>
+          </div>
+        </div>
         <StoryShortEmbed video={storyShorts[0]} />
       </div>
     );
