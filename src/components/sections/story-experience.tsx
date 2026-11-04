@@ -343,13 +343,22 @@ function InstagramProfilePreview() {
       </div>
       <div className="aj-story-instagram-main">
         <div className="aj-story-instagram-avatar-ring">
-          <Image
-            src={storyAsset("instagram-profile-avatar.webp")}
-            alt="Aman’s Instagram profile photo"
-            fill
-            sizes="(max-width: 700px) 96px, 128px"
-            priority={false}
-          />
+          <a
+            className="aj-story-instagram-avatar-link"
+            href="https://www.instagram.com/aman.ja1n/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Aman's Instagram profile"
+          >
+            <Image
+              src={storyAsset("instagram-profile-avatar.webp")}
+              alt="Aman's Instagram profile photo"
+              width={256}
+              height={256}
+              sizes="(max-width: 700px) 96px, 128px"
+              unoptimized
+            />
+          </a>
         </div>
         <div className="aj-story-instagram-details">
           <div className="aj-story-instagram-display-name">
@@ -1025,18 +1034,26 @@ export function StoryExperience() {
                     <blockquote className="aj-story-first-post-quote">{chapter.firstPostQuote}</blockquote>
                   )}
                   <p className="aj-story-scene-intro">{chapter.intro}</p>
-                  <div className="aj-story-scene-paragraphs">
-                    {chapter.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-                  </div>
-                  {"caption" in chapter && chapter.caption && <p className="aj-story-scene-caption">{chapter.caption}</p>}
-                  <div className="aj-story-scene-proof">
-                    {chapter.proof.map((item) => <span key={item}>{item}</span>)}
-                  </div>
-                  <div className="aj-story-lesson">
-                    <span>WHAT STUCK WITH ME</span>
-                    <p>{chapter.takeaway}</p>
-                    <i />
-                  </div>
+                  <details className="aj-story-read-more">
+                    <summary>
+                      <span>Read more</span>
+                      <i aria-hidden="true">+</i>
+                    </summary>
+                    <div className="aj-story-read-more-content">
+                      <div className="aj-story-scene-paragraphs">
+                        {chapter.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                      </div>
+                      {"caption" in chapter && chapter.caption && <p className="aj-story-scene-caption">{chapter.caption}</p>}
+                      <div className="aj-story-scene-proof">
+                        {chapter.proof.map((item) => <span key={item}>{item}</span>)}
+                      </div>
+                      <div className="aj-story-lesson">
+                        <span>WHAT STUCK WITH ME</span>
+                        <p>{chapter.takeaway}</p>
+                        <i />
+                      </div>
+                    </div>
+                  </details>
                 </div>
                 <div className="aj-story-scene-art">
                   <StoryVisual visual={chapter.visual} />

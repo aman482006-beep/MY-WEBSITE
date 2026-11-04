@@ -335,6 +335,11 @@ async function runViewport(viewport) {
       (await firstPost.locator(".aj-story-first-post-quote").textContent())?.includes("My first instinct? Talk about the CFA Level I result."),
       "The first-instinct CFA quote is missing",
     );
+    const readMore = firstPost.locator("details.aj-story-read-more");
+    assert(await readMore.count() === 1, "The first chapter's Read more disclosure is missing");
+    assert(!(await readMore.evaluate((node) => node.open)), "Story detail should start collapsed");
+    await readMore.locator("summary").tap();
+    assert(await readMore.evaluate((node) => node.open), "Read more did not expand the chapter details");
 
     const firstVideo = firstPost.locator("a.aj-story-video-feature");
     assert(
@@ -356,6 +361,11 @@ async function runViewport(viewport) {
     );
     const instagram = experimentChapter.locator(".aj-story-instagram-card");
     const instagramAvatar = instagram.locator(".aj-story-instagram-avatar-ring img");
+    const avatarLink = instagram.locator("a.aj-story-instagram-avatar-link");
+    assert(
+      (await avatarLink.getAttribute("href")) === "https://www.instagram.com/aman.ja1n/",
+      "The profile photo does not link to Aman's Instagram account",
+    );
     await instagramAvatar.evaluate((image) => { image.loading = "eager"; });
     await page.waitForFunction(() => {
       const image = document.querySelector(".aj-story-instagram-avatar-ring img");
