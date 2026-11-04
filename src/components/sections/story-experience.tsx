@@ -1106,8 +1106,6 @@ export function StoryExperience() {
 
       <StoryMemoryGallery />
 
-      <StoryShortsSection />
-
       <section className="aj-story-outro aj-section">
         <div className="aj-container aj-story-outro-inner">
           <p className="aj-eyebrow aj-eyebrow-accent">STILL ADDING CHAPTERS</p>
