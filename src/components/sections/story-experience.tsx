@@ -4,13 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
+// The same clean transparent portrait is used for the My Story window
+// and the chapter-one portrait card. GitHub Pages needs the repository base path.
 const profileImageSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/aman-story-face.jpg"
-  : "/aman-story-face.jpg";
-// Transparent, verified photo cut-out used only in the My Story window.
-const storyAvatarSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/aman-story-avatar.webp"
-  : "/aman-story-avatar.webp";
+  ? "/MY-WEBSITE/aman-story-photo.png"
+  : "/aman-story-photo.png";
+const storyAvatarSrc = profileImageSrc;
 
 const chapters = [
   {
@@ -179,13 +178,27 @@ function StoryWindow() {
           <span className="aj-story-window-hill aj-story-window-hill-front" />
         </div>
         <div className="aj-story-window-person">
-          <Image src={storyAvatarSrc} alt="Aman smiling in a portrait" fill loading="eager" sizes="(max-width: 620px) 56vw, 220px" />
+          <Image src={storyAvatarSrc} alt="Aman in a photo-based portrait" fill loading="eager" sizes="(max-width: 620px) 64vw, 280px" />
         </div>
-        <svg className="aj-story-window-wave" viewBox="0 0 110 170" aria-hidden="true">
+        <svg className="aj-story-window-wave" viewBox="0 0 170 250" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="aj-story-arm-skin" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stopColor="#D8A18A" />
+              <stop offset=".58" stopColor="#C58B73" />
+              <stop offset="1" stopColor="#A96F5B" />
+            </linearGradient>
+            <pattern id="aj-story-arm-plaid" width="22" height="22" patternUnits="userSpaceOnUse">
+              <rect width="22" height="22" fill="#252A35" />
+              <path d="M0 6H22 M0 16H22" stroke="#B9AFC0" strokeWidth="2.4" opacity=".9" />
+              <path d="M7 0V22 M17 0V22" stroke="#8A7B92" strokeWidth="1.6" opacity=".8" />
+            </pattern>
+          </defs>
           <g className="aj-story-wave-arm">
-            <path d="M13 169 C12 145 19 119 27 96 C32 82 34 67 40 56 C36 47 34 38 36 29 C37 22 43 22 45 29 L48 42 L49 15 C50 7 57 8 58 16 L58 43 L63 22 C65 15 72 17 71 25 L67 48 L74 34 C78 27 84 32 80 40 L71 61 C67 75 58 90 53 111 C48 133 49 151 52 169 Z" fill="#BD7C5C" stroke="#8C523D" strokeWidth="1.5" />
-            <path d="M25 106 C31 86 35 73 40 59 L55 66 C49 88 44 106 42 124 Z" fill="#242936" />
-            <path d="M34 77 L48 82 M31 88 L45 93 M29 99 L43 104" stroke="#B7A7BE" strokeWidth="2" opacity=".8" />
+            <path d="M32 250 C27 230 29 211 38 191 C47 169 62 148 74 128 C81 116 81 106 73 96 L59 77 C54 70 57 62 64 61 C70 60 77 72 85 82 L80 53 C79 43 87 39 94 45 C99 50 100 66 103 80 L107 44 C108 34 118 33 123 41 C127 48 122 67 120 81 L130 57 C135 48 145 53 143 63 L131 96 C126 111 117 128 108 146 C98 168 94 188 99 210 C102 226 108 239 115 250 Z" fill="url(#aj-story-arm-skin)" stroke="#925C49" strokeWidth="2.2" strokeLinejoin="round" />
+            <path d="M24 250 C21 230 27 212 41 194 C50 181 63 176 81 178 C93 190 101 212 111 250 Z" fill="url(#aj-story-arm-plaid)" stroke="#252A35" strokeWidth="2" />
+            <path d="M35 206 C50 194 67 190 91 199" fill="none" stroke="#D4C7D3" strokeWidth="2" opacity=".75" />
+            <path d="M77 93 C89 100 101 101 114 96 M88 111 C98 116 109 117 121 111" fill="none" stroke="#955F4D" strokeWidth="1.6" opacity=".55" />
+            <path d="M91 78 C89 68 89 58 89 48 M105 78 C108 67 111 58 114 50 M119 81 C124 73 130 67 135 63" fill="none" stroke="#E6B5A0" strokeWidth="2" strokeLinecap="round" opacity=".75" />
           </g>
         </svg>
         <div className="aj-story-window-sill" />
