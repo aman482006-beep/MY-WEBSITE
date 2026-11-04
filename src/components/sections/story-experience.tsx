@@ -416,8 +416,8 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   if (visual === "archive") {
     const archiveItems = [
       { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world.", video: storyShorts[1] },
-      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one.", video: null },
-      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles.", video: null },
+      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one.", video: storyShorts[3] },
+      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles.", video: storyShorts[4] },
       { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", video: storyShorts[2] },
       { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", video: null }
     ] as const;
@@ -742,60 +742,6 @@ const storyShorts = [
     tag: "MOTIVATION",
   },
 ] as const;
-
-function StoryShortsSection() {
-  return (
-    <section className="aj-story-shorts-section" aria-labelledby="aj-story-shorts-heading">
-      <div className="aj-container">
-        <div className="aj-story-shorts-heading">
-          <p className="aj-eyebrow aj-eyebrow-accent">LITTLE CLIPS FROM THE JOURNEY</p>
-          <h2 id="aj-story-shorts-heading">A few things that kept me moving<span>.</span></h2>
-          <p>Not every chapter needs a big explanation. Sometimes it is just a run, a reminder, or a video worth keeping.</p>
-        </div>
-        <div className="aj-story-shorts-grid">
-          {storyShorts.slice(3).map((video) => (
-            <article className="aj-story-short-card" key={video.id}>
-              <div className="aj-story-short-player">
-                <iframe
-                  src={"https://www.youtube-nocookie.com/embed/" + video.id + "?rel=0"}
-                  title={video.title}
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              </div>
-              <div className="aj-story-short-copy">
-                <small>{video.tag}</small>
-                <h3>{video.title}</h3>
-                <p>{video.note}</p>
-                <a href={"https://youtube.com/shorts/" + video.id} target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-      <style jsx>{`
-        .aj-story-shorts-section { padding: clamp(4rem, 8vw, 7rem) 0; background: #f5f0e8; }
-        .aj-story-shorts-heading { max-width: 680px; margin: 0 auto 2.5rem; text-align: center; }
-        .aj-story-shorts-heading h2 { margin: .7rem 0; font: 500 clamp(2rem, 4.5vw, 3.6rem)/1.08 var(--font-newsreader, Georgia, serif); letter-spacing: -.035em; color: #292821; }
-        .aj-story-shorts-heading h2 span { color: #c87954; }
-        .aj-story-shorts-heading > p:last-child { max-width: 560px; margin: 0 auto; color: #706d64; line-height: 1.7; }
-        .aj-story-shorts-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; max-width: 900px; margin: 0 auto; }
-        .aj-story-short-card { overflow: hidden; border: 1px solid rgba(54,48,38,.12); border-radius: 18px; background: #fffdf8; box-shadow: 0 12px 32px rgba(55,45,30,.06); }
-        .aj-story-short-player { aspect-ratio: 9 / 16; max-height: 520px; background: #171717; }
-        .aj-story-short-player iframe { display: block; width: 100%; height: 100%; border: 0; }
-        .aj-story-short-copy { padding: 1.1rem 1.25rem 1.3rem; }
-        .aj-story-short-copy small { color: #b56f4c; font-size: .68rem; font-weight: 750; letter-spacing: .12em; }
-        .aj-story-short-copy h3 { margin: .45rem 0 .35rem; color: #292821; font-size: 1.2rem; }
-        .aj-story-short-copy p { margin: 0 0 .8rem; color: #706d64; line-height: 1.55; }
-        .aj-story-short-copy a { color: #9b593b; font-size: .88rem; font-weight: 700; text-decoration: none; }
-        @media (max-width: 640px) { .aj-story-shorts-grid { grid-template-columns: 1fr; max-width: 360px; } }
-      `}</style>
-    </section>
-  );
-}
-
 function StoryMemoryGallery() {
   const [isOpen, setIsOpen] = useState(false);
   const [activePhoto, setActivePhoto] = useState<number | null>(null);
