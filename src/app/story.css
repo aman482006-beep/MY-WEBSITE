@@ -1293,3 +1293,62 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-buil
   font-size: 9px;
   font-weight: 900;
 }
+
+
+/* Archive interaction: keep every topic card reachable without clipping. */
+.aj-story-topic-track {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  contain: layout paint;
+}
+.aj-story-topic-card {
+  min-width: 0;
+  box-sizing: border-box;
+}
+@media (max-width: 1023px) {
+  /* The entrance motion must not push the first/last tile outside its card. */
+  html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-topic-card {
+    translate: 0 8px;
+  }
+  .aj-story-topic-card:nth-child(odd),
+  .aj-story-topic-card:nth-child(even) {
+    rotate: 0deg;
+  }
+  .aj-story-topic-card.topic-final {
+    transform: none;
+  }
+}
+@media (max-width: 620px) {
+  .aj-story-topic-track {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 2px 4px 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 4px;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    contain: layout paint;
+  }
+  .aj-story-topic-card {
+    flex: 0 0 106px;
+    width: 106px;
+    min-width: 106px;
+    scroll-snap-align: start;
+    rotate: 0deg !important;
+  }
+  .aj-story-topic-card.topic-final {
+    rotate: 0deg !important;
+    transform: none !important;
+  }
+  html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-topic-card {
+    translate: 0 8px;
+  }
+}
