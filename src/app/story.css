@@ -927,3 +927,75 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-buil
 @media (prefers-reduced-motion: reduce) {
   .aj-project-screenshot { transition: none; }
 }
+
+
+/* My Story character rebuild: one real photo layer, one attached waving arm. */
+.aj-story-window-person {
+  z-index: 5;
+  left: 19%;
+  width: 62%;
+  height: 94%;
+  bottom: -1%;
+  overflow: visible;
+  animation: none !important;
+}
+.aj-story-window-person img {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  filter: drop-shadow(0 5px 8px rgba(45,54,48,.12));
+}
+.aj-story-window-wave {
+  z-index: 7;
+  right: 16%;
+  bottom: -1%;
+  width: 37%;
+  height: 70%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 5px rgba(55,45,37,.16));
+  pointer-events: none;
+}
+.aj-story-wave-arm {
+  transform-box: view-box;
+  transform-origin: 45% 97%;
+  animation: aj-story-wave 1.18s cubic-bezier(.42,0,.58,1) infinite;
+}
+@keyframes aj-story-wave {
+  0%, 100% { transform: rotate(-7deg); }
+  25% { transform: rotate(8deg); }
+  50% { transform: rotate(12deg); }
+  75% { transform: rotate(-3deg); }
+}
+@keyframes aj-story-cloud-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100vw + 430px)); }
+}
+
+/* Use the real transparent portrait in Chapter 1 as well. */
+.aj-story-portrait-large img {
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  filter: drop-shadow(0 5px 8px rgba(45,54,48,.12));
+}
+.aj-story-visual-portrait .aj-story-portrait-large {
+  background: linear-gradient(160deg, #EFE4D8, #F8F2EA);
+}
+
+@media (max-width: 620px) {
+  .aj-story-window-person {
+    left: 12%;
+    width: 72%;
+    height: 88%;
+    bottom: -1%;
+  }
+  .aj-story-window-wave {
+    right: 12%;
+    width: 39%;
+    height: 66%;
+    bottom: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-story-window-person { animation: none !important; }
+  .aj-story-wave-arm { animation: none !important; transform: none !important; }
+  .aj-story-cloud { animation: none !important; }
+}
