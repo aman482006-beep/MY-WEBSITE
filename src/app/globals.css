@@ -1743,3 +1743,16 @@ a[href]:active, button:active { opacity: .82; }
 .aj-video-card.is-playing {
   cursor: default;
 }
+
+
+/* Keep the Creator hub's embedded video cards inside the mobile viewport. */
+.aj-creator-page {
+  min-width: 0;
+  overflow-x: clip;
+}
+.aj-creator-page > .aj-container,
+.aj-creator-page .aj-video-grid,
+.aj-creator-page .aj-video-card {
+  min-width: 0;
+  max-width: 100%;
+}
