@@ -2955,7 +2955,7 @@ body:has(.wispr-challenge) .site-main {
   word-spacing: .025em;
 }
 .aj-story-clean-word:not(:last-child) {
-  margin-right: .21em;
+  margin-right: 0;
 }
 .aj-story-video-visual {
   width: min(100%, 420px);
