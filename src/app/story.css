@@ -1446,3 +1446,235 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-buil
 /* Candid Chapter 01 image: retain the portrait selector used by mobile smoke tests. */
 .aj-story-candid-card { display: block; min-height: 0; width: 100%; aspect-ratio: 1 / 1; padding: 0; overflow: hidden; border-radius: 18px; }
 .aj-story-candid-card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+
+/* --------------------------------------------------------------------------
+   Wispr Flow application pass — spoken-to-clean Chapters 01–02.
+   Existing site tokens, typography, chapter copy and later chapter styling
+   remain intact. Scroll progress is written by a passive rAF scroll listener.
+   -------------------------------------------------------------------------- */
+
+.aj-story-intro-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px 24px;
+}
+.aj-story-skip-option {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  color: var(--aj-muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-decoration: none;
+  transition: color .18s ease;
+}
+.aj-story-skip-option:hover { color: var(--aj-orange-dark); }
+.aj-story-skip-option:focus-visible { outline: 2px solid var(--aj-orange); outline-offset: 4px; border-radius: 3px; }
+
+/* The floating mic stays in view and follows the chapter's scroll tension. */
+.aj-story-mic {
+  --mic-tension: .7;
+  position: fixed;
+  z-index: 310;
+  top: 88px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(190, 113, 78, .24);
+  border-radius: 999px;
+  color: #75432F;
+  background: rgba(255, 250, 244, .92);
+  box-shadow: 0 7px 22px rgba(63, 44, 31, .08);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+.aj-story-mic-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: #D36C57;
+  box-shadow: 0 0 calc(3px + 5px * var(--mic-tension)) rgba(211,108,87,.45);
+}
+.aj-story-mic-label,
+.aj-story-mic-status {
+  color: #8E3B1D;
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: .13em;
+}
+.aj-story-mic-status { color: #8A8177; font-size: 7px; }
+.aj-story-mic-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 29px;
+  height: 18px;
+  transform-origin: center;
+}
+.aj-story-mic-wave i {
+  display: block;
+  width: 2px;
+  height: var(--bar-height, 8px);
+  border-radius: 3px;
+  background: #D36C57;
+  transform: scaleY(calc(.24 + var(--mic-tension) * .76));
+  transform-origin: center;
+  transition: transform 80ms linear;
+}
+.aj-story-mic-wave i:nth-child(1), .aj-story-mic-wave i:nth-child(9) { --bar-height: 5px; }
+.aj-story-mic-wave i:nth-child(2), .aj-story-mic-wave i:nth-child(8) { --bar-height: 9px; }
+.aj-story-mic-wave i:nth-child(3), .aj-story-mic-wave i:nth-child(7) { --bar-height: 13px; }
+.aj-story-mic-wave i:nth-child(4), .aj-story-mic-wave i:nth-child(6) { --bar-height: 7px; }
+.aj-story-mic-wave i:nth-child(5) { --bar-height: 16px; }
+.aj-story-mic[data-chapter="1"] .aj-story-mic-wave {
+  animation: aj-story-mic-tremble 170ms steps(2, end) infinite;
+}
+.aj-story-mic[data-chapter="2"] .aj-story-mic-wave {
+  animation: aj-story-mic-tremble 330ms ease-in-out infinite;
+}
+@keyframes aj-story-mic-tremble {
+  0%, 100% { translate: calc(var(--mic-tension) * -1.3px) 0; rotate: calc(var(--mic-tension) * -1.1deg); }
+  50% { translate: calc(var(--mic-tension) * 1.3px) 0; rotate: calc(var(--mic-tension) * 1.1deg); }
+}
+
+/* Raw words are real text. Only the marked fillers / false starts are crossed out.
+   The remaining phrases compress and move toward the final headline as it opens. */
+.aj-spoken-rewrite {
+  --speech-progress: 0;
+  position: relative;
+  margin: 15px 0 13px;
+  padding: 12px 14px 13px;
+  border: 1px solid rgba(190, 113, 78, .22);
+  border-radius: 11px;
+  background: linear-gradient(125deg, rgba(255,245,235,.9), rgba(255,255,255,.78));
+  transform-origin: left top;
+}
+.aj-spoken-rewrite-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 13px;
+}
+.aj-spoken-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #A64B2C;
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: .16em;
+}
+.aj-spoken-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #D36C57;
+  box-shadow: 0 0 0 3px rgba(211,108,87,.13);
+}
+.aj-spoken-scroll-note {
+  color: #9A8A7D;
+  font-size: 8px;
+  font-weight: 750;
+  letter-spacing: .04em;
+}
+.aj-spoken-transcript {
+  margin: 9px 0 0;
+  color: #4B4D53;
+  font-size: clamp(13px, 1.08vw, 15px);
+  font-weight: 560;
+  line-height: 1.72;
+  transform: translate3d(0, calc(var(--speech-progress) * -9px), 0)
+    scaleX(calc(1 - var(--speech-progress) * .12))
+    scaleY(calc(1 - var(--speech-progress) * .14));
+  transform-origin: left top;
+  opacity: calc(1 - var(--speech-progress) * .76);
+}
+.aj-spoken-fragment {
+  display: inline-block;
+  transform-origin: left center;
+}
+.aj-spoken-fragment:not(.is-filler):not(.is-false-start) {
+  transform: translate3d(0, calc(var(--speech-progress) * -3px), 0)
+    scaleX(calc(1 - var(--speech-progress) * .13))
+    scaleY(calc(1 - var(--speech-progress) * .07));
+  letter-spacing: calc(var(--speech-progress) * -.012em);
+}
+.aj-spoken-fragment.is-filler,
+.aj-spoken-fragment.is-false-start {
+  color: #8B695B;
+  text-decoration-line: line-through;
+  text-decoration-color: rgba(177, 73, 43, calc(.15 + var(--speech-progress) * .85));
+  text-decoration-thickness: calc(var(--speech-progress) * 1.7px);
+  text-decoration-skip-ink: none;
+  transform: translateY(calc(var(--speech-progress) * -2px))
+    scaleX(calc(1 - var(--speech-progress) * .2));
+  transform-origin: left center;
+}
+.aj-story-clean-headline {
+  transform: translateY(calc((1 - var(--speech-progress, 0)) * 7px))
+    scaleX(calc(.93 + var(--speech-progress, 0) * .07))
+    scaleY(calc(.95 + var(--speech-progress, 0) * .05));
+  transform-origin: left center;
+}
+.aj-story-clean-word {
+  display: inline-block;
+  transform: translateY(calc((1 - var(--speech-progress, 0)) * 5px))
+    scaleX(calc(.86 + var(--speech-progress, 0) * .14));
+  transform-origin: left center;
+  transition: none;
+}
+
+/* Keep the first two chapters readable without relying on animation support. */
+.aj-story-progress-track i { transition: none; }
+
+@media (max-width: 700px) {
+  .aj-story-intro-actions { gap: 11px 18px; }
+  .aj-story-skip-option { min-height: 34px; font-size: 8px; }
+  .aj-story-mic {
+    top: auto;
+    right: auto;
+    bottom: 14px;
+    left: 12px;
+    min-height: 34px;
+    gap: 7px;
+    padding: 0 10px;
+  }
+  .aj-story-mic-status { display: none; }
+  .aj-spoken-rewrite {
+    margin: 13px 0 11px;
+    padding: 10px 11px 11px;
+    border-radius: 9px;
+  }
+  .aj-spoken-transcript { font-size: 13px; line-height: 1.65; }
+}
+@media (max-width: 380px) {
+  .aj-story-mic { bottom: 12px; left: 10px; }
+  .aj-spoken-scroll-note { font-size: 7px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-spoken-rewrite { display: none !important; }
+  .aj-story-clean-headline,
+  .aj-story-clean-word {
+    transform: none !important;
+    filter: none !important;
+  }
+  .aj-story-mic-wave,
+  .aj-story-mic[data-chapter="1"] .aj-story-mic-wave,
+  .aj-story-mic[data-chapter="2"] .aj-story-mic-wave {
+    animation: none !important;
+    translate: none !important;
+    rotate: none !important;
+  }
+  .aj-story-mic-wave i { transform: scaleY(.55); transition: none; }
+  .aj-story-skip-option,
+  .aj-story-clean-word { transition: none !important; }
+}
