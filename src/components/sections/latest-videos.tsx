@@ -11,6 +11,7 @@ const featuredVideos = [
 
 export function LatestVideos() {
   const [videoTitles, setVideoTitles] = useState<Record<string, string>>({});
+  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -58,28 +59,38 @@ export function LatestVideos() {
 
         <div className="aj-video-grid">
           {featuredVideos.map((video) => (
-            <a
-              key={video.id}
-              className="aj-video-card"
-              href={`https://www.youtube.com/watch?v=${video.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Play ${videoTitles[video.id] || `YouTube video ${video.number}`}`}
-            >
+            <article key={video.id} className={"aj-video-card" + (activeVideoId === video.id ? " is-playing" : "")}>
               <div className="aj-video-thumbnail">
-                <Image
-                  src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
-                  alt={`YouTube thumbnail for featured video ${video.number}`}
-                  fill
-                  sizes="(max-width: 700px) 48vw, 22vw"
-                />
+                {activeVideoId === video.id ? (
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${video.id}?autoplay=1&playsinline=1&rel=0`}
+                    title={videoTitles[video.id] || `YouTube video ${video.number}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    className="aj-video-inline-trigger"
+                    onClick={() => setActiveVideoId(video.id)}
+                    aria-label={`Play ${videoTitles[video.id] || `YouTube video ${video.number}`} here`}
+                  >
+                    <Image
+                      src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
+                      alt={`YouTube thumbnail for featured video ${video.number}`}
+                      fill
+                      sizes="(max-width: 700px) 48vw, 22vw"
+                    />
+                  </button>
+                )}
               </div>
               <div className="aj-video-info">
                 <span className="aj-video-label">YOUTUBE · {video.number}</span>
                 <h3>{videoTitles[video.id] || "Loading video title…"}</h3>
-                <span className="aj-video-cta">Click to play <span aria-hidden="true">↗</span></span>
+                <span className="aj-video-cta">{activeVideoId === video.id ? "Playing here" : "Click thumbnail to play"} <span aria-hidden="true">{activeVideoId === video.id ? "✓" : "▶"}</span></span>
               </div>
-            </a>
+            </article>
           ))}
         </div>
       </div>
