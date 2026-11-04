@@ -64,7 +64,6 @@ const cfaVideoIds: { title: string; id: string }[] = [];
 function SpokenCleanup({ chapter }: { chapter: 1 | 2 }) {
   const parts = spokenDrafts[chapter];
   const transcript = parts.map((part) => part.text).join(" ");
-  const headline = cleanHeadlines[chapter];
 
   return (
     <div className="aj-spoken-rewrite wispr-spoken-cleanup" aria-label="Spoken words being cleaned into a headline">
