@@ -560,39 +560,39 @@ export function StoryPreview() {
 
 
 
-const storyMemorySpriteSrc = process.env.GITHUB_ACTIONS === "true"
-  ? "/MY-WEBSITE/story-gallery/story-gallery-sprite.webp"
-  : "/story-gallery/story-gallery-sprite.webp";
+const storyAsset = (filename: string) => process.env.GITHUB_ACTIONS === "true"
+  ? "/MY-WEBSITE/story-gallery/" + filename
+  : "/story-gallery/" + filename;
 
 const storyMemories = [
   {
     title: "The moustache era",
     note: "A 2016 trip to Bengaluru. The commitment to the bit was already there.",
-    position: "0% 0%",
+    src: storyAsset("story-childhood.webp"),
     year: "2016",
   },
   {
     title: "Built-in teammate",
     note: "Me and my brother, school-uniform era.",
-    position: "50% 0%",
+    src: storyAsset("story-brother.webp"),
     year: "THEN",
   },
   {
     title: "The family frame",
     note: "A family photo from the camera roll.",
-    position: "100% 0%",
+    src: storyAsset("story-family.webp"),
     year: "FAMILY",
   },
   {
     title: "A moment with Nithin Kamath",
     note: "One conversation worth keeping.",
-    position: "0% 100%",
+    src: storyAsset("story-nithin-kamath.webp"),
     year: "A GOOD ONE",
   },
   {
     title: "The friends chapter",
     note: "Good people. Better memories.",
-    position: "50% 100%",
+    src: storyAsset("story-friends.webp"),
     year: "THE CREW",
   },
 ] as const;
@@ -683,15 +683,15 @@ function StoryMemoryGallery() {
                   onClick={() => setActivePhoto(index)}
                   aria-label={"Open photo: " + photo.title}
                 >
-                  <span
-                    className="aj-story-memory-photo"
-                    role="img"
-                    aria-label={photo.title}
-                    style={{
-                      backgroundImage: 'url("' + storyMemorySpriteSrc + '")',
-                      backgroundPosition: photo.position,
-                    }}
-                  />
+                  <span className="aj-story-memory-photo">
+                    <Image
+                      src={photo.src}
+                      alt={photo.title}
+                      fill
+                      sizes="(max-width: 700px) 44vw, (max-width: 980px) 30vw, 18vw"
+                      loading="lazy"
+                    />
+                  </span>
                   <span className="aj-story-memory-card-meta">
                     <span>{photo.year}</span>
                     <b>{photo.title}</b>
@@ -765,15 +765,15 @@ function StoryMemoryGallery() {
             >
               ×
             </button>
-            <div
-              className="aj-story-memory-large"
-              role="img"
-              aria-label={selectedMemory.title}
-              style={{
-                backgroundImage: 'url("' + storyMemorySpriteSrc + '")',
-                backgroundPosition: selectedMemory.position,
-              }}
-            />
+            <div className="aj-story-memory-large">
+              <Image
+                src={selectedMemory.src}
+                alt={selectedMemory.title}
+                fill
+                sizes="(max-width: 700px) 88vw, 420px"
+                priority
+              />
+            </div>
             <div className="aj-story-memory-dialog-footer">
               <div>
                 <small>{selectedMemory.year} · {String(activePhoto + 1).padStart(2, "0")} / 05</small>
