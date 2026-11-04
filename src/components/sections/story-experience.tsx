@@ -12,14 +12,14 @@ const publicAsset = (path: string) => {
 };
 const profileImageSrc = publicAsset("aman-story-photo.png");
 const storyAvatarSrc = profileImageSrc;
-const candidStoryImageSrc = publicAsset("aman-story-candid.webp");
+const storyInstagramAvatarSrc = publicAsset("aman-story-avatar.webp");
 
 const chapters = [
   {
     number: "01",
     label: "The first post",
     period: "A first attempt",
-    title: "I had a CFA Level I result. So I made my first post.",
+    title: "One CFA result. One first post.",
     intro: "I had a result I was proud of. I did not have a content plan yet.",
     firstPostQuote: "My first instinct? Talk about the CFA Level I result.",
     paragraphs: [
@@ -209,7 +209,7 @@ function StoryWindow() {
           <span className="aj-story-window-hill aj-story-window-hill-front" />
         </div>
         <div className="aj-story-window-person">
-          <Image src={storyAvatarSrc} alt="Aman in a photo-based portrait" fill loading="eager" sizes="(max-width: 620px) 64vw, 280px" />
+          <img src={storyAvatarSrc} alt="Aman in a photo-based portrait" loading="eager" />
         </div>
         <svg className="aj-story-window-wave" viewBox="0 0 170 250" aria-hidden="true" focusable="false">
           <defs>
@@ -252,91 +252,82 @@ function StoryWindow() {
 function StoryShortEmbed({ video }: { video: (typeof storyShorts)[number] }) {
   const url = "https://youtube.com/shorts/" + video.id + "?feature=share";
   return (
-    <a className="aj-story-video-feature" href={url} target="_blank" rel="noopener noreferrer" aria-label={"Watch " + video.title + " on YouTube"}>
-      <span className="aj-story-video-thumb">
-        <Image
-          src={"https://i.ytimg.com/vi/" + video.id + "/hqdefault.jpg"}
-          alt=""
-          width={480}
-          height={360}
-          sizes="(max-width: 700px) 42vw, 190px"
+    <article className="aj-story-video-embed">
+      <div className="aj-story-video-embed-player">
+        <iframe
+          src={"https://www.youtube-nocookie.com/embed/" + video.id + "?rel=0"}
+          title={video.title}
           loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
         />
-        <i aria-hidden="true">▶</i>
-      </span>
-      <span className="aj-story-video-copy">
+      </div>
+      <div className="aj-story-video-embed-copy">
         <small>{video.tag}</small>
         <b>{video.title}</b>
         <span>{video.note}</span>
-        <strong>Watch on YouTube ↗</strong>
-      </span>
-    </a>
+        <a href={url} target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a>
+      </div>
+    </article>
   );
 }
 
 function InstagramProfilePreview() {
-  const profileRef = useRef<HTMLDivElement | null>(null);
   const [posts, setPosts] = useState(0);
   const [followers, setFollowers] = useState(100);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const frameRef = useRef(0);
+  const runningRef = useRef(false);
 
-  useEffect(() => {
-    const node = profileRef.current;
-    if (!node) return;
-
-    let frame = 0;
-    let observer: IntersectionObserver | null = null;
-    let started = false;
-    const easeOut = (value: number) => 1 - Math.pow(1 - value, 3);
-    const finish = () => {
-      setPosts(149);
-      setFollowers(645);
-    };
-    const animate = () => {
-      if (started) return;
-      started = true;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        finish();
-        return;
-      }
-
-      setPosts(0);
-      setFollowers(100);
-      const start = performance.now();
-      const duration = 2600;
-      const tick = (now: number) => {
-        const progress = Math.min(1, (now - start) / duration);
-        const postValue = Math.round(149 * easeOut(progress));
-        const followerValue = progress < 0.52
-          ? Math.round(100 + 300 * easeOut(progress / 0.52))
-          : Math.round(400 + 245 * easeOut((progress - 0.52) / 0.48));
-        setPosts(postValue);
-        setFollowers(followerValue);
-        if (progress < 1) frame = window.requestAnimationFrame(tick);
-        else finish();
-      };
-      frame = window.requestAnimationFrame(tick);
-    };
-
-    if ("IntersectionObserver" in window) {
-      observer = new IntersectionObserver((entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          animate();
-          observer?.disconnect();
-        }
-      }, { threshold: 0.24 });
-      observer.observe(node);
-    } else {
-      animate();
-    }
-
-    return () => {
-      observer?.disconnect();
-      if (frame) window.cancelAnimationFrame(frame);
-    };
+  useEffect(() => () => {
+    if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
   }, []);
 
+  const playCountUp = () => {
+    if (runningRef.current) return;
+    runningRef.current = true;
+    setIsAnimating(true);
+    setPosts(0);
+    setFollowers(100);
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setPosts(149);
+      setFollowers(645);
+      setIsAnimating(false);
+      setHasAnimated(true);
+      runningRef.current = false;
+      return;
+    }
+
+    const easeOut = (value: number) => 1 - Math.pow(1 - value, 3);
+    const start = performance.now();
+    const duration = 2600;
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - start) / duration);
+      setPosts(Math.round(149 * easeOut(progress)));
+      const followerValue = progress < 0.52
+        ? Math.round(100 + 300 * easeOut(progress / 0.52))
+        : Math.round(400 + 245 * easeOut((progress - 0.52) / 0.48));
+      setFollowers(followerValue);
+
+      if (progress < 1) {
+        frameRef.current = window.requestAnimationFrame(tick);
+      } else {
+        setPosts(149);
+        setFollowers(645);
+        setIsAnimating(false);
+        setHasAnimated(true);
+        runningRef.current = false;
+      }
+    };
+
+    frameRef.current = window.requestAnimationFrame(tick);
+  };
+
   return (
-    <div className="aj-story-instagram-card" ref={profileRef} aria-label="Instagram profile preview for aman.ja1n">
+    <div className="aj-story-instagram-card" aria-label="Instagram profile preview for aman.ja1n">
       <div className="aj-story-instagram-topbar">
         <a href="https://www.instagram.com/aman.ja1n/" target="_blank" rel="noopener noreferrer">aman.ja1n</a>
         <span aria-hidden="true">•••</span>
@@ -348,16 +339,9 @@ function InstagramProfilePreview() {
             href="https://www.instagram.com/aman.ja1n/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Open Aman's Instagram profile"
+            aria-label="Open Aman&apos;s Instagram profile"
           >
-            <Image
-              src={storyAsset("instagram-profile-avatar.webp")}
-              alt="Aman's Instagram profile photo"
-              width={256}
-              height={256}
-              sizes="(max-width: 700px) 96px, 128px"
-              unoptimized
-            />
+            <img src={storyInstagramAvatarSrc} alt="Aman&apos;s Instagram profile photo" loading="lazy" />
           </a>
         </div>
         <div className="aj-story-instagram-details">
@@ -367,7 +351,7 @@ function InstagramProfilePreview() {
             <small>he/him</small>
           </div>
           <div className="aj-story-instagram-stats" aria-label="Instagram account statistics">
-            <div><strong>{posts}</strong><span>posts</span></div>
+            <div><strong>{posts.toLocaleString("en-IN")}</strong><span>posts</span></div>
             <div><strong>{followers.toLocaleString("en-IN")}</strong><span>followers</span></div>
             <div><strong>31</strong><span>following</span></div>
           </div>
@@ -381,9 +365,16 @@ function InstagramProfilePreview() {
           <a href="https://www.instagram.com/aman.ja1n/" target="_blank" rel="noopener noreferrer">@ aman.ja1n</a>
         </div>
       </div>
+      <div className="aj-story-instagram-count-up">
+        <button type="button" onClick={playCountUp} disabled={isAnimating}>
+          {isAnimating ? "COUNTING UP…" : hasAnimated ? "REPLAY THE COUNT-UP ↻" : "WATCH THE NUMBERS ADD UP ↗"}
+        </button>
+        <small>Final snapshot from your supplied profile: 149 posts · 645 followers. The count-up is a visual reveal, not a historical analytics timeline.</small>
+      </div>
     </div>
   );
 }
+
 function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }) {
   const [flippedBuildCards, setFlippedBuildCards] = useState<string[]>([]);
   const [consistencyStep, setConsistencyStep] = useState(0);
@@ -396,16 +387,10 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
     return (
       <div className="aj-story-visual-card aj-story-post-visual aj-story-video-visual">
         <div className="aj-story-first-video-context">
-          <Image
-            src={candidStoryImageSrc}
-            alt="Aman smiling in a casual outdoor portrait"
-            width={120}
-            height={120}
-            sizes="88px"
-          />
+          <img src={storyInstagramAvatarSrc} alt="Aman&apos;s Instagram profile photo" loading="lazy" />
           <div>
-            <small>BEFORE THE FIRST UPLOAD</small>
-            <b>One CFA result. One camera. No playbook.</b>
+            <small>THE FIRST UPLOAD</small>
+            <b>My CFA prep, before I had a content playbook.</b>
           </div>
         </div>
         <StoryShortEmbed video={storyShorts[0]} />
@@ -820,8 +805,11 @@ function StoryMemoryGallery() {
             aria-controls="aj-story-memory-content"
             onClick={() => setIsOpen((open) => !open)}
           >
-            {isOpen ? "Close the camera roll" : "Explore my gallery"}
-            <span aria-hidden="true">{isOpen ? "−" : "↗"}</span>
+            <span className="aj-story-memory-toggle-preview">
+              <img src={storyMemories[0].src} alt="" loading="lazy" />
+            </span>
+            <span className="aj-story-memory-toggle-label">{isOpen ? "Close the camera roll" : "Explore my gallery"}</span>
+            <span className="aj-story-memory-toggle-icon" aria-hidden="true">{isOpen ? "−" : "↗"}</span>
           </button>
         </div>
 
@@ -837,13 +825,7 @@ function StoryMemoryGallery() {
                   aria-label={"Open photo: " + photo.title}
                 >
                   <span className="aj-story-memory-photo">
-                    <Image
-                      src={photo.src}
-                      alt={photo.title}
-                      fill
-                      sizes="(max-width: 700px) 44vw, (max-width: 980px) 30vw, 18vw"
-                      loading="lazy"
-                    />
+                    <img src={photo.src} alt={photo.title} loading="lazy" />
                   </span>
                   <span className="aj-story-memory-card-meta">
                     <span>{photo.year}</span>
@@ -881,13 +863,7 @@ function StoryMemoryGallery() {
               ×
             </button>
             <div className="aj-story-memory-large">
-              <Image
-                src={selectedMemory.src}
-                alt={selectedMemory.title}
-                fill
-                sizes="(max-width: 700px) 88vw, 420px"
-                priority
-              />
+              <img src={selectedMemory.src} alt={selectedMemory.title} loading="eager" />
             </div>
             <div className="aj-story-memory-dialog-footer">
               <div>
@@ -1048,13 +1024,13 @@ export function StoryExperience() {
                   >
                     {index === 0 ? (
                       <>
-                        {["I", "had", "a", "CFA", "Level", "I", "result."].map((word, wordIndex) => (
-                          <Fragment key={"first-" + wordIndex}><span className="aj-story-clean-word">{word}</span>{" "}</Fragment>
+                        {["One", "CFA", "result."].map((word, wordIndex) => (
+                          <Fragment key={"first-" + wordIndex}><span className="aj-story-clean-word">{word}</span>{wordIndex < 2 ? " " : ""}</Fragment>
                         ))}
                         <br />
                         <em>
-                          {["So", "I", "made", "my", "first", "post."].map((word, wordIndex) => (
-                            <Fragment key={"second-" + wordIndex}><span className="aj-story-clean-word">{word}</span>{wordIndex < 5 ? " " : ""}</Fragment>
+                          {["One", "first", "post."].map((word, wordIndex) => (
+                            <Fragment key={"second-" + wordIndex}><span className="aj-story-clean-word">{word}</span>{wordIndex < 2 ? " " : ""}</Fragment>
                           ))}
                         </em>
                       </>
