@@ -12,7 +12,6 @@ const publicAsset = (path: string) => {
 };
 const profileImageSrc = publicAsset("aman-story-photo.png");
 const storyAvatarSrc = profileImageSrc;
-const candidStoryImageSrc = publicAsset("aman-story-candid.webp");
 const storyInstagramAvatarSrc = publicAsset("aman-story-avatar.webp");
 
 const chapters = [
