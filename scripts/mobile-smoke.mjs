@@ -486,11 +486,16 @@ for (const viewport of [{ width: 390, height: 844 }, { width: 360, height: 800 }
 }
 
 if (pageErrors.length) failures.push("Browser JavaScript errors:\n" + pageErrors.join("\n"));
-if (failures.length) {
-  process.stderr.write("MOBILE SMOKE TEST FAILED:\n- " + failures.join("\n- ") + "\n");
-  process.exitCode = 1;
-} else {
-  process.stdout.write("All mobile interaction checks passed.\n");
+
+try {
+  await runDesktopCenteringAudit();
+} catch (error) {
+  failures.push("desktop: " + (error instanceof Error ? error.message : String(error)));
 }
 
-try { await runDesktopCenteringAudit(); } catch (error) { failures.push("desktop: " + (error instanceof Error ? error.message : String(error))); }
+if (failures.length) {
+  process.stderr.write("MOBILE / RESPONSIVE SMOKE TEST FAILED:\n- " + failures.join("\n- ") + "\n");
+  process.exitCode = 1;
+} else {
+  process.stdout.write("All mobile interaction and desktop centering checks passed.\n");
+}
