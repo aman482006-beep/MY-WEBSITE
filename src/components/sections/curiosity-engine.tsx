@@ -857,9 +857,9 @@ export function CuriosityEngine() {
                 <div className="ce-signal-card" data-reveal>
                   {signalComplete ? (
                     <div className="ce-signal-finish" aria-live="polite">
-                      <span className="ce-card-index">FIELD NOTES / THAT'S A WRAP</span>
+                      <span className="ce-card-index">FIELD NOTES / THAT&apos;S A WRAP</span>
                       <div className="ce-signal-finish-mark" aria-hidden="true">✳</div>
-                      <h4>That's the signal, bro.</h4>
+                      <h4>That&apos;s the signal, bro.</h4>
                       <p>No score, no judgement. Keep a little faith, back yourself, and take the next step. The rest will sort itself out one move at a time.</p>
                       <div className="ce-signal-final-score">
                         <strong>03<small> / 03</small></strong>
