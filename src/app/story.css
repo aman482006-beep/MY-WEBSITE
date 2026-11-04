@@ -3122,3 +3122,44 @@ body:has(.wispr-challenge) .site-main {
 @media (prefers-reduced-motion: reduce) {
   .aj-story-creator-metrics > button { transition: none !important; }
 }
+
+.aj-story-first-video-context {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(100%, 320px);
+  margin: 0 auto 12px;
+  padding: 9px;
+  border: 1px solid rgba(208,190,168,.72);
+  border-radius: 12px;
+  background: rgba(255,255,255,.78);
+}
+.aj-story-first-video-context img {
+  display: block;
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+.aj-story-first-video-context div {
+  display: grid;
+  gap: 5px;
+}
+.aj-story-first-video-context small {
+  color: #A16B50;
+  font-size: 7px;
+  font-weight: 950;
+  letter-spacing: .12em;
+}
+.aj-story-first-video-context b {
+  color: var(--aj-ink);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+@media (max-width: 620px) {
+  .aj-story-first-video-context { width: 100%; }
+  .aj-story-first-video-context img { width: 68px; height: 68px; flex-basis: 68px; }
+}
