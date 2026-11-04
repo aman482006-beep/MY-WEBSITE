@@ -19,8 +19,9 @@ const chapters = [
     number: "01",
     label: "The first post",
     period: "A first attempt",
-    title: "I started by sharing one result.",
-    intro: "“My first instinct was to talk about the CFA Level I result.” It was the first milestone I was proud enough to put out there.",
+    title: "I had a CFA Level I result. So I made my first post.",
+    intro: "I had a result I was proud of. I did not have a content plan yet.",
+    firstPostQuote: "My first instinct? Talk about the CFA Level I result.",
     paragraphs: [
       "There wasn't a carefully planned niche or a content calendar behind that first post. I had something I was proud of, and I decided to put it out there.",
       "That first step mattered because it made the next one easier to imagine. I didn't need a perfect creator identity before I could begin; I needed to publish, learn and try again."
@@ -33,7 +34,7 @@ const chapters = [
     number: "02",
     label: "The cringe archive",
     period: "Trying things out",
-    title: "Finance news. Running. Motivation. Daily life. Back to finance.",
+    title: "I tried different formats. Finance kept pulling me back.",
     intro: "My content direction changed a lot before it started making sense.",
     paragraphs: [
       "I tried finance news, running, motivation and daily-life videos. Some ideas were a better fit than others. Looking back, the switches weren't wasted time; they were how I learned what I enjoyed making and what I could keep doing.",
@@ -249,38 +250,37 @@ function StoryWindow() {
 }
 
 function StoryShortEmbed({ video }: { video: (typeof storyShorts)[number] }) {
+  const url = "https://youtube.com/shorts/" + video.id + "?feature=share";
   return (
-    <article className="aj-story-video-feature">
-      <div className="aj-story-video-frame">
-        <iframe
-          src={"https://www.youtube-nocookie.com/embed/" + video.id + "?rel=0"}
-          title={video.title}
+    <a className="aj-story-video-feature" href={url} target="_blank" rel="noopener noreferrer" aria-label={"Watch " + video.title + " on YouTube"}>
+      <span className="aj-story-video-thumb">
+        <Image
+          src={"https://i.ytimg.com/vi/" + video.id + "/hqdefault.jpg"}
+          alt=""
+          width={480}
+          height={360}
+          sizes="(max-width: 700px) 42vw, 190px"
           loading="lazy"
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
         />
-      </div>
-      <div className="aj-story-video-copy">
+        <i aria-hidden="true">▶</i>
+      </span>
+      <span className="aj-story-video-copy">
         <small>{video.tag}</small>
         <b>{video.title}</b>
-        <p>{video.note}</p>
-        <a href={"https://youtube.com/shorts/" + video.id + "?feature=share"} target="_blank" rel="noopener noreferrer">
-          Watch on YouTube <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-    </article>
+        <span>{video.note}</span>
+        <strong>Watch on YouTube ↗</strong>
+      </span>
+    </a>
   );
 }
 
-function StoryCreatorMetrics() {
-  const metricRef = useRef<HTMLDivElement | null>(null);
+function InstagramProfilePreview() {
+  const profileRef = useRef<HTMLDivElement | null>(null);
   const [posts, setPosts] = useState(0);
   const [followers, setFollowers] = useState(100);
-  const [replay, setReplay] = useState(0);
 
   useEffect(() => {
-    const node = metricRef.current;
+    const node = profileRef.current;
     if (!node) return;
 
     let frame = 0;
@@ -288,7 +288,7 @@ function StoryCreatorMetrics() {
     let started = false;
     const easeOut = (value: number) => 1 - Math.pow(1 - value, 3);
     const finish = () => {
-      setPosts(100);
+      setPosts(149);
       setFollowers(645);
     };
     const animate = () => {
@@ -302,13 +302,13 @@ function StoryCreatorMetrics() {
       setPosts(0);
       setFollowers(100);
       const start = performance.now();
-      const duration = 2400;
+      const duration = 2600;
       const tick = (now: number) => {
         const progress = Math.min(1, (now - start) / duration);
-        const postValue = Math.round(100 * easeOut(progress));
-        const followerValue = progress < 0.5
-          ? Math.round(100 + 300 * easeOut(progress * 2))
-          : Math.round(400 + 245 * easeOut((progress - 0.5) * 2));
+        const postValue = Math.round(149 * easeOut(progress));
+        const followerValue = progress < 0.52
+          ? Math.round(100 + 300 * easeOut(progress / 0.52))
+          : Math.round(400 + 245 * easeOut((progress - 0.52) / 0.48));
         setPosts(postValue);
         setFollowers(followerValue);
         if (progress < 1) frame = window.requestAnimationFrame(tick);
@@ -323,7 +323,7 @@ function StoryCreatorMetrics() {
           animate();
           observer?.disconnect();
         }
-      }, { threshold: 0.28 });
+      }, { threshold: 0.24 });
       observer.observe(node);
     } else {
       animate();
@@ -333,32 +333,52 @@ function StoryCreatorMetrics() {
       observer?.disconnect();
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [replay]);
+  }, []);
 
   return (
-    <div className="aj-story-creator-metrics" ref={metricRef} aria-label="Posting and Instagram follower milestones">
-      <div className="aj-story-creator-metric">
-        <strong>{posts >= 100 ? "100+" : posts}</strong>
-        <span>posts shared</span>
+    <div className="aj-story-instagram-card" ref={profileRef} aria-label="Instagram profile preview for aman.ja1n">
+      <div className="aj-story-instagram-topbar">
+        <a href="https://www.instagram.com/aman.ja1n/" target="_blank" rel="noopener noreferrer">aman.ja1n</a>
+        <span aria-hidden="true">•••</span>
       </div>
-      <div className="aj-story-creator-metric">
-        <strong>{followers.toLocaleString("en-IN")}</strong>
-        <span>Instagram followers</span>
+      <div className="aj-story-instagram-main">
+        <div className="aj-story-instagram-avatar-ring">
+          <Image
+            src={storyAsset("instagram-profile-avatar.webp")}
+            alt="Aman’s Instagram profile photo"
+            fill
+            sizes="(max-width: 700px) 96px, 128px"
+            priority={false}
+          />
+        </div>
+        <div className="aj-story-instagram-details">
+          <div className="aj-story-instagram-display-name">
+            <b>Aman Jain</b>
+            <span>Finance + AI + CFA L2</span>
+            <small>he/him</small>
+          </div>
+          <div className="aj-story-instagram-stats" aria-label="Instagram account statistics">
+            <div><strong>{posts}</strong><span>posts</span></div>
+            <div><strong>{followers.toLocaleString("en-IN")}</strong><span>followers</span></div>
+            <div><strong>31</strong><span>following</span></div>
+          </div>
+        </div>
       </div>
-      <div className="aj-story-creator-milestones">
-        <span>100</span><i /><span>400</span><i /><b>645 · NOW</b>
+      <div className="aj-story-instagram-bio">
+        <span className="aj-story-instagram-category">Public figure</span>
+        <p>20yo figuring out finance + career<br />CFA L2 | Using AI to study smarter &amp; grow<br />Bangalore | Gym = therapy</p>
+        <div className="aj-story-instagram-links">
+          <a href="https://www.youtube.com/@AmanJain-4" target="_blank" rel="noopener noreferrer">↗ youtube.com/@amanjain-4</a>
+          <a href="https://www.instagram.com/aman.ja1n/" target="_blank" rel="noopener noreferrer">@ aman.ja1n</a>
+        </div>
       </div>
-      <button type="button" onClick={() => setReplay((value) => value + 1)}>
-        Replay the climb <span aria-hidden="true">↻</span>
-      </button>
     </div>
   );
 }
-
 function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }) {
   const [flippedBuildCards, setFlippedBuildCards] = useState<string[]>([]);
   const [consistencyStep, setConsistencyStep] = useState(0);
-  const [archiveSelected, setArchiveSelected] = useState(4);
+  const [archiveSelected, setArchiveSelected] = useState(0);
   const [stageStep, setStageStep] = useState(0);
   const [peopleFocus, setPeopleFocus] = useState(0);
   const [workSelected, setWorkSelected] = useState(0);
@@ -386,15 +406,15 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
 
   if (visual === "archive") {
     const archiveItems = [
-      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world." },
+      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world.", video: storyShorts[1] },
       { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one." },
       { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles." },
-      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create." },
+      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", video: storyShorts[2] },
       { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students." }
     ] as const;
     return (
       <div className="aj-story-visual-card aj-story-archive-visual">
-        <StoryCreatorMetrics />
+        <InstagramProfilePreview />
         <span className="aj-story-archive-label">THE CONTENT EXPERIMENTS · PICK A CHAPTER</span>
         <div className="aj-story-topic-track">
           {archiveItems.map((item, index) => (
@@ -414,10 +434,11 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           <b>{archiveItems[archiveSelected].name}</b>
           <p>{archiveItems[archiveSelected].detail}</p>
         </div>
-        <div className="aj-story-archive-video-grid">
-          <StoryShortEmbed video={storyShorts[1]} />
-          <StoryShortEmbed video={storyShorts[2]} />
-        </div>
+        {archiveItems[archiveSelected].video && (
+          <div className="aj-story-archive-video-grid" aria-live="polite">
+            <StoryShortEmbed video={archiveItems[archiveSelected].video} />
+          </div>
+        )}
       </div>
     );
   }
@@ -971,12 +992,23 @@ export function StoryExperience() {
                     id={"story-heading-" + chapter.number}
                     className={index === 0 ? "aj-story-clean-headline" : undefined}
                   >
-                    {index === 0
-                      ? chapter.title.split(" ").map((word, wordIndex) => (
-                          <Fragment key={wordIndex}><span className="aj-story-clean-word">{word}</span>{wordIndex < chapter.title.split(" ").length - 1 ? " " : ""}</Fragment>
-                        ))
-                      : chapter.title}
+                    {index === 0 ? (
+                      <>
+                        {["I", "had", "a", "CFA", "Level", "I", "result."].map((word, wordIndex) => (
+                          <Fragment key={"first-" + wordIndex}><span className="aj-story-clean-word">{word}</span>{" "}</Fragment>
+                        ))}
+                        <br />
+                        <em>
+                          {["So", "I", "made", "my", "first", "post."].map((word, wordIndex) => (
+                            <Fragment key={"second-" + wordIndex}><span className="aj-story-clean-word">{word}</span>{wordIndex < 5 ? " " : ""}</Fragment>
+                          ))}
+                        </em>
+                      </>
+                    ) : chapter.title}
                   </h2>
+                  {"firstPostQuote" in chapter && chapter.firstPostQuote && (
+                    <blockquote className="aj-story-first-post-quote">{chapter.firstPostQuote}</blockquote>
+                  )}
                   <p className="aj-story-scene-intro">{chapter.intro}</p>
                   <div className="aj-story-scene-paragraphs">
                     {chapter.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
