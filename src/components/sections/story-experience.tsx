@@ -249,10 +249,10 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           </div>
         </div>
         <div className="aj-story-post-interaction">
-          <button type="button" className="aj-story-post-button" onClick={() => setPostTapped((current) => !current)}>
-            {postTapped ? "RESET ↺" : "POST"}
+          <button type="button" className="aj-story-post-button" onClick={() => setPostTapped(true)} disabled={postTapped}>
+            {postTapped ? "POSTED ✓" : "POST"}
           </button>
-          <p>{postTapped ? "Published. The next step was to learn and post again." : "Tap POST to replay that first step."}</p>
+          <p>{postTapped ? "Published. The next step was to learn and post again." : "Tap POST to mark that first step as published."}</p>
         </div>
       </div>
     );
