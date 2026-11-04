@@ -384,35 +384,6 @@ export function StoryPreview() {
   );
 }
 
-function StoryTypewriter({ text, active }: { text: string; active: boolean }) {
-  const spanRef = useRef<HTMLSpanElement | null>(null);
-  const startedRef = useRef(false);
-
-  useEffect(() => {
-    const node = spanRef.current;
-    if (!active || !node || startedRef.current) return;
-    startedRef.current = true;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      node.textContent = text;
-      return;
-    }
-
-    let index = 0;
-    const timer = window.setInterval(() => {
-      index += 1;
-      node.textContent = text.slice(0, index);
-      if (index >= text.length) window.clearInterval(timer);
-    }, 30);
-
-    return () => {
-      window.clearInterval(timer);
-      if (index < text.length && spanRef.current) spanRef.current.textContent = text;
-    };
-  }, [active, text]);
-
-  return <span ref={spanRef} aria-label={text} />;
-}
 
 export function StoryExperience() {
   const [activeChapter, setActiveChapter] = useState(0);
@@ -504,9 +475,7 @@ export function StoryExperience() {
                   </div>
                   <div className="aj-story-lesson">
                     <span>WHAT STUCK WITH ME</span>
-                    <p>{chapter.number === "09"
-                      ? <StoryTypewriter text={chapter.takeaway} active={activeChapter === index} />
-                      : chapter.takeaway}</p>
+                    <p>{chapter.takeaway}</p>
                     <i />
                   </div>
                 </div>
