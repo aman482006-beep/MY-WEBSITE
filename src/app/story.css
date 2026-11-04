@@ -1441,3 +1441,8 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-buil
 @media (max-width: 380px) {
   .aj-story-progress { display: none; }
 }
+
+
+/* Candid Chapter 01 image: retain the portrait selector used by mobile smoke tests. */
+.aj-story-candid-card { display: block; min-height: 0; width: 100%; aspect-ratio: 1 / 1; padding: 0; overflow: hidden; border-radius: 18px; }
+.aj-story-candid-card img { display: block; width: 100%; height: 100%; object-fit: cover; }

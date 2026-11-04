@@ -217,14 +217,14 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   const [deepStep, setDeepStep] = useState(0);
   if (visual === "portrait") {
     return (
-      <div className="aj-story-visual-card aj-story-visual-portrait aj-story-candid-card" style={{ padding: 0, overflow: "hidden", borderRadius: 18 }}>
+      <div className="aj-story-visual-card aj-story-visual-portrait aj-story-candid-card aj-story-portrait-large">
         <Image
           src={candidStoryImageSrc}
           alt="Aman relaxing with a playful smile against a warm sunset sky"
           width={512}
           height={512}
           sizes="(max-width: 850px) 88vw, 520px"
-          style={{ display: "block", width: "100%", height: "auto" }}
+          style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
           priority
         />
       </div>
