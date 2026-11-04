@@ -194,11 +194,11 @@ function StoryWindow() {
             </pattern>
           </defs>
           <g className="aj-story-wave-arm">
-            <path d="M32 250 C27 230 29 211 38 191 C47 169 62 148 74 128 C81 116 81 106 73 96 L59 77 C54 70 57 62 64 61 C70 60 77 72 85 82 L80 53 C79 43 87 39 94 45 C99 50 100 66 103 80 L107 44 C108 34 118 33 123 41 C127 48 122 67 120 81 L130 57 C135 48 145 53 143 63 L131 96 C126 111 117 128 108 146 C98 168 94 188 99 210 C102 226 108 239 115 250 Z" fill="url(#aj-story-arm-skin)" stroke="#925C49" strokeWidth="2.2" strokeLinejoin="round" />
-            <path d="M24 250 C21 230 27 212 41 194 C50 181 63 176 81 178 C93 190 101 212 111 250 Z" fill="url(#aj-story-arm-plaid)" stroke="#252A35" strokeWidth="2" />
-            <path d="M35 206 C50 194 67 190 91 199" fill="none" stroke="#D4C7D3" strokeWidth="2" opacity=".75" />
-            <path d="M77 93 C89 100 101 101 114 96 M88 111 C98 116 109 117 121 111" fill="none" stroke="#955F4D" strokeWidth="1.6" opacity=".55" />
-            <path d="M91 78 C89 68 89 58 89 48 M105 78 C108 67 111 58 114 50 M119 81 C124 73 130 67 135 63" fill="none" stroke="#E6B5A0" strokeWidth="2" strokeLinecap="round" opacity=".75" />
+            <path d="M24 250 C23 229 24 208 30 190 C46 178 65 176 85 183 C98 203 104 226 112 250 Z" fill="url(#aj-story-arm-plaid)" stroke="#252A35" strokeWidth="2" />
+            <path d="M38 190 C30 172 33 153 43 133 C53 112 67 94 76 77 C80 67 76 59 68 50 L56 34 C51 27 55 20 62 21 C68 22 75 34 82 43 L78 19 C77 9 85 4 91 10 C96 16 96 30 99 45 L103 10 C104 0 114 0 119 7 C123 14 118 31 116 47 L126 24 C131 15 140 20 137 29 L126 62 C122 76 115 90 107 106 C98 124 93 140 93 156 C93 170 97 181 104 191 Z" fill="url(#aj-story-arm-skin)" stroke="#925C49" strokeWidth="2.2" strokeLinejoin="round" />
+            <path d="M35 207 C49 194 68 190 93 201 M30 222 C52 210 73 207 99 216" fill="none" stroke="#D4C7D3" strokeWidth="2" opacity=".75" />
+            <path d="M77 91 C89 98 101 100 114 95 M87 109 C98 114 109 115 121 109" fill="none" stroke="#955F4D" strokeWidth="1.6" opacity=".55" />
+            <path d="M91 77 C89 67 89 57 89 47 M105 77 C108 66 111 57 114 49 M119 80 C124 72 130 66 135 62" fill="none" stroke="#E6B5A0" strokeWidth="2" strokeLinecap="round" opacity=".75" />
           </g>
         </svg>
         <div className="aj-story-window-sill" />
