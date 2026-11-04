@@ -3163,3 +3163,18 @@ body:has(.wispr-challenge) .site-main {
   .aj-story-first-video-context { width: 100%; }
   .aj-story-first-video-context img { width: 68px; height: 68px; flex-basis: 68px; }
 }
+
+
+/* At tablet widths the small card rotations were creating a 4px horizontal overflow. */
+@media (max-width: 850px) {
+  .aj-story-build-flip-card.build-fokus,
+  .aj-story-build-flip-card.build-finance,
+  .aj-story-build-flip-card.build-web {
+    rotate: 0deg;
+  }
+  .aj-story-build-stack {
+    min-width: 0;
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+}
