@@ -1009,6 +1009,16 @@ export function StoryExperience() {
                           ))}
                         </em>
                       </>
+                    ) : index === 1 ? (
+                      <>
+                        I tried different formats.<br />
+                        <em>Finance kept pulling me back.</em>
+                      </>
+                    ) : index === 2 ? (
+                      <>
+                        I thought extreme was the shortcut.<br />
+                        <em>Consistency was the answer.</em>
+                      </>
                     ) : chapter.title}
                   </h2>
                   {"firstPostQuote" in chapter && chapter.firstPostQuote && (
