@@ -174,77 +174,36 @@ function SpokenTranscript({ chapter }: { chapter: 1 | 2 }) {
 
 
 function StoryWindow() {
-  const sceneRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const scene = sceneRef.current;
-    if (!scene) return;
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion || !("IntersectionObserver" in window)) {
-      scene.dataset.windowOpen = "true";
-      return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        scene.dataset.windowOpen = "true";
-        observer.disconnect();
-      }
-    }, { threshold: 0.35, rootMargin: "0px 0px -8% 0px" });
-
-    observer.observe(scene);
-    return () => observer.disconnect();
-  }, []);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoId = "voUd1rKiaFc";
 
   return (
-    <div className="aj-story-preview-window" role="img" aria-label="An animated wooden window opens onto a moving sky while Aman waves">
-      <div className="aj-story-window-scene" ref={sceneRef} data-window-open="false">
-        <div className="aj-story-window-sky">
-          <span className="aj-story-cloud aj-story-cloud-one" />
-          <span className="aj-story-cloud aj-story-cloud-two" />
-          <span className="aj-story-cloud aj-story-cloud-three" />
-          <span className="aj-story-window-sun" />
-          <span className="aj-story-window-horizon" />
-          <span className="aj-story-window-hill aj-story-window-hill-back" />
-          <span className="aj-story-window-hill aj-story-window-hill-front" />
-        </div>
-        <div className="aj-story-window-person">
-          <img src={storyAvatarSrc} alt="Aman in a photo-based portrait" loading="eager" />
-        </div>
-        <svg className="aj-story-window-wave" viewBox="0 0 170 250" aria-hidden="true" focusable="false">
-          <defs>
-            <linearGradient id="aj-story-arm-skin" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor="#D8A18A" />
-              <stop offset=".58" stopColor="#C58B73" />
-              <stop offset="1" stopColor="#A96F5B" />
-            </linearGradient>
-            <pattern id="aj-story-arm-plaid" width="22" height="22" patternUnits="userSpaceOnUse">
-              <rect width="22" height="22" fill="#252A35" />
-              <path d="M0 6H22 M0 16H22" stroke="#B9AFC0" strokeWidth="2.4" opacity=".9" />
-              <path d="M7 0V22 M17 0V22" stroke="#8A7B92" strokeWidth="1.6" opacity=".8" />
-            </pattern>
-          </defs>
-          <g className="aj-story-wave-arm">
-            <path d="M24 250 C23 229 24 208 30 190 C46 178 65 176 85 183 C98 203 104 226 112 250 Z" fill="url(#aj-story-arm-plaid)" stroke="#252A35" strokeWidth="2" />
-            <path d="M38 190 C30 172 33 153 43 133 C53 112 67 94 76 77 C80 67 76 59 68 50 L56 34 C51 27 55 20 62 21 C68 22 75 34 82 43 L78 19 C77 9 85 4 91 10 C96 16 96 30 99 45 L103 10 C104 0 114 0 119 7 C123 14 118 31 116 47 L126 24 C131 15 140 20 137 29 L126 62 C122 76 115 90 107 106 C98 124 93 140 93 156 C93 170 97 181 104 191 Z" fill="url(#aj-story-arm-skin)" stroke="#925C49" strokeWidth="2.2" strokeLinejoin="round" />
-            <path d="M35 207 C49 194 68 190 93 201 M30 222 C52 210 73 207 99 216" fill="none" stroke="#D4C7D3" strokeWidth="2" opacity=".75" />
-            <path d="M77 91 C89 98 101 100 114 95 M87 109 C98 114 109 115 121 109" fill="none" stroke="#955F4D" strokeWidth="1.6" opacity=".55" />
-            <path d="M91 77 C89 67 89 57 89 47 M105 77 C108 66 111 57 114 49 M119 80 C124 72 130 66 135 62" fill="none" stroke="#E6B5A0" strokeWidth="2" strokeLinecap="round" opacity=".75" />
-          </g>
-        </svg>
-        <div className="aj-story-window-sill" />
-        <div className="aj-story-window-frame aj-story-window-frame-top" />
-        <div className="aj-story-window-frame aj-story-window-frame-left" />
-        <div className="aj-story-window-frame aj-story-window-frame-right" />
-        <div className="aj-story-window-frame aj-story-window-frame-bottom" />
-        <div className="aj-story-window-mullion aj-story-window-mullion-vertical" />
-        <div className="aj-story-window-mullion aj-story-window-mullion-horizontal" />
-        <div className="aj-story-window-shutters" aria-hidden="true">
-          <div className="aj-story-window-shutter aj-story-window-shutter-left"><span /><span /><span /></div>
-          <div className="aj-story-window-shutter aj-story-window-shutter-right"><span /><span /><span /></div>
-        </div>
+    <div className="aj-story-preview-window">
+      <div className="aj-story-window-scene aj-story-window-video-scene">
+        {isPlaying ? (
+          <iframe
+            src={"https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&playsinline=1&rel=0"}
+            title="Aman — My Story"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        ) : (
+          <button
+            type="button"
+            className="aj-story-window-video-trigger"
+            onClick={() => setIsPlaying(true)}
+            aria-label="Play Aman's story video"
+          >
+            <img
+              src={"https://i.ytimg.com/vi/" + videoId + "/hqdefault.jpg"}
+              alt="A preview frame from Aman's story video"
+              loading="lazy"
+            />
+          </button>
+        )}
       </div>
-      <div className="aj-story-window-caption"><span>MY STORY</span><b>Open a little window.</b><i>↗</i></div>
+      <div className="aj-story-window-caption"><span>MY STORY</span><b>{isPlaying ? "Playing right here." : "A little video window."}</b><i>↗</i></div>
     </div>
   );
 }
