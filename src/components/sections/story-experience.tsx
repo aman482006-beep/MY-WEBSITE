@@ -13,7 +13,7 @@ const publicAsset = (path: string) => {
 const profileImageSrc = publicAsset("aman-story-photo.png");
 const storyAvatarSrc = profileImageSrc;
 const storyInstagramAvatarSrc = publicAsset("aman-story-avatar.webp");
-const storyGalleryGridSrc = publicAsset("story-gallery/story-gallery-grid.webp");
+
 
 const chapters = [
   {
@@ -667,31 +667,31 @@ const storyMemories = [
   {
     title: "The moustache era",
     note: "A 2016 trip to Bengaluru. The commitment to the bit was already there.",
-    position: "0% 0%",
+    src: publicAsset("story-gallery/story-childhood.webp"),
     year: "2016",
   },
   {
     title: "Built-in teammate",
     note: "Me and my brother, school-uniform era.",
-    position: "100% 0%",
+    src: publicAsset("story-gallery/story-brother.webp"),
     year: "THEN",
   },
   {
     title: "The family frame",
     note: "A family photo from the camera roll.",
-    position: "0% 50%",
+    src: publicAsset("story-gallery/story-family.webp"),
     year: "FAMILY",
   },
   {
     title: "A moment with Nithin Kamath",
     note: "One conversation worth keeping.",
-    position: "100% 50%",
+    src: publicAsset("story-gallery/story-nithin-kamath.webp"),
     year: "A GOOD ONE",
   },
   {
     title: "The friends chapter",
     note: "Good people. Better memories.",
-    position: "0% 100%",
+    src: publicAsset("story-gallery/story-friends.webp"),
     year: "THE CREW",
   },
 ] as const;
@@ -777,7 +777,9 @@ function StoryMemoryGallery() {
             aria-controls="aj-story-memory-content"
             onClick={() => setIsOpen((open) => !open)}
           >
-            <span className="aj-story-memory-toggle-preview" aria-hidden="true" />
+            <span className="aj-story-memory-toggle-preview">
+              <img src={storyMemories[0].src} alt="" loading="lazy" />
+            </span>
             <span className="aj-story-memory-toggle-label">{isOpen ? "Close the camera roll" : "Explore my gallery"}</span>
             <span className="aj-story-memory-toggle-icon" aria-hidden="true">{isOpen ? "−" : "↗"}</span>
           </button>
@@ -794,16 +796,9 @@ function StoryMemoryGallery() {
                   onClick={() => setActivePhoto(index)}
                   aria-label={"Open photo: " + photo.title}
                 >
-                  <span
-                    className="aj-story-memory-photo"
-                    role="img"
-                    aria-label={photo.title}
-                    style={{
-                      backgroundImage: 'url("' + storyGalleryGridSrc + '")',
-                      backgroundPosition: photo.position,
-                      backgroundSize: "200% 300%",
-                    }}
-                  />
+                  <span className="aj-story-memory-photo">
+                    <img src={photo.src} alt={photo.title} loading="lazy" />
+                  </span>
                   <span className="aj-story-memory-card-meta">
                     <span>{photo.year}</span>
                     <b>{photo.title}</b>
@@ -839,16 +834,9 @@ function StoryMemoryGallery() {
             >
               ×
             </button>
-            <div
-              className="aj-story-memory-large"
-              role="img"
-              aria-label={selectedMemory.title}
-              style={{
-                backgroundImage: 'url("' + storyGalleryGridSrc + '")',
-                backgroundPosition: selectedMemory.position,
-                backgroundSize: "200% 300%",
-              }}
-            />
+            <div className="aj-story-memory-large">
+              <img src={selectedMemory.src} alt={selectedMemory.title} loading="eager" />
+            </div>
             <div className="aj-story-memory-dialog-footer">
               <div>
                 <small>{selectedMemory.year} · {String(activePhoto + 1).padStart(2, "0")} / 05</small>
