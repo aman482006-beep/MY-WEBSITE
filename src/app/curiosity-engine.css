@@ -994,3 +994,57 @@
   .ce-desk-board[data-cursor-ready="true"],
   .ce-desk-board[data-cursor-ready="true"] button { cursor: auto; }
 }
+
+
+/* Signal Room: keep answer reveals playful and non-judgemental. */
+.ce-signal-options.is-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 700px;
+}
+.ce-signal-option.is-selected {
+  border-color: var(--aj-ink);
+  background: #FFF5CF;
+  box-shadow: 2px 2px 0 var(--aj-ink);
+}
+.ce-signal-option.is-selected .ce-signal-option-letter {
+  background: #FFE36E;
+  color: var(--aj-ink);
+}
+.ce-signal-option-mark {
+  display: grid;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  margin-left: auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #FFE36E;
+  color: var(--aj-ink);
+  font-size: 12px;
+  font-weight: 900;
+}
+.ce-signal-feedback.is-reveal {
+  border-left-color: #C49B35;
+  background: #FFF7D9;
+}
+.ce-signal-feedback.is-reveal > strong {
+  font-size: 13px;
+}
+.ce-signal-feedback.is-reveal > p {
+  color: #595345;
+  font-size: 11px;
+}
+.ce-signal-card-footer > span {
+  line-height: 1.5;
+}
+@media (max-width: 680px) {
+  .ce-signal-options,
+  .ce-signal-options.is-two {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: none;
+  }
+  .ce-signal-option {
+    min-height: 62px;
+    align-items: center;
+  }
+}
