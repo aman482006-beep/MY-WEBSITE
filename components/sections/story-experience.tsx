@@ -260,12 +260,55 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
 
   if (visual === "archive") {
     const archiveItems = [
-      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world." },
-      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one." },
-      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles." },
-      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create." },
-      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students." }
+      {
+        title: <>Finance<br />news</>,
+        name: "Finance news",
+        detail: "I tried breaking down what was happening in markets and the wider finance world.",
+        video: null
+      },
+      {
+        title: "Running",
+        name: "Running",
+        detail: "I tested a completely different interest instead of forcing one niche from day one.",
+        video: {
+          id: "Q0PoQ0u6Lb4",
+          url: "https://www.youtube.com/shorts/Q0PoQ0u6Lb4",
+          title: "The running experiment",
+          description: "Trying a completely different interest instead of forcing one niche from day one."
+        }
+      },
+      {
+        title: "Motivation",
+        name: "Motivation",
+        detail: "I experimented with motivational videos and different storytelling styles.",
+        video: {
+          id: "-cHr2vD9bLc",
+          url: "https://www.youtube.com/shorts/-cHr2vD9bLc",
+          title: "The motivation experiment",
+          description: "Trying motivational videos and different storytelling styles."
+        }
+      },
+      {
+        title: <>Daily<br />life</>,
+        name: "Daily life",
+        detail: "I shared everyday moments while figuring out what felt natural to create.",
+        video: null
+      },
+      {
+        title: <>Finance for<br />students</>,
+        name: "Finance for students",
+        detail: "This was the direction I kept returning to: useful finance explained for students.",
+        video: {
+          id: "U5kfmKOUBHY",
+          url: "https://www.youtube.com/shorts/U5kfmKOUBHY",
+          title: "Finance for students",
+          description: "The direction I kept coming back to: useful finance explained for students."
+        }
+      }
     ] as const;
+    const selectedArchiveItem = archiveItems[archiveSelected];
+    const selectedVideo = selectedArchiveItem.video;
+
     return (
       <div className="aj-story-visual-card aj-story-archive-visual">
         <span className="aj-story-archive-label">THE CONTENT EXPERIMENTS · PICK A CHAPTER</span>
@@ -284,9 +327,35 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           ))}
         </div>
         <div className="aj-story-archive-detail" aria-live="polite">
-          <b>{archiveItems[archiveSelected].name}</b>
-          <p>{archiveItems[archiveSelected].detail}</p>
+          <b>{selectedArchiveItem.name}</b>
+          <p>{selectedArchiveItem.detail}</p>
         </div>
+        {selectedVideo && (
+          <div className="aj-story-archive-video-grid">
+            <a
+              className="aj-story-video-feature"
+              href={selectedVideo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={"Watch " + selectedVideo.title + " on YouTube"}
+            >
+              <span className="aj-story-video-thumb">
+                <img
+                  src={"https://i.ytimg.com/vi/" + selectedVideo.id + "/hqdefault.jpg"}
+                  alt={selectedVideo.title + " YouTube thumbnail"}
+                  loading="lazy"
+                />
+                <i aria-hidden="true">▶</i>
+              </span>
+              <span className="aj-story-video-copy">
+                <small>A FORMAT I TRIED</small>
+                <b>{selectedVideo.title}</b>
+                <span>{selectedVideo.description}</span>
+                <strong>WATCH ON YOUTUBE ↗</strong>
+              </span>
+            </a>
+          </div>
+        )}
       </div>
     );
   }
