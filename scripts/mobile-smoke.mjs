@@ -337,7 +337,7 @@ async function runViewport(viewport) {
     );
     const readMore = firstPost.locator("details.aj-story-read-more");
     assert(await readMore.count() === 1, "The first chapter's Read more disclosure is missing");
-    assert(!(await readMore.evaluate((node) => (node as HTMLDetailsElement).open)), "Story detail should start collapsed");
+    assert(!(await readMore.evaluate((node) => node.open)), "Story detail should start collapsed");
     await readMore.locator("summary").tap();
     assert(await readMore.evaluate((node) => (node as HTMLDetailsElement).open), "Read more did not expand the chapter details");
 
