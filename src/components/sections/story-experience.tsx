@@ -434,7 +434,6 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           <StoryShortEmbed video={storyShorts[1]} />
           <StoryShortEmbed video={storyShorts[2]} />
         </div>
-        <StoryCreatorMetrics />
       </div>
     );
   }
@@ -895,7 +894,7 @@ export function StoryExperience() {
         const rect = scene.getBoundingClientRect();
         if (rect.top <= viewportHeight * 0.42) current = index;
         if (reducedMotion || rect.top < viewportHeight * 0.86) scene.dataset.revealed = "true";
-        if (index < 2) {
+        if (index === 0) {
           scene.style.setProperty("--speech-progress", getProgress(scene, viewportHeight).toFixed(3));
         }
       });
