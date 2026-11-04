@@ -397,6 +397,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
     ] as const;
     return (
       <div className="aj-story-visual-card aj-story-archive-visual">
+        <StoryCreatorMetrics />
         <span className="aj-story-archive-label">THE CONTENT EXPERIMENTS · PICK A CHAPTER</span>
         <div className="aj-story-topic-track">
           {archiveItems.map((item, index) => (
