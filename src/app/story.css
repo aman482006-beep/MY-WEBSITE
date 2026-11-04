@@ -999,3 +999,11 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-buil
   .aj-story-wave-arm { animation: none !important; transform: none !important; }
   .aj-story-cloud { animation: none !important; }
 }
+
+/* The waving arm's hinge now meets the avatar at shoulder height. */
+.aj-story-window-wave { bottom: 26%; }
+.aj-story-wave-arm { transform-origin: 45% 76%; }
+@media (max-width: 620px) {
+  .aj-story-window-wave { bottom: 25%; }
+  .aj-story-wave-arm { transform-origin: 45% 76%; }
+}
