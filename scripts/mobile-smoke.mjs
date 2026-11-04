@@ -57,64 +57,24 @@ async function runViewport(viewport) {
     }
 
 
-    // The My Story preview uses a single, section-scoped window scene.
+    // The My Story preview now uses an inline YouTube video instead of the animated portrait window.
     const storyWindow = page.locator(".aj-story-preview-window");
     await storyWindow.scrollIntoViewIfNeeded();
-    assert(await storyWindow.count() === 1, "Homepage My Story window is missing");
-    assert(await storyWindow.locator(".aj-story-cloud").count() === 3, "Moving-sky clouds are missing");
-    assert(await storyWindow.locator(".aj-story-window-shutter").count() === 2, "The opening window needs two shutters");
-    currentStage = "load transparent portrait inside My Story window";
-    const storyAvatarImage = page.locator(".aj-story-window-person img");
-    await storyAvatarImage.waitFor({ state: "attached" });
-    const storyAvatarSource = await storyAvatarImage.getAttribute("src");
-    assert(
-      storyAvatarSource?.includes("aman-story-photo.png"),
-      "My Story window is not using the transparent photo cut-out: " + storyAvatarSource,
-    );
-    await storyAvatarImage.evaluate((image) => { image.loading = "eager"; });
-    await page.waitForFunction(() => {
-      const image = document.querySelector(".aj-story-window-person img");
-      return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
-    }, null, { timeout: 15000 }).catch(async () => {
-      const imageDetails = await storyAvatarImage.evaluate((image) => ({
-        src: image.getAttribute("src"),
-        currentSrc: image.currentSrc,
-        complete: image.complete,
-        naturalWidth: image.naturalWidth,
-        naturalHeight: image.naturalHeight,
-        loading: image.loading,
-      }));
-      throw new Error("Story portrait failed to load: " + JSON.stringify({ image: imageDetails, network: storyAssetNetwork }));
-    });
-    const wavingArm = storyWindow.locator(".aj-story-wave-arm");
-    const firstWaveTransform = await wavingArm.evaluate((element) => getComputedStyle(element).transform);
-    await page.waitForTimeout(420);
-    const secondWaveTransform = await wavingArm.evaluate((element) => getComputedStyle(element).transform);
-    assert(
-      firstWaveTransform !== secondWaveTransform,
-      "The photo-based character's arm is not continuously waving",
-    );
-
-    currentStage = "open the My Story window when it enters view";
+    assert(await storyWindow.count() === 1, "Homepage My Story video preview is missing");
+    const storyVideoTrigger = storyWindow.locator(".aj-story-window-video-trigger");
+    assert(await storyVideoTrigger.count() === 1, "My Story video thumbnail is missing");
+    assert(await storyWindow.locator("iframe").count() === 0, "My Story video should wait until the thumbnail is clicked");
+    await storyVideoTrigger.click();
     await page.waitForFunction(
-      () => document.querySelector(".aj-story-window-scene")?.getAttribute("data-window-open") === "true",
+      () => document.querySelector(".aj-story-window-video-scene iframe")?.getAttribute("src")?.includes("voUd1rKiaFc"),
       null,
       { timeout: 8000 },
     );
-    const windowMotion = await storyWindow.locator(".aj-story-window-shutter-left").evaluate((element) => ({
-      transitionDuration: getComputedStyle(element).transitionDuration,
-      transform: getComputedStyle(element).transform,
-    }));
-    assert(
-      windowMotion.transitionDuration.split(",").some((duration) => {
-        const raw = duration.trim();
-        const parsed = Number.parseFloat(raw);
-        const seconds = raw.endsWith("ms") ? parsed / 1000 : parsed;
-        return seconds >= 0.8 && seconds < 0.9;
-      }),
-      "The My Story window opening should be an 800–899ms transform transition: " + JSON.stringify(windowMotion),
-    );
+    assert(await storyWindow.locator("iframe").count() === 1, "My Story video did not open inline");
+    assert(await storyWindow.locator(".aj-story-window-video-trigger").count() === 0, "My Story thumbnail should be replaced by the inline player");
     await page.evaluate(() => window.scrollTo(0, 0));
+
+
 
     // Check the global external-link policy: external websites open separately,
     // while routes inside this portfolio stay in the current tab.
