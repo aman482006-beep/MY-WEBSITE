@@ -454,7 +454,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
               </span>
             )}
           </div>
-          {archiveItems[archiveSelected].video && (
+          {activeArchiveVideo && (
             <div className="aj-story-archive-player-wrap">
               <div className="aj-story-archive-player">
                 <iframe
