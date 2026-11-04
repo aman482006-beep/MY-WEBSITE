@@ -8,7 +8,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 // Unlike GITHUB_ACTIONS, this value is intentionally exposed to client components.
 const publicAsset = (path: string) => {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-  return basePath + "/" + path.replace(/^\\/+/, "");
+  return basePath + "/" + path.replace(/^\/+/, "");
 };
 const profileImageSrc = publicAsset("aman-story-photo.png");
 const storyAvatarSrc = profileImageSrc;
@@ -356,7 +356,6 @@ function StoryCreatorMetrics() {
 }
 
 function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }) {
-  const [postTapped, setPostTapped] = useState(false);
   const [flippedBuildCards, setFlippedBuildCards] = useState<string[]>([]);
   const [consistencyStep, setConsistencyStep] = useState(0);
   const [archiveSelected, setArchiveSelected] = useState(4);
