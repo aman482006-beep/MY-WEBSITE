@@ -1714,3 +1714,32 @@ a[href]:active, button:active { opacity: .82; }
     margin-top: 8px;
   }
 }
+
+
+/* Featured YouTube cards play inline after the thumbnail is selected. */
+.aj-video-inline-trigger {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: #171717;
+}
+.aj-video-inline-trigger img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.aj-video-thumbnail iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.aj-video-card.is-playing {
+  cursor: default;
+}
