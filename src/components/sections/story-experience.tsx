@@ -210,7 +210,6 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   const [postTapped, setPostTapped] = useState(false);
   const [flippedBuildCards, setFlippedBuildCards] = useState<string[]>([]);
   const [consistencyStep, setConsistencyStep] = useState(0);
-  const [portraitExpanded, setPortraitExpanded] = useState(false);
   const [archiveSelected, setArchiveSelected] = useState(4);
   const [stageStep, setStageStep] = useState(0);
   const [peopleFocus, setPeopleFocus] = useState(0);
@@ -218,7 +217,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
   const [deepStep, setDeepStep] = useState(0);
   if (visual === "portrait") {
     return (
-      <div className="aj-story-visual-card aj-story-visual-portrait aj-story-candid-card">
+      <div className="aj-story-visual-card aj-story-visual-portrait aj-story-candid-card" style={{ padding: 0, overflow: "hidden", borderRadius: 18 }}>
         <Image
           src={candidStoryImageSrc}
           alt="Aman relaxing with a playful smile against a warm sunset sky"
