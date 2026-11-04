@@ -569,7 +569,7 @@ export function StoryExperience() {
 
       <div className="aj-story-progress" aria-label="Story progress">
         <span>THE JOURNEY</span>
-        <div className="aj-story-progress-track"><i style={{ transform: "scaleY(" + ((activeChapter + 1) / chapters.length) + ")" }} /></div>
+        <div className="aj-story-progress-track"><i style={{ "--story-progress": String((activeChapter + 1) / chapters.length) } as CSSProperties} /></div>
         <b aria-live="polite">{String(activeChapter + 1).padStart(2, "0")} <small>/ {String(chapters.length).padStart(2, "0")}</small></b>
       </div>
 
