@@ -1280,3 +1280,16 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-buil
   .aj-story-work-list > button,
   .aj-story-flow .flow-step { transition: none !important; }
 }
+
+/* Keep selectable work-history number markers as compact visual anchors. */
+.aj-story-work-list > button > span {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  color: #8E3B1D;
+  background: #F9E7D9;
+  font-size: 9px;
+  font-weight: 900;
+}
