@@ -208,28 +208,6 @@ function StoryWindow() {
   );
 }
 
-function StoryShortEmbed({ video }: { video: (typeof storyShorts)[number] }) {
-  return (
-    <article className="aj-story-video-embed">
-      <div className="aj-story-video-embed-player">
-        <iframe
-          src={"https://www.youtube-nocookie.com/embed/" + video.id + "?rel=0"}
-          title={video.title}
-          loading="lazy"
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-        />
-      </div>
-      <div className="aj-story-video-embed-copy">
-        <small>{video.tag}</small>
-        <b>{video.title}</b>
-        <span>{video.note}</span>
-      </div>
-    </article>
-  );
-}
-
 function InstagramProfilePreview() {
   const [posts, setPosts] = useState(0);
   const [followers, setFollowers] = useState(100);
@@ -341,21 +319,19 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
             <b>My CFA prep, before I had a content playbook.</b>
           </div>
         </div>
-        <StoryShortEmbed video={storyShorts[0]} />
       </div>
     );
   }
 
   if (visual === "archive") {
     const archiveItems = [
-      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world.", video: storyShorts[1] },
-      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one.", video: storyShorts[3] },
-      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles.", video: storyShorts[4] },
-      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", video: storyShorts[2] },
-      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", video: storyShorts[5] }
+      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world." },
+      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one." },
+      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles." },
+      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create." },
+      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students." }
     ] as const;
     const activeArchiveItem = archiveSelected >= 0 ? archiveItems[archiveSelected] : null;
-    const activeArchiveVideo = activeArchiveItem?.video;
     return (
       <div className="aj-story-visual-card aj-story-archive-visual">
         <InstagramProfilePreview />
@@ -384,33 +360,13 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           ))}
         </div>
         <div
-          className={"aj-story-archive-detail" + (activeArchiveVideo ? " has-video" : "")}
+          className="aj-story-archive-detail"
           aria-live="polite"
         >
           <div className="aj-story-archive-detail-copy">
             <b>{activeArchiveItem?.name ?? "Choose a sticky note"}</b>
             <p>{activeArchiveItem?.detail ?? "Tap a chapter above to bring up its video right here."}</p>
-            {activeArchiveVideo && (
-              <span className="aj-story-archive-video-label">
-                {activeArchiveVideo.tag} · PLAY THE CLIP
-              </span>
-            )}
           </div>
-          {activeArchiveVideo && (
-            <div className="aj-story-archive-player-wrap">
-              <div className="aj-story-archive-player">
-                <iframe
-                  key={activeArchiveVideo.id}
-                  src={"https://www.youtube-nocookie.com/embed/" + activeArchiveVideo.id + "?rel=0"}
-                  title={activeArchiveVideo.title}
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              </div>
-            </div>
-          )}
         </div>
 
       </div>
@@ -675,44 +631,6 @@ const storyMemories = [
   },
 ] as const;
 
-const storyShorts = [
-  {
-    id: "cZmWuFLi7XI",
-    title: "My first video",
-    note: "CFA prep, before I had a content playbook.",
-    tag: "FIRST UPLOAD",
-  },
-  {
-    id: "SG_CkTR15IQ",
-    title: "The finance-news experiment",
-    note: "Trying to make finance news a format.",
-    tag: "A FORMAT I TRIED",
-  },
-  {
-    id: "Syf-ChVSyu4",
-    title: "A day in my life",
-    note: "A little more of the day-to-day.",
-    tag: "DAY IN THE LIFE",
-  },
-  {
-    id: "Q0PoQ0u6Lb4",
-    title: "A running chapter",
-    note: "A little running motivation from the camera roll.",
-    tag: "RUNNING",
-  },
-  {
-    id: "-cHr2vD9bLc",
-    title: "A reminder to keep going",
-    note: "A motivational video for the days when momentum feels low.",
-    tag: "MOTIVATION",
-  },
-  {
-    id: "U5kfmKOUBHY",
-    title: "Finance for students",
-    note: "Useful finance explained for students — the direction I kept returning to.",
-    tag: "FINANCE FOR STUDENTS",
-  },
-] as const;
 function StoryMemoryGallery() {
   const [isOpen, setIsOpen] = useState(false);
   const [activePhoto, setActivePhoto] = useState<number | null>(null);
