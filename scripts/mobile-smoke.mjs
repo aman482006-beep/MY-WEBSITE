@@ -365,6 +365,13 @@ async function runViewport(viewport) {
       { topicIndex: 4, id: "U5kfmKOUBHY", label: "finance-for-students" },
     ];
     const archivePlayer = experimentChapter.locator(".aj-story-archive-player iframe");
+    assert(await archivePlayer.count() === 0, "No Story video should load before a chapter is selected");
+    await experimentChapter.locator(".aj-story-topic-next").first().tap();
+    await page.waitForFunction(
+      () => document.querySelector(".aj-story-archive-player iframe")?.getAttribute("src")?.includes("/embed/Q0PoQ0u6Lb4"),
+      null,
+      { timeout: 5000 },
+    );
     for (const video of archiveVideoChecks) {
       await experimentChapter.locator(".aj-story-topic-card").nth(video.topicIndex).tap();
       await page.waitForFunction(
