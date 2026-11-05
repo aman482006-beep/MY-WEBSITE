@@ -385,18 +385,18 @@ async function runViewport(viewport) {
       await experimentChapter.locator("a.aj-story-video-feature").count() === 0,
       "Story archive Shorts should play inline rather than navigate away to YouTube",
     );
-    const allStoryShorts = experimentChapter.locator(".aj-story-short-library-grid .aj-story-video-embed-player iframe");
-    assert(await allStoryShorts.count() === 6, "All six Story Shorts should be embedded visibly on the Story page");
-    for (const video of [
-      "cZmWuFLi7XI", "SG_CkTR15IQ", "Syf-ChVSyu4",
-      "Q0PoQ0u6Lb4", "-cHr2vD9bLc", "U5kfmKOUBHY",
-    ]) {
-      assert(
-        (await allStoryShorts.evaluateAll((frames) => frames.map((frame) => frame.getAttribute("src") || "")))
-          .some((src) => src.includes("/embed/" + video)),
-        "Missing inline Story Short: " + video,
-      );
-    }
+    assert(
+      await experimentChapter.locator(".aj-story-short-library-grid").count() === 0,
+      "The Story archive should not list every video below the selected chapter",
+    );
+    assert(
+      await experimentChapter.locator(".aj-story-archive-player iframe").count() === 1,
+      "Only the selected chapter video should be embedded",
+    );
+    assert(
+      await experimentChapter.locator(".aj-story-topic-next").count() === 4,
+      "Each sticky note should have a next arrow between chapters",
+    );
     const topicCardBox = await experimentChapter.locator(".aj-story-topic-card").first().boundingBox();
     assert(topicCardBox && topicCardBox.height <= 120, "Story topic cards should stay compact signposts, not tall panels");
 
