@@ -348,12 +348,14 @@ async function runViewport(viewport) {
       return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
     }, null, { timeout: 10000 });
     await instagram.scrollIntoViewIfNeeded();
-    await instagram.locator(".aj-story-instagram-count-up button").click();
     await page.waitForFunction(() => {
       const stats = Array.from(document.querySelectorAll(".aj-story-instagram-stats strong"))
         .map((node) => node.textContent?.trim());
-      return stats.includes("149") && stats.includes("645") && stats.includes("31");
+      return stats.includes("150") && stats.includes("647") && stats.includes("31");
     }, null, { timeout: 10000 });
+    assert(await instagram.locator(".aj-story-instagram-count-up").count() === 0, "Manual count-up controls should not appear");
+    assert(await instagram.locator('a[href="https://www.threads.net/@aman.ja1n"]').isVisible(), "Threads link should be visible below the YouTube link");
+    assert(await instagram.locator('a[href="https://www.instagram.com/aman.ja1n/"]').count() >= 2, "Instagram profile links should remain visible");
 
     const archiveVideoChecks = [
       { topicIndex: 0, id: "SG_CkTR15IQ", label: "finance-news" },
