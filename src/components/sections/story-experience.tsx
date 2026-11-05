@@ -12,7 +12,7 @@ const publicAsset = (path: string) => {
 };
 const profileImageSrc = publicAsset("aman-story-photo.png");
 const storyAvatarSrc = profileImageSrc;
-const storyInstagramAvatarSrc = publicAsset("story-gallery/instagram-profile-aman.jpg");
+const storyInstagramAvatarSrc = publicAsset("story-gallery/instagram-profile-avatar.webp");
 
 const chapters = [
   {
