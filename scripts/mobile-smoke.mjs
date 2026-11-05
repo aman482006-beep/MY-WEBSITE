@@ -291,7 +291,7 @@ async function runViewport(viewport) {
       await page.getByRole("heading", { name: projectTitle, exact: true }).waitFor();
     }
 
-    // Verify the seven-chapter story journey, embedded Shorts, Instagram profile and gym visual.
+    // Verify the seven-chapter story journey, compact Instagram profile, video-free archive and gym visual.
     currentStage = "verify inline Story video embeds";
     await page.goto(base + "/story/", { waitUntil: "domcontentloaded" });
     await page.locator(".aj-story-journey-intro h1").waitFor({ state: "visible" });
@@ -347,8 +347,12 @@ async function runViewport(viewport) {
       return stats.includes("150") && stats.includes("647") && stats.includes("31");
     }, null, { timeout: 10000 });
     assert(await instagram.locator(".aj-story-instagram-count-up").count() === 0, "Manual count-up controls should not appear");
-    assert(await instagram.locator('a[href="https://www.threads.net/@aman.ja1n"]').isVisible(), "Threads link should be visible below the YouTube link");
-    assert(await instagram.locator('a[href="https://www.instagram.com/aman.ja1n/"]').count() >= 2, "Instagram profile links should remain visible");
+    assert(await instagram.locator(".aj-story-instagram-links").count() === 0, "The compact Instagram card should not show extra blue social-link rows");
+    assert(
+      await instagram.locator('a[href="https://www.threads.net/@aman.ja1n"], a[href="https://www.youtube.com/@AmanJain-4"]').count() === 0,
+      "The compact Instagram card should not show redundant YouTube or Threads links",
+    );
+    assert(await instagram.locator("a.aj-story-instagram-avatar-link").count() === 1, "The Instagram profile photo link should remain");
 
     const archiveTopics = experimentChapter.locator(".aj-story-topic-card");
     const expectedTopicNotes = ["Market updates", "Running clips", "Keep going", "Everyday bits", "Student finance"];
