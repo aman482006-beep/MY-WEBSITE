@@ -12,7 +12,7 @@ const publicAsset = (path: string) => {
 };
 const profileImageSrc = publicAsset("aman-story-photo.png");
 const storyAvatarSrc = profileImageSrc;
-const storyInstagramAvatarSrc = publicAsset("aman-story-avatar.webp");
+const storyInstagramAvatarSrc = publicAsset("story-gallery/instagram-profile-corrected.webp");
 
 const chapters = [
   {
@@ -291,11 +291,6 @@ function InstagramProfilePreview() {
       <div className="aj-story-instagram-bio">
         <span className="aj-story-instagram-category">Public figure</span>
         <p>20yo figuring out finance + career<br />CFA L2 | Using AI to study smarter &amp; grow<br />Bangalore | Gym = therapy</p>
-        <div className="aj-story-instagram-links">
-          <a href="https://www.youtube.com/@AmanJain-4" target="_blank" rel="noopener noreferrer">↗ youtube.com/@amanjain-4</a>
-          <a href="https://www.instagram.com/aman.ja1n/" target="_blank" rel="noopener noreferrer">◎ Instagram · @aman.ja1n</a>
-          <a href="https://www.threads.net/@aman.ja1n" target="_blank" rel="noopener noreferrer">＠ Threads · @aman.ja1n</a>
-        </div>
       </div>
     </div>
   );
@@ -325,11 +320,11 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
 
   if (visual === "archive") {
     const archiveItems = [
-      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world." },
-      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one." },
-      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles." },
-      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create." },
-      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students." }
+      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world.", note: "Market updates" },
+      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one.", note: "Running clips" },
+      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles.", note: "Keep going" },
+      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", note: "Everyday bits" },
+      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", note: "Student finance" }
     ] as const;
     const activeArchiveItem = archiveSelected >= 0 ? archiveItems[archiveSelected] : null;
     return (
@@ -345,7 +340,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
                 aria-pressed={archiveSelected === index}
                 onClick={() => setArchiveSelected(index)}
               >
-                <small>0{index + 1}</small><b>{item.title}</b>
+                <small>0{index + 1}</small><b>{item.title}</b><span className="aj-story-topic-note">{item.note}</span>
                 {index === 4 && <span className="aj-story-topic-final-label">FOUND MY WAY</span>}
               </button>
               {index < archiveItems.length - 1 && (
