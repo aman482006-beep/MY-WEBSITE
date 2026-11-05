@@ -1756,3 +1756,22 @@ a[href]:active, button:active { opacity: .82; }
   min-width: 0;
   max-width: 100%;
 }
+
+/* Featured-video cards must keep their copy and play cue inside narrow grid columns. */
+.aj-video-info > * {
+  min-width: 0;
+  max-width: 100%;
+}
+.aj-video-info h3 {
+  width: 100%;
+}
+.aj-video-cta {
+  max-width: 100%;
+  white-space: normal;
+  flex-wrap: wrap;
+  text-align: center;
+  line-height: 1.2;
+}
+.aj-video-cta > span {
+  flex: 0 0 auto;
+}
