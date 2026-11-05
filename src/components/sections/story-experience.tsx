@@ -332,11 +332,11 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
 
   if (visual === "archive") {
     const archiveItems = [
-      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world.", note: "Market updates", videoId: null },
+      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world.", note: "Market updates", videoId: "SG_CkTR15IQ" },
       { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one.", note: "Running clips", videoId: "Q0PoQ0u6Lb4" },
       { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles.", note: "Keep going", videoId: "-cHr2vD9bLc" },
-      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", note: "Everyday bits", videoId: null },
-      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", note: "Student finance", videoId: null }
+      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", note: "Everyday bits", videoId: "Syf-ChVSyu4" },
+      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", note: "Student finance", videoId: "U5kfmKOUBHY" }
     ] as const;
     const activeArchiveItem = archiveSelected >= 0 ? archiveItems[archiveSelected] : null;
     return (
