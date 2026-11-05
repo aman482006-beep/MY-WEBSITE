@@ -807,7 +807,6 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-topi
   opacity: 1;
   translate: 0 0;
 }
-.aj-story-scene[data-revealed="true"] 
 @keyframes aj-story-meter-settle {
   from { transform: rotate(-10deg); }
   to { transform: rotate(5deg); }
