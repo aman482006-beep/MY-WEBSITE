@@ -4048,3 +4048,31 @@ body:has(.wispr-challenge) .site-main {
   height: 100%;
   border: 0;
 }
+
+/* Compact sticky-note chapter tabs: the cards are signposts, not content panels. */
+.aj-story-archive-visual { min-height: 0; }
+.aj-story-topic-track { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; align-items: stretch; }
+.aj-story-topic-card { min-height: 104px; height: 104px; padding: 9px 11px; border-radius: 10px; text-align: left; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
+.aj-story-topic-card b { max-width: 90%; font-size: clamp(13px, 1.25vw, 17px); }
+.aj-story-topic-card:hover, .aj-story-topic-card.is-selected { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(52,38,26,.13); }
+.aj-story-topic-arrow { position: absolute; right: 10px; bottom: 8px; color: #A95D43; font-family: sans-serif; font-size: 19px; font-weight: 700; }
+.aj-story-topic-card.topic-final .aj-story-topic-final-label { position: absolute; right: 8px; top: 8px; color: #9A492A; font-size: 7px; font-weight: 950; letter-spacing: .07em; }
+.aj-story-short-library { margin-top: 20px; }
+.aj-story-short-library-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; color: #8E705E; font-size: 9px; font-weight: 900; letter-spacing: .12em; }
+.aj-story-short-library-heading span { color: #8D8175; font-size: 10px; font-weight: 600; letter-spacing: 0; }
+.aj-story-short-library-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.aj-story-short-library-grid .aj-story-video-embed { display: flex; flex-direction: column; width: 100%; max-width: none; gap: 8px; padding: 8px; }
+.aj-story-short-library-grid .aj-story-video-embed-player { width: 100%; aspect-ratio: 9 / 16; max-height: 340px; }
+.aj-story-short-library-grid .aj-story-video-embed-copy { width: 100%; gap: 4px; }
+.aj-story-short-library-grid .aj-story-video-embed-copy b { font-size: 13px; }
+.aj-story-short-library-grid .aj-story-video-embed-copy span { font-size: 10px; }
+@media (max-width: 760px) {
+  .aj-story-topic-track { display: flex; overflow-x: auto; padding: 4px 3px 10px; scroll-snap-type: x mandatory; }
+  .aj-story-topic-card { flex: 0 0 132px; min-height: 92px; height: 92px; scroll-snap-align: start; }
+  .aj-story-short-library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .aj-story-short-library-grid .aj-story-video-embed-player { max-height: 290px; }
+}
+@media (max-width: 390px) {
+  .aj-story-short-library-grid { grid-template-columns: minmax(0, 1fr); }
+  .aj-story-short-library-grid .aj-story-video-embed-player { max-height: 420px; }
+}
