@@ -298,6 +298,7 @@ function InstagramProfilePreview() {
 
 function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }) {
   const [flippedBuildCards, setFlippedBuildCards] = useState<string[]>([]);
+  const [isFirstVideoPlaying, setIsFirstVideoPlaying] = useState(false);
   const [consistencyStep, setConsistencyStep] = useState(0);
   const [archiveSelected, setArchiveSelected] = useState(-1);
   const [stageStep, setStageStep] = useState(0);
@@ -308,12 +309,34 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
     return (
       <div className="aj-story-visual-card aj-story-post-visual aj-story-video-visual">
         <div className="aj-story-first-video-context">
-          <img src={storyInstagramAvatarSrc} alt="Aman&apos;s Instagram profile photo" loading="lazy" />
-          <div>
+          <div className="aj-story-first-video-copy">
             <small>THE FIRST UPLOAD</small>
             <b>My CFA prep, before I had a content playbook.</b>
           </div>
+          <a
+            className="aj-story-first-video-link"
+            href="https://www.youtube.com/watch?v=cZmWuFLi7XI"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(event) => {
+              event.preventDefault();
+              setIsFirstVideoPlaying((playing) => !playing);
+            }}
+          >
+            {isFirstVideoPlaying ? "CLOSE VIDEO ↑" : "WATCH FIRST VIDEO ↗"}
+          </a>
         </div>
+        {isFirstVideoPlaying && (
+          <div className="aj-story-first-video-player">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/cZmWuFLi7XI?autoplay=1&playsinline=1&rel=0"
+              title="Aman's first-ever video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+        )}
       </div>
     );
   }

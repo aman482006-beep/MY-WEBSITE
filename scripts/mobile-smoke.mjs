@@ -317,9 +317,31 @@ async function runViewport(viewport) {
     await readMore.locator("summary").tap();
     assert(await readMore.evaluate((node) => node.open), "Read more did not expand the chapter details");
 
+    const firstVideoLink = firstPost.locator(".aj-story-first-video-link");
+    assert(
+      (await firstPost.locator(".aj-story-first-video-context img").count()) === 0,
+      "The old CFA-prep profile photo should not appear in the first-upload card",
+    );
+    assert(
+      (await firstPost.locator(".aj-story-first-video-context b").textContent())?.includes("My CFA prep, before I had a content playbook."),
+      "The first-upload title should remain visible",
+    );
+    assert(
+      (await firstVideoLink.getAttribute("href")) === "https://www.youtube.com/watch?v=cZmWuFLi7XI",
+      "The first-ever video link is missing or points to the wrong video",
+    );
+    await firstVideoLink.tap();
+    const firstVideoPlayer = firstPost.locator(".aj-story-first-video-player iframe");
+    await firstVideoPlayer.waitFor({ state: "visible" });
+    assert(
+      (await firstVideoPlayer.getAttribute("src"))?.includes("/embed/cZmWuFLi7XI"),
+      "The first-ever video should play inline in the Story page",
+    );
+    await firstVideoLink.tap();
+    assert(await firstVideoPlayer.count() === 0, "The first-ever inline video should close when tapped again");
     assert(
       await page.locator(".aj-story-video-embed, .aj-story-archive-player iframe, a.aj-story-video-feature").count() === 0,
-      "Story video cards, thumbnails and embeds should all be removed",
+      "The five archive video cards, thumbnails and embeds should remain removed",
     );
 
     const experimentChapter = page.locator(".aj-story-scene").nth(1);
