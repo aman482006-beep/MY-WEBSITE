@@ -383,6 +383,20 @@ async function runViewport(viewport) {
       await experimentChapter.locator("a.aj-story-video-feature").count() === 0,
       "Story archive Shorts should play inline rather than navigate away to YouTube",
     );
+    const allStoryShorts = experimentChapter.locator(".aj-story-short-library-grid .aj-story-video-embed-player iframe");
+    assert(await allStoryShorts.count() === 6, "All six Story Shorts should be embedded visibly on the Story page");
+    for (const video of [
+      "cZmWuFLi7XI", "SG_CkTR15IQ", "Syf-ChVSyu4",
+      "Q0PoQ0u6Lb4", "-cHr2vD9bLc", "U5kfmKOUBHY",
+    ]) {
+      assert(
+        (await allStoryShorts.evaluateAll((frames) => frames.map((frame) => frame.getAttribute("src") || "")))
+          .some((src) => src.includes("/embed/" + video)),
+        "Missing inline Story Short: " + video,
+      );
+    }
+    const topicCardBox = await experimentChapter.locator(".aj-story-topic-card").first().boundingBox();
+    assert(topicCardBox && topicCardBox.height <= 120, "Story topic cards should stay compact signposts, not tall panels");
 
     const gymChapter = page.locator(".aj-story-scene").nth(2);
     assert(
