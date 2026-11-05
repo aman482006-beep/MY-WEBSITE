@@ -72,6 +72,20 @@ async function runViewport(viewport) {
     );
     assert(await storyWindow.locator("iframe").count() === 1, "My Story video did not open inline");
     assert(await storyWindow.locator(".aj-story-window-video-trigger").count() === 0, "My Story thumbnail should be replaced by the inline player");
+    // Verify the homepage featured-video strip is present and plays inside the page.
+    const featuredVideoSection = page.locator("#latest-videos");
+    await featuredVideoSection.scrollIntoViewIfNeeded();
+    const featuredVideoCards = featuredVideoSection.locator(".aj-video-card");
+    assert(await featuredVideoCards.count() === 3, "Homepage should show all three featured YouTube videos");
+    const storyShortCard = featuredVideoCards.nth(2);
+    await storyShortCard.locator(".aj-video-inline-trigger").click();
+    await page.waitForFunction(
+      () => document.querySelector("#latest-videos .aj-video-card.is-playing iframe")?.getAttribute("src")?.includes("voUd1rKiaFc"),
+      null,
+      { timeout: 8000 },
+    );
+    assert(await storyShortCard.locator("iframe").count() === 1, "The featured Story video did not play inline on the homepage");
+
     await page.evaluate(() => window.scrollTo(0, 0));
 
 
@@ -334,6 +348,7 @@ async function runViewport(viewport) {
       return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
     }, null, { timeout: 10000 });
     await instagram.scrollIntoViewIfNeeded();
+    await instagram.locator(".aj-story-instagram-count-up button").click();
     await page.waitForFunction(() => {
       const stats = Array.from(document.querySelectorAll(".aj-story-instagram-stats strong"))
         .map((node) => node.textContent?.trim());
@@ -460,7 +475,7 @@ async function runDesktopCenteringAudit() {
 
     for (const route of ["/", "/projects/"]) {
       await page.goto(base + route, { waitUntil: "domcontentloaded" });
-      const mainContainer = page.locator(".aj-home .aj-container, .aj-projects-page > .aj-container").first();
+      const mainContainer = page.locator(".aj-home .aj-container, .aj-projects-page .aj-container").first();
       await mainContainer.waitFor({ state: "visible" });
       const result = await mainContainer.evaluate((element) => {
         const rect = element.getBoundingClientRect();
