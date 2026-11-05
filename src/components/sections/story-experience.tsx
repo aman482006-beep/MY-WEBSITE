@@ -378,8 +378,8 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
               aria-pressed={archiveSelected === index}
               onClick={() => setArchiveSelected(index)}
             >
-              <small>0{index + 1}</small><b>{item.title}</b><i />
-              {index === 4 && <span>FOUND MY WAY</span>}
+              <small>0{index + 1}</small><b>{item.title}</b><i /><span className="aj-story-topic-arrow" aria-hidden="true">→</span>
+              {index === 4 && <span className="aj-story-topic-final-label">FOUND MY WAY</span>}
             </button>
           ))}
         </div>
@@ -411,6 +411,17 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
               </div>
             </div>
           )}
+        </div>
+        <div className="aj-story-short-library" aria-label="All six videos from my content journey">
+          <div className="aj-story-short-library-heading">
+            <b>THE ACTUAL VIDEOS</b>
+            <span>Every short, right here on the page</span>
+          </div>
+          <div className="aj-story-short-library-grid">
+            {storyShorts.map((video) => (
+              <StoryShortEmbed key={video.id} video={video} />
+            ))}
+          </div>
         </div>
       </div>
     );
