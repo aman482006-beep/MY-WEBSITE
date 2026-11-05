@@ -835,7 +835,6 @@ html.aj-story-motion-ready .aj-story-scene[data-revealed="false"] .aj-story-topi
 
 @media (prefers-reduced-motion: reduce) {
   .aj-story-topic-card,
-  .aj-story-topic-card:nth-child(-n+4) i,
   .aj-story-stage-needle,
   .aj-story-flow > i {
     opacity: 1 !important;
