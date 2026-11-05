@@ -326,7 +326,7 @@ function InstagramProfilePreview() {
 function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }) {
   const [flippedBuildCards, setFlippedBuildCards] = useState<string[]>([]);
   const [consistencyStep, setConsistencyStep] = useState(0);
-  const [archiveSelected, setArchiveSelected] = useState(0);
+  const [archiveSelected, setArchiveSelected] = useState(-1);
   const [stageStep, setStageStep] = useState(0);
   const [peopleFocus, setPeopleFocus] = useState(0);
   const [workSelected, setWorkSelected] = useState(0);
@@ -354,24 +354,33 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
       { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", video: storyShorts[2] },
       { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", video: storyShorts[5] }
     ] as const;
-    const activeArchiveItem = archiveItems[archiveSelected];
-    const activeArchiveVideo = activeArchiveItem.video;
+    const activeArchiveItem = archiveSelected >= 0 ? archiveItems[archiveSelected] : null;
+    const activeArchiveVideo = activeArchiveItem?.video;
     return (
       <div className="aj-story-visual-card aj-story-archive-visual">
         <InstagramProfilePreview />
         <span className="aj-story-archive-label">THE CONTENT EXPERIMENTS · PICK A CHAPTER</span>
-        <div className="aj-story-topic-track">
+        <div className="aj-story-topic-track" aria-label="Choose a content chapter">
           {archiveItems.map((item, index) => (
-            <button
-              type="button"
-              key={item.name}
-              className={"aj-story-topic-card topic-" + ["one", "two", "three", "four", "final"][index] + (archiveSelected === index ? " is-selected" : "")}
-              aria-pressed={archiveSelected === index}
-              onClick={() => setArchiveSelected(index)}
-            >
-              <small>0{index + 1}</small><b>{item.title}</b><i /><span className="aj-story-topic-arrow" aria-hidden="true">→</span>
-              {index === 4 && <span className="aj-story-topic-final-label">FOUND MY WAY</span>}
-            </button>
+            <div className="aj-story-topic-step" key={item.name}>
+              <button
+                type="button"
+                className={"aj-story-topic-card topic-" + ["one", "two", "three", "four", "final"][index] + (archiveSelected === index ? " is-selected" : "")}
+                aria-pressed={archiveSelected === index}
+                onClick={() => setArchiveSelected(index)}
+              >
+                <small>0{index + 1}</small><b>{item.title}</b>
+                {index === 4 && <span className="aj-story-topic-final-label">FOUND MY WAY</span>}
+              </button>
+              {index < archiveItems.length - 1 && (
+                <button
+                  type="button"
+                  className="aj-story-topic-next"
+                  aria-label={"Next: " + archiveItems[index + 1].name}
+                  onClick={() => setArchiveSelected(index + 1)}
+                >→</button>
+              )}
+            </div>
           ))}
         </div>
         <div
@@ -379,8 +388,8 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           aria-live="polite"
         >
           <div className="aj-story-archive-detail-copy">
-            <b>{activeArchiveItem.name}</b>
-            <p>{activeArchiveItem.detail}</p>
+            <b>{activeArchiveItem?.name ?? "Choose a sticky note"}</b>
+            <p>{activeArchiveItem?.detail ?? "Tap a chapter above to bring up its video right here."}</p>
             {activeArchiveVideo && (
               <span className="aj-story-archive-video-label">
                 {activeArchiveVideo.tag} · PLAY THE CLIP
@@ -403,17 +412,7 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
             </div>
           )}
         </div>
-        <div className="aj-story-short-library" aria-label="All six videos from my content journey">
-          <div className="aj-story-short-library-heading">
-            <b>THE ACTUAL VIDEOS</b>
-            <span>Every short, right here on the page</span>
-          </div>
-          <div className="aj-story-short-library-grid">
-            {storyShorts.map((video) => (
-              <StoryShortEmbed key={video.id} video={video} />
-            ))}
-          </div>
-        </div>
+
       </div>
     );
   }
