@@ -332,11 +332,11 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
 
   if (visual === "archive") {
     const archiveItems = [
-      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world.", note: "Market updates" },
-      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one.", note: "Running clips" },
-      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles.", note: "Keep going" },
-      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", note: "Everyday bits" },
-      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", note: "Student finance" }
+      { title: <>Finance<br />news</>, name: "Finance news", detail: "I tried breaking down what was happening in markets and the wider finance world.", note: "Market updates", videoId: null },
+      { title: "Running", name: "Running", detail: "I tested a completely different interest instead of forcing one niche from day one.", note: "Running clips", videoId: "Q0PoQ0u6Lb4" },
+      { title: "Motivation", name: "Motivation", detail: "I experimented with motivational videos and different storytelling styles.", note: "Keep going", videoId: "-cHr2vD9bLc" },
+      { title: <>Daily<br />life</>, name: "Daily life", detail: "I shared everyday moments while figuring out what felt natural to create.", note: "Everyday bits", videoId: null },
+      { title: <>Finance for<br />students</>, name: "Finance for students", detail: "This was the direction I kept returning to: useful finance explained for students.", note: "Student finance", videoId: null }
     ] as const;
     const activeArchiveItem = archiveSelected >= 0 ? archiveItems[archiveSelected] : null;
     return (
@@ -373,6 +373,19 @@ function StoryVisual({ visual }: { visual: (typeof chapters)[number]["visual"] }
           <div className="aj-story-archive-detail-copy">
             <b>{activeArchiveItem?.name ?? "Choose a sticky note"}</b>
             <p>{activeArchiveItem?.detail ?? "Tap a chapter above to bring up its video right here."}</p>
+            {activeArchiveItem?.videoId && (
+              <div style={{ width: "100%", aspectRatio: "16 / 9", marginTop: "16px", overflow: "hidden", borderRadius: "12px", background: "#111" }}>
+                <iframe
+                  src={"https://www.youtube-nocookie.com/embed/" + activeArchiveItem.videoId + "?playsinline=1&rel=0"}
+                  title={activeArchiveItem.name + " video"}
+                  loading="lazy"
+                  style={{ width: "100%", height: "100%", border: 0 }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              </div>
+            )}
           </div>
         </div>
 
