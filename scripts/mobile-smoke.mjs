@@ -317,16 +317,9 @@ async function runViewport(viewport) {
     await readMore.locator("summary").tap();
     assert(await readMore.evaluate((node) => node.open), "Read more did not expand the chapter details");
 
-    const firstVideo = firstPost.locator(".aj-story-video-embed iframe");
-    assert(await firstVideo.count() === 1, "The first CFA video player is missing from the first-post chapter");
-    const firstVideoSource = await firstVideo.getAttribute("src");
     assert(
-      firstVideoSource?.includes("/embed/cZmWuFLi7XI"),
-      "The first CFA Short is not embedded inline in the first-post chapter",
-    );
-    assert(
-      await firstPost.locator("a.aj-story-video-feature").count() === 0,
-      "The first CFA Short should play inline, not navigate away to YouTube",
+      await page.locator(".aj-story-video-embed, .aj-story-archive-player iframe, a.aj-story-video-feature").count() === 0,
+      "Story video cards, thumbnails and embeds should all be removed",
     );
 
     const experimentChapter = page.locator(".aj-story-scene").nth(1);
@@ -357,48 +350,23 @@ async function runViewport(viewport) {
     assert(await instagram.locator('a[href="https://www.threads.net/@aman.ja1n"]').isVisible(), "Threads link should be visible below the YouTube link");
     assert(await instagram.locator('a[href="https://www.instagram.com/aman.ja1n/"]').count() >= 2, "Instagram profile links should remain visible");
 
-    const archiveVideoChecks = [
-      { topicIndex: 0, id: "SG_CkTR15IQ", label: "finance-news" },
-      { topicIndex: 1, id: "Q0PoQ0u6Lb4", label: "running" },
-      { topicIndex: 2, id: "-cHr2vD9bLc", label: "motivation" },
-      { topicIndex: 3, id: "Syf-ChVSyu4", label: "day-in-the-life" },
-      { topicIndex: 4, id: "U5kfmKOUBHY", label: "finance-for-students" },
-    ];
-    const archivePlayer = experimentChapter.locator(".aj-story-archive-player iframe");
-    assert(await archivePlayer.count() === 0, "No Story video should load before a chapter is selected");
-    await experimentChapter.locator(".aj-story-topic-next").first().tap();
-    await page.waitForFunction(
-      () => document.querySelector(".aj-story-archive-player iframe")?.getAttribute("src")?.includes("/embed/Q0PoQ0u6Lb4"),
-      null,
-      { timeout: 5000 },
-    );
-    for (const video of archiveVideoChecks) {
-      await experimentChapter.locator(".aj-story-topic-card").nth(video.topicIndex).tap();
-      await page.waitForFunction(
-        (videoId) => {
-          const player = document.querySelector(".aj-story-archive-player iframe");
-          return player instanceof HTMLIFrameElement && player.getAttribute("src")?.includes("/embed/" + videoId);
-        },
-        video.id,
-        { timeout: 5000 },
-      );
-      const source = await archivePlayer.getAttribute("src");
+    const archiveTopics = experimentChapter.locator(".aj-story-topic-card");
+    const expectedTopicNotes = ["Market updates", "Running clips", "Keep going", "Everyday bits", "Student finance"];
+    assert(await archiveTopics.count() === 5, "The Story archive should show five compact chapter notes");
+    for (let index = 0; index < expectedTopicNotes.length; index += 1) {
       assert(
-        source?.includes("/embed/" + video.id),
-        "The " + video.label + " Short is not playing in the inline Story archive player",
+        (await archiveTopics.nth(index).locator(".aj-story-topic-note").textContent())?.trim() === expectedTopicNotes[index],
+        "The Story note is missing its short description at position " + (index + 1),
+      );
+      await archiveTopics.nth(index).tap();
+      assert(
+        await experimentChapter.locator(".aj-story-archive-player iframe, .aj-story-video-embed iframe").count() === 0,
+        "Selecting a Story note must not load a video",
       );
     }
     assert(
-      await experimentChapter.locator("a.aj-story-video-feature").count() === 0,
-      "Story archive Shorts should play inline rather than navigate away to YouTube",
-    );
-    assert(
-      await experimentChapter.locator(".aj-story-short-library-grid").count() === 0,
-      "The Story archive should not list every video below the selected chapter",
-    );
-    assert(
-      await experimentChapter.locator(".aj-story-archive-player iframe").count() === 1,
-      "Only the selected chapter video should be embedded",
+      await experimentChapter.locator(".aj-story-video-embed, .aj-story-archive-player iframe, a.aj-story-video-feature, .aj-story-short-library-grid").count() === 0,
+      "The Story archive must not contain any video cards, thumbnails, embeds or video library",
     );
     assert(
       await experimentChapter.locator(".aj-story-topic-next").count() === 4,
