@@ -317,7 +317,8 @@ async function runViewport(viewport) {
     await readMore.locator("summary").tap();
     assert(await readMore.evaluate((node) => node.open), "Read more did not expand the chapter details");
 
-    const firstVideoLink = firstPost.locator(".aj-story-first-video-link");
+    const firstVideoDetails = firstPost.locator(".aj-story-first-video-details");
+    const firstVideoLink = firstVideoDetails.locator("summary");
     assert(
       (await firstPost.locator(".aj-story-first-video-context img").count()) === 0,
       "The old CFA-prep profile photo should not appear in the first-upload card",
@@ -327,10 +328,11 @@ async function runViewport(viewport) {
       "The first-upload title should remain visible",
     );
     assert(
-      (await firstVideoLink.getAttribute("href")) === "https://www.youtube.com/watch?v=cZmWuFLi7XI",
-      "The first-ever video link is missing or points to the wrong video",
+      (await firstVideoLink.textContent())?.includes("WATCH FIRST VIDEO"),
+      "The first-ever video action is missing",
     );
     await firstVideoLink.tap();
+    assert(await firstVideoDetails.evaluate((details) => details.open), "The first-ever video disclosure did not open");
     const firstVideoPlayer = firstPost.locator(".aj-story-first-video-player iframe");
     await firstVideoPlayer.waitFor({ state: "visible" });
     assert(
@@ -338,7 +340,7 @@ async function runViewport(viewport) {
       "The first-ever video should play inline in the Story page",
     );
     await firstVideoLink.tap();
-    assert(await firstVideoPlayer.count() === 0, "The first-ever inline video should close when tapped again");
+    assert(!(await firstVideoDetails.evaluate((details) => details.open)), "The first-ever video disclosure did not close");
     assert(
       await page.locator(".aj-story-video-embed, .aj-story-archive-player iframe, a.aj-story-video-feature").count() === 0,
       "The five archive video cards, thumbnails and embeds should remain removed",

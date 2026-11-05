@@ -3146,11 +3146,13 @@ body:has(.wispr-challenge) .site-main {
   font-weight: 600;
   line-height: 1.15;
 }
+.aj-story-first-video-details {
+  flex: 0 0 auto;
+}
 .aj-story-first-video-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
   min-height: 36px;
   padding: 8px 11px;
   border: 1px solid rgba(161,107,80,.28);
@@ -3160,8 +3162,10 @@ body:has(.wispr-challenge) .site-main {
   font-size: 8px;
   font-weight: 900;
   letter-spacing: .06em;
-  text-decoration: none;
+  list-style: none;
+  cursor: pointer;
 }
+.aj-story-first-video-link::-webkit-details-marker { display: none; }
 .aj-story-first-video-link:focus-visible {
   outline: 3px solid rgba(113,139,103,.5);
   outline-offset: 3px;
