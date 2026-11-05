@@ -88,7 +88,7 @@ export function LatestVideos() {
               <div className="aj-video-info">
                 <span className="aj-video-label">YOUTUBE · {video.number}</span>
                 <h3>{videoTitles[video.id] || "Loading video title…"}</h3>
-                <span className="aj-video-cta">{activeVideoId === video.id ? "Playing here" : "Click thumbnail to play"} <span aria-hidden="true">{activeVideoId === video.id ? "✓" : "▶"}</span></span>
+                <span className="aj-video-cta">{activeVideoId === video.id ? "Playing here" : "Play here"} <span aria-hidden="true">{activeVideoId === video.id ? "✓" : "▶"}</span></span>
               </div>
             </article>
           ))}
