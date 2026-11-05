@@ -233,58 +233,54 @@ function StoryShortEmbed({ video }: { video: (typeof storyShorts)[number] }) {
 function InstagramProfilePreview() {
   const [posts, setPosts] = useState(0);
   const [followers, setFollowers] = useState(100);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const hasStartedRef = useRef(false);
   const frameRef = useRef(0);
-  const runningRef = useRef(false);
 
-  useEffect(() => () => {
-    if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
+  useEffect(() => {
+    const profile = profileRef.current;
+    if (!profile || hasStartedRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || hasStartedRef.current) return;
+        hasStartedRef.current = true;
+        observer.disconnect();
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          setPosts(150);
+          setFollowers(647);
+          return;
+        }
+
+        const start = performance.now();
+        const duration = 2400;
+        const easeOut = (value: number) => 1 - Math.pow(1 - value, 3);
+        const tick = (now: number) => {
+          const progress = Math.min(1, (now - start) / duration);
+          setPosts(Math.round(150 * easeOut(progress)));
+          setFollowers(Math.round(100 + 547 * easeOut(progress)));
+          if (progress < 1) {
+            frameRef.current = window.requestAnimationFrame(tick);
+          } else {
+            setPosts(150);
+            setFollowers(647);
+          }
+        };
+        frameRef.current = window.requestAnimationFrame(tick);
+      },
+      { threshold: 0.35 },
+    );
+
+    observer.observe(profile);
+    return () => {
+      observer.disconnect();
+      if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
+    };
   }, []);
 
-  const playCountUp = () => {
-    if (runningRef.current) return;
-    runningRef.current = true;
-    setIsAnimating(true);
-    setPosts(0);
-    setFollowers(100);
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setPosts(149);
-      setFollowers(645);
-      setIsAnimating(false);
-      setHasAnimated(true);
-      runningRef.current = false;
-      return;
-    }
-
-    const easeOut = (value: number) => 1 - Math.pow(1 - value, 3);
-    const start = performance.now();
-    const duration = 2600;
-    const tick = (now: number) => {
-      const progress = Math.min(1, (now - start) / duration);
-      setPosts(Math.round(149 * easeOut(progress)));
-      const followerValue = progress < 0.52
-        ? Math.round(100 + 300 * easeOut(progress / 0.52))
-        : Math.round(400 + 245 * easeOut((progress - 0.52) / 0.48));
-      setFollowers(followerValue);
-
-      if (progress < 1) {
-        frameRef.current = window.requestAnimationFrame(tick);
-      } else {
-        setPosts(149);
-        setFollowers(645);
-        setIsAnimating(false);
-        setHasAnimated(true);
-        runningRef.current = false;
-      }
-    };
-
-    frameRef.current = window.requestAnimationFrame(tick);
-  };
-
   return (
-    <div className="aj-story-instagram-card" aria-label="Instagram profile preview for aman.ja1n">
+    <div ref={profileRef} className="aj-story-instagram-card" aria-label="Instagram profile preview for aman.ja1n">
       <div className="aj-story-instagram-topbar">
         <a href="https://www.instagram.com/aman.ja1n/" target="_blank" rel="noopener noreferrer">aman.ja1n</a>
         <span aria-hidden="true">•••</span>
@@ -319,14 +315,9 @@ function InstagramProfilePreview() {
         <p>20yo figuring out finance + career<br />CFA L2 | Using AI to study smarter &amp; grow<br />Bangalore | Gym = therapy</p>
         <div className="aj-story-instagram-links">
           <a href="https://www.youtube.com/@AmanJain-4" target="_blank" rel="noopener noreferrer">↗ youtube.com/@amanjain-4</a>
-          <a href="https://www.instagram.com/aman.ja1n/" target="_blank" rel="noopener noreferrer">@ aman.ja1n</a>
+          <a href="https://www.instagram.com/aman.ja1n/" target="_blank" rel="noopener noreferrer">◎ Instagram · @aman.ja1n</a>
+          <a href="https://www.threads.net/@aman.ja1n" target="_blank" rel="noopener noreferrer">＠ Threads · @aman.ja1n</a>
         </div>
-      </div>
-      <div className="aj-story-instagram-count-up">
-        <button type="button" onClick={playCountUp} disabled={isAnimating}>
-          {isAnimating ? "COUNTING UP…" : hasAnimated ? "REPLAY THE COUNT-UP ↻" : "WATCH THE NUMBERS ADD UP ↗"}
-        </button>
-        <small>Final snapshot from your supplied profile: 149 posts · 645 followers. The count-up is a visual reveal, not a historical analytics timeline.</small>
       </div>
     </div>
   );
