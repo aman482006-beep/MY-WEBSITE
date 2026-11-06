@@ -66,3 +66,6 @@ The workflow passes the optional `YOUTUBE_API_KEY` repository secret to the buil
 - Instagram: [@aman.ja1n](https://www.instagram.com/aman.ja1n/)
 
 <!-- harmless commit connectivity check -->
+
+
+Cross-project browser QA also runs against the deployed project previews, records desktop/mobile timings and validates ModelForge Excel exports through LibreOffice Calc.
