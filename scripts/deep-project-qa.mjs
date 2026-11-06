@@ -108,6 +108,9 @@ try {
         metricContainer: document.querySelector("#overviewMetrics")?.innerHTML?.slice(0, 500) || null,
         visibleText: document.body?.innerText?.slice(0, 1200) || "",
         scripts: [...document.scripts].map((script) => script.src).filter(Boolean),
+        browserErrors: entry.pageErrors,
+        consoleErrors: entry.consoleErrors,
+        failedRequests: entry.failedRequests,
       }));
       await saveScreenshot(page, "modelforge-startup-failure.png", true);
       throw new Error("ModelForge failed to initialise: " + JSON.stringify(entry.bootstrapDiagnostics) + " / " + error.message);
