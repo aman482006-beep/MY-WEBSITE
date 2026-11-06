@@ -46,7 +46,7 @@ async function loadPage(page, url, selector, label) {
   const start = performance.now();
   const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
   assert(response && response.status() === 200, label + " returned HTTP " + (response?.status() ?? "no response"));
-  await page.locator(selector).waitFor({ state: "visible", timeout: 45000 });
+  await page.locator(selector).first().waitFor({ state: "visible", timeout: 45000 });
   await page.waitForLoadState("load", { timeout: 25000 }).catch(() => {});
   await page.evaluate(() => document.fonts.ready);
   const elapsed = performance.now() - start;
