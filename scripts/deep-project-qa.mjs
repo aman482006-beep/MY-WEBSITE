@@ -97,7 +97,7 @@ try {
     entry.load = await loadPage(page, URLS.modelforge, "#page-overview.active", "ModelForge");
     await page.waitForFunction(() => !!window.ModelEngine && !!window.ModelWorkbook, null, { timeout: 45000 });
     await page.waitForFunction(() => !!window.ModelForge, null, { timeout: 45000 }).catch(async (error) => {
-      entry.bootstrapDiagnostics = await page.evaluate(() => ({
+      const browserSnapshot = await page.evaluate(() => ({
         title: document.title,
         readyState: document.readyState,
         modelEngine: !!window.ModelEngine,
@@ -108,10 +108,13 @@ try {
         metricContainer: document.querySelector("#overviewMetrics")?.innerHTML?.slice(0, 500) || null,
         visibleText: document.body?.innerText?.slice(0, 1200) || "",
         scripts: [...document.scripts].map((script) => script.src).filter(Boolean),
-        browserErrors: entry.pageErrors,
-        consoleErrors: entry.consoleErrors,
-        failedRequests: entry.failedRequests,
       }));
+      entry.bootstrapDiagnostics = {
+        ...browserSnapshot,
+        browserErrors: [...entry.pageErrors],
+        consoleErrors: [...entry.consoleErrors],
+        failedRequests: [...entry.failedRequests],
+      };
       await saveScreenshot(page, "modelforge-startup-failure.png", true);
       throw new Error("ModelForge failed to initialise: " + JSON.stringify(entry.bootstrapDiagnostics) + " / " + error.message);
     });
