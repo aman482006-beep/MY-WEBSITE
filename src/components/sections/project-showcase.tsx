@@ -64,31 +64,22 @@ function FokusGallery() {
   );
 }
 
-const projectPreviewAssets: Record<ProjectArtworkKind, string> = {
-  finance: "ai-personal-finance-manager.jpg",
-  model: "automated-financial-modelling-agent.jpg",
-  quant: "ai-powered-quantitative-trading-system.jpg",
-};
-
-const projectPreviewDescriptions: Record<ProjectArtworkKind, string> = {
-  finance: "Moneta personal finance dashboard, captured from the live project preview.",
-  model: "ModelForge financial modelling workspace, captured from the live project preview.",
-  quant: "India QuantLab historical research terminal, captured from the live project preview.",
-};
-
 function ProjectArtwork({ kind }: { kind: ProjectArtworkKind }) {
-  const [screenshotLoaded, setScreenshotLoaded] = useState(false);
   const title = kind === "finance" ? "MONEY OVERVIEW" : kind === "model" ? "MODEL WORKSPACE" : "STRATEGY LAB";
-  const screenshotSrc = assetPrefix + "/project-previews/" + projectPreviewAssets[kind];
+  const description = kind === "finance"
+    ? "Illustrative personal finance dashboard preview."
+    : kind === "model"
+      ? "Illustrative financial modelling workspace preview."
+      : "Illustrative quantitative research workspace preview.";
 
   return (
     <div
       className={`aj-project-art aj-project-lab-art aj-project-lab-${kind}`}
       role="img"
-      aria-label={projectPreviewDescriptions[kind]}
+      aria-label={description}
     >
       <div className="aj-project-lab-window" aria-hidden="true">
-        <div className="aj-project-lab-windowbar"><i /><i /><i /><strong>{title}</strong><small>WORK IN PROGRESS</small></div>
+        <div className="aj-project-lab-windowbar"><i /><i /><i /><strong>{title}</strong><small>ILLUSTRATIVE PREVIEW</small></div>
         <div className="aj-project-lab-body">
           {kind === "finance" && (
             <>
@@ -111,20 +102,11 @@ function ProjectArtwork({ kind }: { kind: ProjectArtworkKind }) {
           )}
         </div>
       </div>
-      <Image
-        src={screenshotSrc}
-        alt=""
-        fill
-        sizes="(max-width: 700px) 100vw, 50vw"
-        unoptimized
-        loading="lazy"
-        onLoad={() => setScreenshotLoaded(true)}
-        className={`aj-project-screenshot${screenshotLoaded ? " is-loaded" : ""}`}
-      />
-      {screenshotLoaded && <span className="aj-project-screenshot-label">LIVE INTERFACE · 4K CAPTURE</span>}
+      <span className="aj-project-screenshot-label">ILLUSTRATIVE WORKSPACE · NOT A LIVE CAPTURE</span>
     </div>
   );
 }
+
 export function ProjectShowcase() {
   return (
     <section className="aj-section aj-projects-section" id="projects" aria-labelledby="projects-heading">
