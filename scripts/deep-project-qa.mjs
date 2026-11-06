@@ -99,33 +99,41 @@ try {
     await page.waitForTimeout(700);
     await saveScreenshot(page, "modelforge-desktop.png", true);
 
-    entry.canvas = await page.evaluate(() => {
-      const ids = ["revenueChart", "marginChart", "cashChart", "dcfChart"];
-      return Object.fromEntries(ids.map((id) => {
+    entry.canvas = {};
+    const verifyVisibleCharts = async (ids, group) => {
+      await page.waitForFunction((chartIds) => chartIds.every((id) => {
         const canvas = document.getElementById(id);
-        if (!canvas) return [id, { exists: false }];
+        if (!canvas || canvas.clientWidth < 100 || canvas.clientHeight < 100) return false;
         const context = canvas.getContext("2d");
+        if (!context) return false;
+        const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+        let painted = 0;
+        for (let i = 3; i < pixels.length; i += 4) if (pixels[i] > 0) painted++;
+        return painted > 150;
+      }), ids, { timeout: 12000 });
+      const stats = await page.evaluate((chartIds) => Object.fromEntries(chartIds.map((id) => {
+        const canvas = document.getElementById(id);
+        const context = canvas?.getContext("2d");
         const pixels = context && canvas.width && canvas.height
           ? context.getImageData(0, 0, canvas.width, canvas.height).data
           : [];
-        let painted = 0;
-        for (let i = 3; i < pixels.length; i += 4) if (pixels[i] > 0) painted++;
-        const rect = canvas.getBoundingClientRect();
+        let paintedPixels = 0;
+        for (let i = 3; i < pixels.length; i += 4) if (pixels[i] > 0) paintedPixels++;
+        const rect = canvas?.getBoundingClientRect();
         return [id, {
-          exists: true,
-          width: canvas.width,
-          height: canvas.height,
-          cssWidth: Math.round(rect.width),
-          cssHeight: Math.round(rect.height),
-          paintedPixels: painted,
-          hasContext: !!context,
+          width: canvas?.width ?? 0,
+          height: canvas?.height ?? 0,
+          cssWidth: Math.round(rect?.width ?? 0),
+          cssHeight: Math.round(rect?.height ?? 0),
+          paintedPixels,
         }];
-      }));
-    });
-    for (const [id, metrics] of Object.entries(entry.canvas)) {
-      assert(metrics.exists && metrics.hasContext, "ModelForge missing canvas/context: " + id);
-      assert(metrics.paintedPixels > 150, "ModelForge chart is blank: " + id + " " + JSON.stringify(metrics));
-    }
+      })), ids);
+      for (const [id, metrics] of Object.entries(stats)) {
+        assert(metrics.paintedPixels > 150, "ModelForge chart is blank: " + id + " " + JSON.stringify(metrics));
+      }
+      entry.canvas[group] = stats;
+    };
+    await verifyVisibleCharts(["revenueChart"], "overview");
 
     const pages = ["data", "history", "model", "dcf", "comps", "sensitivity", "assistant", "overview"];
     for (const target of pages) {
@@ -133,6 +141,8 @@ try {
       await page.locator('button.nav-btn[data-page="' + target + '"]').click();
       await page.locator("#page-" + target + ".active").waitFor({ state: "visible" });
       entry.interactions["navigate_" + target + "_ms"] = Math.round(performance.now() - start);
+      if (target === "history") await verifyVisibleCharts(["marginChart", "cashChart"], "history");
+      if (target === "dcf") await verifyVisibleCharts(["dcfChart"], "dcf");
     }
     await assertNoHorizontalOverflow(page, "ModelForge desktop");
 
