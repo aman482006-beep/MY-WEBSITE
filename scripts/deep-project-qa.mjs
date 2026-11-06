@@ -94,9 +94,34 @@ try {
     });
     const page = await context.newPage();
     recordConsole(page, entry);
-    entry.load = await loadPage(page, URLS.modelforge, "#overviewMetrics .metric-card", "ModelForge");
-    await page.waitForFunction(() => !!window.ModelEngine && !!window.ModelWorkbook, null, { timeout: 30000 });
+    entry.load = await loadPage(page, URLS.modelforge, "#page-overview.active", "ModelForge");
+    await page.waitForFunction(() => !!window.ModelEngine && !!window.ModelWorkbook, null, { timeout: 45000 });
+    await page.waitForFunction(() => !!window.ModelForge, null, { timeout: 45000 }).catch(async (error) => {
+      entry.bootstrapDiagnostics = await page.evaluate(() => ({
+        title: document.title,
+        readyState: document.readyState,
+        modelEngine: !!window.ModelEngine,
+        modelWorkbook: !!window.ModelWorkbook,
+        modelForge: !!window.ModelForge,
+        xlsxLoadError: window.ModelForgeXlsxLoadError || null,
+        zipLoadError: window.ModelForgeZipLoadError || null,
+        metricContainer: document.querySelector("#overviewMetrics")?.innerHTML?.slice(0, 500) || null,
+        visibleText: document.body?.innerText?.slice(0, 1200) || "",
+        scripts: [...document.scripts].map((script) => script.src).filter(Boolean),
+      }));
+      await saveScreenshot(page, "modelforge-startup-failure.png", true);
+      throw new Error("ModelForge failed to initialise: " + JSON.stringify(entry.bootstrapDiagnostics) + " / " + error.message);
+    });
+    await page.waitForFunction(() => document.querySelectorAll("#overviewMetrics .metric-card").length >= 4, null, { timeout: 15000 });
     await page.waitForTimeout(700);
+    entry.bootstrapDiagnostics = await page.evaluate(() => ({
+      modelEngine: !!window.ModelEngine,
+      modelWorkbook: !!window.ModelWorkbook,
+      modelForge: !!window.ModelForge,
+      xlsxLoadError: window.ModelForgeXlsxLoadError || null,
+      zipLoadError: window.ModelForgeZipLoadError || null,
+      metricCards: document.querySelectorAll("#overviewMetrics .metric-card").length,
+    }));
     await saveScreenshot(page, "modelforge-desktop.png", true);
 
     entry.canvas = {};
