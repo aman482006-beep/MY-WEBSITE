@@ -41,7 +41,7 @@ jobs:
           libreoffice --headless -env:UserInstallation=file:///tmp/lo-modelforge-partial-qa --convert-to xlsx --outdir project-qa-artifacts/recalculated project-qa-artifacts/ModelForge-DCF-Only.xlsx
           python scripts/inspect-modelforge-export.py
       - name: Upload browser screenshots, timings and real Excel exports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: deep-project-browser-qa-evidence
