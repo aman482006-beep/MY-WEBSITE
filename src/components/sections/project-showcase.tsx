@@ -115,7 +115,7 @@ function FinanceRoastRoomArtwork() {
       aria-label="Actual Finance Roast Room interface with finance advisor portraits around a debate table and a getting-started panel"
     >
       <Image
-        src={assetPrefix + "/projects/finance-roast-room.webp"}
+        src={assetPrefix + "/projects/finance-roast-room.svg"}
         alt="Finance Roast Room interface showing advisor portraits around the debate table, deliberation stages and getting-started guidance"
         fill
         sizes="(max-width: 700px) 100vw, 500px"
