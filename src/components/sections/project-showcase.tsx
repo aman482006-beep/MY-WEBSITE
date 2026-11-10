@@ -107,6 +107,25 @@ function ProjectArtwork({ kind }: { kind: ProjectArtworkKind }) {
   );
 }
 
+function FinanceRoastRoomArtwork() {
+  return (
+    <div
+      className="aj-project-art aj-finance-roast-room-art"
+      role="img"
+      aria-label="Actual Finance Roast Room interface with finance advisor portraits around a debate table and a getting-started panel"
+    >
+      <Image
+        src={assetPrefix + "/projects/finance-roast-room.webp"}
+        alt="Finance Roast Room interface showing advisor portraits around the debate table, deliberation stages and getting-started guidance"
+        fill
+        sizes="(max-width: 700px) 100vw, 500px"
+        unoptimized
+        loading="lazy"
+      />
+    </div>
+  );
+}
+
 export function ProjectShowcase() {
   return (
     <section className="aj-section aj-projects-section" id="projects" aria-labelledby="projects-heading">
@@ -138,9 +157,24 @@ export function ProjectShowcase() {
           </article>
 
           <article className="aj-project-card">
+            <FinanceRoastRoomArtwork />
+            <div className="aj-project-card-content">
+              <div className="aj-project-card-meta"><span>Finance × AI · Open-source tool</span><span>02</span></div>
+              <h3>Finance Roast Room</h3>
+              <p className="aj-project-subtitle">A debate room for consequential money decisions.</p>
+              <p className="aj-project-description">An AI-powered council of 20 simulated finance thinkers that stress-tests investing, trading, valuation and capital-allocation decisions. Advisors challenge one another across structured rounds before the Chair delivers weighted scores, a final verdict and a downloadable PDF report.</p>
+              <div className="aj-project-tags"><span>Node.js</span><span>Anthropic API</span><span>AI agents</span><span>Investment analysis</span></div>
+              <p className="aj-project-note">Run locally with Claude Code or Google Antigravity. An optional Anthropic API runner is available. Advisor personas are simulations, not the actual people or financial advice.</p>
+              <div className="aj-project-actions">
+                <a href="https://github.com/aman482006-beep/Finance-Roast-Room" target="_blank" rel="noopener noreferrer">View on GitHub <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>
+
+          <article className="aj-project-card">
             <ProjectArtwork kind="finance" />
             <div className="aj-project-card-content">
-              <div className="aj-project-card-meta"><span>Fintech · In development</span><span>02</span></div>
+              <div className="aj-project-card-meta"><span>Fintech · In development</span><span>03</span></div>
               <h3>AI Personal Finance Manager</h3>
               <p className="aj-project-description">An experiment in making personal finances easier to understand, with spending views, budgeting workflows and AI-assisted insights in one place.</p>
               <div className="aj-project-tags"><span>Personal finance</span><span>AI</span><span>Fintech</span><span>Product thinking</span></div>
@@ -152,7 +186,7 @@ export function ProjectShowcase() {
           <article className="aj-project-card">
             <ProjectArtwork kind="model" />
             <div className="aj-project-card-content">
-              <div className="aj-project-card-meta"><span>Finance × AI · In development</span><span>03</span></div>
+              <div className="aj-project-card-meta"><span>Finance × AI · In development</span><span>04</span></div>
               <h3>Automated Financial Modelling Agent</h3>
               <p className="aj-project-description">Exploring how an AI-assisted workflow can organise assumptions, historical financials, forecast schedules and valuation outputs.</p>
               <div className="aj-project-tags"><span>Financial modelling</span><span>Automation</span><span>AI agents</span></div>
@@ -164,7 +198,7 @@ export function ProjectShowcase() {
           <article className="aj-project-card">
             <ProjectArtwork kind="quant" />
             <div className="aj-project-card-content">
-              <div className="aj-project-card-meta"><span>Quant · Research prototype</span><span>04</span></div>
+              <div className="aj-project-card-meta"><span>Quant · Research prototype</span><span>05</span></div>
               <h3>AI-Powered Quantitative Trading System</h3>
               <p className="aj-project-description">A research project exploring strategy signals, historical backtesting and risk-aware evaluation before any live-trading claims.</p>
               <div className="aj-project-tags"><span>Python</span><span>Quantitative research</span><span>Backtesting</span><span>Risk</span></div>

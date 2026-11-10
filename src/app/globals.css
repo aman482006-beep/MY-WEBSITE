@@ -1775,3 +1775,16 @@ a[href]:active, button:active { opacity: .82; }
 .aj-video-cta > span {
   flex: 0 0 auto;
 }
+
+
+/* Finance Roast Room project artwork: preserve the complete real interface screenshot. */
+.aj-projects-page .aj-finance-roast-room-art {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  background: #F6F8FB;
+}
+.aj-projects-page .aj-finance-roast-room-art img {
+  object-fit: contain;
+  object-position: center;
+}
