@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { dailyNewspaperAutomationPrompt } from "./daily-newspaper-prompt";
+import { financialModelWithAiPrompt } from "./financial-model-with-ai-prompt";
 import "./newspaper-resource.css";
 
 const resourceAreas = [
@@ -28,6 +29,8 @@ const resourceAreas = [
 export function ResourcesContent() {
   const [requestText, setRequestText] = useState("");
   const [copyStatus, setCopyStatus] = useState<"idle" | "success" | "error">("idle");
+  const [selectedAiFinanceWorkflow, setSelectedAiFinanceWorkflow] = useState("");
+  const [aiFinanceCopyStatus, setAiFinanceCopyStatus] = useState<"idle" | "success" | "error">("idle");
 
   function openNewspaperPreview() {
     const basePath = window.location.pathname.startsWith("/MY-WEBSITE") ? "/MY-WEBSITE" : "";
@@ -67,6 +70,40 @@ export function ResourcesContent() {
     }
 
     setCopyStatus(copied ? "success" : "error");
+  }
+
+  async function copyFinancialModelPrompt() {
+    setAiFinanceCopyStatus("idle");
+    let copied = false;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(financialModelWithAiPrompt);
+        copied = true;
+      }
+    } catch {
+      // Fall through to the selection-based clipboard fallback below.
+    }
+
+    if (!copied) {
+      const textarea = document.createElement("textarea");
+      textarea.value = financialModelWithAiPrompt;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      textarea.style.pointerEvents = "none";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      try {
+        copied = document.execCommand("copy");
+      } finally {
+        textarea.remove();
+      }
+    }
+
+    setAiFinanceCopyStatus(copied ? "success" : "error");
   }
 
   function handleRequest(event: FormEvent<HTMLFormElement>) {
@@ -109,6 +146,49 @@ export function ResourcesContent() {
                 ? "Clipboard access was blocked by this browser. Please allow clipboard access and try again."
                 : "Preview opens the 30 October 2026 sample only. Copy prompt gives you the complete reusable setup instructions."}
           </p>
+        </section>
+
+        <section className="aj-ai-small-finance" aria-labelledby="ai-small-finance-heading">
+          <div className="aj-ai-small-finance-copy">
+            <p className="aj-ai-small-finance-kicker">AI × FINANCE · PROMPT LIBRARY</p>
+            <h2 id="ai-small-finance-heading">AI Small X Finance</h2>
+            <p>Practical AI workflows for financial analysis and modelling. I’ll keep adding prompts here as they’re ready to use.</p>
+          </div>
+          <div className="aj-ai-small-finance-picker">
+            <label htmlFor="ai-finance-workflow">Choose a workflow</label>
+            <select
+              id="ai-finance-workflow"
+              value={selectedAiFinanceWorkflow}
+              onChange={(event) => {
+                setSelectedAiFinanceWorkflow(event.target.value);
+                setAiFinanceCopyStatus("idle");
+              }}
+            >
+              <option value="">Select a finance workflow</option>
+              <option value="three-statement-financial-model">Three-Statement Financial Model with AI</option>
+            </select>
+            {selectedAiFinanceWorkflow === "three-statement-financial-model" && (
+              <div className="aj-ai-small-finance-selected">
+                <h3>Three-Statement Financial Model with AI</h3>
+                <p>Build a linked, scenario-driven Excel model from a Screener.in export, including ratio analysis, DCF valuation, sensitivities and a reverse DCF.</p>
+                <button type="button" className="aj-button aj-button-primary" onClick={copyFinancialModelPrompt}>
+                  {aiFinanceCopyStatus === "success"
+                    ? "Copied!"
+                    : aiFinanceCopyStatus === "error"
+                      ? "Try copy again"
+                      : "Copy prompt"}
+                  <span aria-hidden="true">{aiFinanceCopyStatus === "success" ? "✓" : "↗"}</span>
+                </button>
+                <p className="aj-ai-small-finance-status" data-state={aiFinanceCopyStatus} aria-live="polite">
+                  {aiFinanceCopyStatus === "success"
+                    ? "Full modelling prompt copied. Paste it into ChatGPT with the Screener.in Excel export and completed input form."
+                    : aiFinanceCopyStatus === "error"
+                      ? "Clipboard access was blocked by this browser. Please allow clipboard access and try again."
+                      : "Select this workflow, then copy the complete prompt to use it in ChatGPT."}
+                </p>
+              </div>
+            )}
+          </div>
         </section>
 
         <section className="aj-resource-grid" aria-label="Resource areas">
