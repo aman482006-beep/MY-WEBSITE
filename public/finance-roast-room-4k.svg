@@ -208,7 +208,7 @@ ansform="translate(260 1715)">
     <rect x="-73" y="143" width="146" height="31" rx="9" fill="#0e1925" opacity=".88"/>
     <circle cx="-49" cy="159" r="5" fill="#e6a16f"/>
     <path d="M-31 159 H52" stroke="#95a5b4" stroke-width="4" stroke-linecap="round" opacity=".55"/>
-  </g><g transform="translate(628 1715)">
+  <g transform="translate(628 1715)">
     <ellipse cx="0" cy="175" rx="116" ry="22" fill="#050a12" opacity=".34"/>
     <path d="M-104 165 Q-91 62 -44 46 L0 36 L44 46 Q91 62 104 165 Z" fill="#5b7897" stroke="#e5b18c" stroke-opacity=".12" stroke-width="5"/>
     <path d="M-31 47 L0 88 L31 47 L15 165 L-15 165 Z" fill="#d9e0e1" opacity=".86"/>
