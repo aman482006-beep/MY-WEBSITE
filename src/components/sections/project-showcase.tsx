@@ -114,13 +114,14 @@ function FinanceRoastRoomArtwork() {
       role="img"
       aria-label="4K vector artwork of a 20-advisor finance debate room"
     >
-      <Image
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
         src={assetPrefix + "/finance-roast-room-4k.svg"}
         alt="A 20-advisor finance council debating around a central data table, shown in a 4K vector illustration"
-        fill
-        sizes="(max-width: 700px) 100vw, 500px"
-        unoptimized
-        priority
+        width={3840}
+        height={2160}
+        loading="eager"
+        decoding="async"
       />
     </div>
   );

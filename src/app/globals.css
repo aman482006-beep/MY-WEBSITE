@@ -1785,6 +1785,10 @@ a[href]:active, button:active { opacity: .82; }
   background: #F6F8FB;
 }
 .aj-projects-page .aj-finance-roast-room-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   object-position: center;
 }

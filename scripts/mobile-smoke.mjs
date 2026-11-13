@@ -300,6 +300,12 @@ async function runViewport(viewport) {
     await page.locator(".aj-finance-roast-room-art").scrollIntoViewIfNeeded();
     const roastRoomImage = page.locator(".aj-finance-roast-room-art img");
     await roastRoomImage.waitFor({ state: "visible" });
+    const roastAssetResponse = await page.request.get(base + "/finance-roast-room-4k.svg");
+    console.log("FINANCE_ROAST_ROOM_ASSET_RESPONSE " + JSON.stringify({
+      status: roastAssetResponse.status(),
+      contentType: roastAssetResponse.headers()["content-type"],
+      bytes: (await roastAssetResponse.body()).length,
+    }));
     await page.waitForFunction(() => {
       const image = document.querySelector(".aj-finance-roast-room-art img");
       return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0 && image.naturalHeight > 0;
