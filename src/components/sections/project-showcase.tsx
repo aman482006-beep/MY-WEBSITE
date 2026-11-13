@@ -112,11 +112,11 @@ function FinanceRoastRoomArtwork() {
     <div
       className="aj-project-art aj-finance-roast-room-art"
       role="img"
-      aria-label="Finance Roast Room hero showing seven finance advisor portraits around the debate table"
+      aria-label="4K AI-generated concept artwork of a 20-advisor finance debate room"
     >
       <Image
-        src="https://raw.githubusercontent.com/aman482006-beep/Finance-Roast-Room/main/docs/room.jpg"
-        alt="Seven finance advisor portraits arranged above the Finance Roast Room debate table"
+        src={assetPrefix + "/finance-roast-room-4k.avif"}
+        alt="A 20-advisor finance council debating around a central data table"
         fill
         sizes="(max-width: 700px) 100vw, 500px"
         unoptimized

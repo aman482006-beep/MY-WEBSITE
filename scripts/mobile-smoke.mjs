@@ -284,12 +284,18 @@ async function runViewport(viewport) {
     assert(!projectOverflow, "Projects page has horizontal overflow at " + viewport.width + "px");
 
     await page.getByRole("heading", { name: "Fokus" }).waitFor();
-    assert(await page.getByRole("link", { name: /View on GitHub/i }).isVisible(), "Fokus GitHub link is missing");
+    assert(await page.locator(".aj-project-card").first().getByRole("link", { name: /View on GitHub/i }).isVisible(), "Fokus GitHub link is missing");
     assert(await page.getByRole("link", { name: /Get Fokus/i }).isVisible(), "Fokus product link is missing");
-    assert(await page.locator(".aj-project-card").count() === 4, "Projects section should show Fokus and the three active AI/finance builds");
+    assert(await page.locator(".aj-project-card").count() === 5, "Projects section should show Fokus, Finance Roast Room and the three AI/finance builds");
     for (const projectTitle of ["AI Personal Finance Manager", "Automated Financial Modelling Agent", "AI-Powered Quantitative Trading System"]) {
       await page.getByRole("heading", { name: projectTitle, exact: true }).waitFor();
     }
+    await page.getByRole("heading", { name: "Finance Roast Room", exact: true }).waitFor();
+    await page.locator(".aj-finance-roast-room-art").scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => {
+      const image = document.querySelector(".aj-finance-roast-room-art img");
+      return image instanceof HTMLImageElement && image.complete && image.naturalWidth === 3840 && image.naturalHeight === 2160;
+    }, null, { timeout: 15000 });
 
     // Verify the seven-chapter story journey, compact Instagram profile, video-free archive and gym visual.
     currentStage = "verify inline Story video embeds";
