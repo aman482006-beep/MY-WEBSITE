@@ -112,14 +112,14 @@ function FinanceRoastRoomArtwork() {
     <div
       className="aj-project-art aj-finance-roast-room-art"
       role="img"
-      aria-label="4K vector artwork of a 20-advisor finance debate room"
+      aria-label="Screenshot preview of the Finance Roast Room with advisor portraits and its decision prompt"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={assetPrefix + "/finance-roast-room-4k.svg"}
-        alt="A 20-advisor finance council debating around a central data table, shown in a 4K vector illustration"
-        width={3840}
-        height={2160}
+        src={assetPrefix + "/finance-roast-room.webp"}
+        alt="Finance Roast Room screenshot showing Warren Buffett, Benjamin Graham, Charlie Munger, Peter Lynch, Howard Marks, Ray Dalio and Aswath Damodaran above the room's decision prompt"
+        width={640}
+        height={347}
         loading="eager"
         decoding="async"
       />

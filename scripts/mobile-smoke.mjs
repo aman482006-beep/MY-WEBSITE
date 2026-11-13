@@ -1,9 +1,12 @@
 import { chromium } from "playwright";
 import { readFileSync } from "node:fs";
 
-const roastRoomSvg = readFileSync("out/finance-roast-room-4k.svg", "utf8");
-if (!roastRoomSvg.includes('width="3840"') || !roastRoomSvg.includes('height="2160"')) {
-  throw new Error("Finance Roast Room artwork must be a 3840 × 2160 4K asset in the static export.");
+const roastRoomWebp = readFileSync("out/finance-roast-room.webp");
+if (
+  roastRoomWebp.subarray(0, 4).toString("ascii") !== "RIFF" ||
+  roastRoomWebp.subarray(8, 12).toString("ascii") !== "WEBP"
+) {
+  throw new Error("Finance Roast Room image must be a standalone WebP file in the static export.");
 }
 
 const base = "http://127.0.0.1:4173/MY-WEBSITE";
@@ -300,7 +303,7 @@ async function runViewport(viewport) {
     await page.locator(".aj-finance-roast-room-art").scrollIntoViewIfNeeded();
     const roastRoomImage = page.locator(".aj-finance-roast-room-art img");
     await roastRoomImage.waitFor({ state: "visible" });
-    const roastAssetResponse = await page.request.get(base + "/finance-roast-room-4k.svg");
+    const roastAssetResponse = await page.request.get(base + "/finance-roast-room.webp");
     console.log("FINANCE_ROAST_ROOM_ASSET_RESPONSE " + JSON.stringify({
       status: roastAssetResponse.status(),
       contentType: roastAssetResponse.headers()["content-type"],
@@ -315,7 +318,9 @@ async function runViewport(viewport) {
       height: image.naturalHeight,
       src: image.currentSrc,
     }));
-    assert(roastRoomDimensions.src.includes("finance-roast-room-4k.svg"), "Finance Roast Room artwork URL is incorrect");
+    assert(roastRoomDimensions.src.includes("finance-roast-room.webp"), "Finance Roast Room image URL is incorrect");
+    assert(roastRoomDimensions.width === 640 && roastRoomDimensions.height === 347, "Finance Roast Room screenshot dimensions are incorrect");
+    assert(roastAssetResponse.status() === 200 && (roastAssetResponse.headers()["content-type"] || "").includes("image/webp"), "Finance Roast Room image did not return HTTP 200 with the correct WebP content type");
     console.log("FINANCE_ROAST_ROOM_ARTWORK_RENDERED " + JSON.stringify(roastRoomDimensions));
 
     // Verify the seven-chapter story journey, compact Instagram profile, video-free archive and gym visual.
