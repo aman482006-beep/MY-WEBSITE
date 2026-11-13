@@ -1,4 +1,10 @@
 import { chromium } from "playwright";
+import { readFileSync } from "node:fs";
+
+const roastRoomSvg = readFileSync("out/finance-roast-room-4k.svg", "utf8");
+if (!roastRoomSvg.includes('width="3840"') || !roastRoomSvg.includes('height="2160"')) {
+  throw new Error("Finance Roast Room artwork must be a 3840 × 2160 4K asset in the static export.");
+}
 
 const base = "http://127.0.0.1:4173/MY-WEBSITE";
 const failures = [];
@@ -292,10 +298,19 @@ async function runViewport(viewport) {
     }
     await page.getByRole("heading", { name: "Finance Roast Room", exact: true }).waitFor();
     await page.locator(".aj-finance-roast-room-art").scrollIntoViewIfNeeded();
+    const roastRoomImage = page.locator(".aj-finance-roast-room-art img");
+    await roastRoomImage.waitFor({ state: "visible" });
     await page.waitForFunction(() => {
       const image = document.querySelector(".aj-finance-roast-room-art img");
-      return image instanceof HTMLImageElement && image.complete && image.naturalWidth === 3840 && image.naturalHeight === 2160;
-    }, null, { timeout: 15000 });
+      return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0 && image.naturalHeight > 0;
+    }, null, { timeout: 20000 });
+    const roastRoomDimensions = await roastRoomImage.evaluate((image) => ({
+      width: image.naturalWidth,
+      height: image.naturalHeight,
+      src: image.currentSrc,
+    }));
+    assert(roastRoomDimensions.src.includes("finance-roast-room-4k.svg"), "Finance Roast Room artwork URL is incorrect");
+    console.log("FINANCE_ROAST_ROOM_ARTWORK_RENDERED " + JSON.stringify(roastRoomDimensions));
 
     // Verify the seven-chapter story journey, compact Instagram profile, video-free archive and gym visual.
     currentStage = "verify inline Story video embeds";

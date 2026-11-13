@@ -120,7 +120,7 @@ function FinanceRoastRoomArtwork() {
         fill
         sizes="(max-width: 700px) 100vw, 500px"
         unoptimized
-        loading="lazy"
+        priority
       />
     </div>
   );
