@@ -3,7 +3,7 @@ import { ProjectShowcase } from "@/components/sections/project-showcase";
 
 export const metadata: Metadata = {
   title: "What I’ve Built",
-  description: "Selected finance, AI, education and product projects by Aman Jain, with source code and demos where available.",
+  description: "Finance and AI projects by Aman Jain, including Finance Roast Room, a 20-advisor AI investment debate room, Fokus and financial modelling tools.",
   alternates: { canonical: "/projects" },
 };
 
