@@ -1,4 +1,4 @@
-export const financeTrackerPrompt = String.raw\`# BUILD MY PERSONAL FINANCE TRACKER — COMPLETE DEVELOPMENT PROMPT
+export const financeTrackerPrompt = String.raw`# BUILD MY PERSONAL FINANCE TRACKER — COMPLETE DEVELOPMENT PROMPT
 
 You are a senior full-stack developer, financial product designer, UI/UX specialist and software architect.
 
@@ -379,4 +379,4 @@ Do not stop after producing a design or development plan. Implement the applicat
 
 FINAL OBJECTIVE:
 
-Build a personalised finance tracker through which I can record income and expenses, import bank statements, visualise cash flow, manage budgets, identify spending patterns, export financial reports and interact with an AI financial analyst.\`
+Build a personalised finance tracker through which I can record income and expenses, import bank statements, visualise cash flow, manage budgets, identify spending patterns, export financial reports and interact with an AI financial analyst.`;
