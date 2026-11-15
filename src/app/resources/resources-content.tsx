@@ -17,7 +17,7 @@ const resourceAreas = [
     description: "Revision trackers, formula references and a more organised study plan.",
     link: {
       label: "Open CFA resources",
-      href: "https://drive.google.com/drive/mobile/folders/1BWsJY1_X_vU9E9qf1B7m5UIudjbCRC?usp=sharing",
+      href: "https://drive.google.com/drive/mobile/folders/1BWsJY1_X_vU9EwE9qf1B7m5UIudjbCRC?usp=sharing",
     },
   },
   {
