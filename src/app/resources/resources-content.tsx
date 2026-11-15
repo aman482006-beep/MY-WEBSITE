@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { dailyNewspaperAutomationPrompt } from "./daily-newspaper-prompt";
 import { financialModelWithAiPrompt } from "./financial-model-with-ai-prompt";
+import { financeTrackerPrompt } from "./finance-tracker-prompt";
 import "./newspaper-resource.css";
 
 const resourceAreas = [
@@ -16,7 +17,7 @@ const resourceAreas = [
     description: "Revision trackers, formula references and a more organised study plan.",
     link: {
       label: "Open CFA resources",
-      href: "https://drive.google.com/drive/mobile/folders/1BWsJY1_X_vU9EwE9qf1B7m5UIudjbCRC?usp=sharing",
+      href: "https://drive.google.com/drive/mobile/folders/1BWsJY1_X_vU9E9qf1B7m5UIudjbCRC?usp=sharing",
     },
   },
   {
@@ -31,6 +32,7 @@ export function ResourcesContent() {
   const [copyStatus, setCopyStatus] = useState<"idle" | "success" | "error">("idle");
   const [selectedAiFinanceWorkflow, setSelectedAiFinanceWorkflow] = useState("");
   const [aiFinanceCopyStatus, setAiFinanceCopyStatus] = useState<"idle" | "success" | "error">("idle");
+  const [financeTrackerCopyStatus, setFinanceTrackerCopyStatus] = useState<"idle" | "success" | "error">("idle");
 
   function openNewspaperPreview() {
     const basePath = window.location.pathname.startsWith("/MY-WEBSITE") ? "/MY-WEBSITE" : "";
@@ -106,6 +108,42 @@ export function ResourcesContent() {
     setAiFinanceCopyStatus(copied ? "success" : "error");
   }
 
+  async function copyFinanceTrackerPrompt() {
+    setFinanceTrackerCopyStatus("idle");
+    let copied = false;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(financeTrackerPrompt);
+        copied = true;
+      }
+    } catch {
+      // Fall back for browsers or contexts that block the Clipboard API.
+    }
+
+    if (!copied) {
+      const textarea = document.createElement("textarea");
+      textarea.value = financeTrackerPrompt;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      textarea.style.pointerEvents = "none";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      try {
+        copied = document.execCommand("copy");
+      } catch {
+        copied = false;
+      } finally {
+        textarea.remove();
+      }
+    }
+
+    setFinanceTrackerCopyStatus(copied ? "success" : "error");
+  }
+
   function handleRequest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const request = requestText.trim();
@@ -162,10 +200,12 @@ export function ResourcesContent() {
               onChange={(event) => {
                 setSelectedAiFinanceWorkflow(event.target.value);
                 setAiFinanceCopyStatus("idle");
+                setFinanceTrackerCopyStatus("idle");
               }}
             >
               <option value="">Select a finance workflow</option>
               <option value="three-statement-financial-model">Three-Statement Financial Model with AI</option>
+              <option value="finance-tracker">Finance Tracker</option>
             </select>
             {selectedAiFinanceWorkflow === "three-statement-financial-model" && (
               <div className="aj-ai-small-finance-selected">
@@ -185,6 +225,27 @@ export function ResourcesContent() {
                     : aiFinanceCopyStatus === "error"
                       ? "Clipboard access was blocked by this browser. Please allow clipboard access and try again."
                       : "Select this workflow, then copy the complete prompt to use it in ChatGPT."}
+                </p>
+              </div>
+            )}
+            {selectedAiFinanceWorkflow === "finance-tracker" && (
+              <div className="aj-ai-small-finance-selected">
+                <h3>Finance Tracker</h3>
+                <p>Build your own personal finance dashboard with income and expense tracking, CSV statement imports, interactive charts, budgets, spending insights, data exports and an optional AI financial analyst.</p>
+                <button type="button" className="aj-button aj-button-primary" onClick={copyFinanceTrackerPrompt}>
+                  {financeTrackerCopyStatus === "success"
+                    ? "Copied!"
+                    : financeTrackerCopyStatus === "error"
+                      ? "Try copy again"
+                      : "Copy prompt"}
+                  <span aria-hidden="true">{financeTrackerCopyStatus === "success" ? "✓" : "↗"}</span>
+                </button>
+                <p className="aj-ai-small-finance-status" data-state={financeTrackerCopyStatus} aria-live="polite">
+                  {financeTrackerCopyStatus === "success"
+                    ? "Full Finance Tracker development prompt copied. Paste it into your AI coding assistant to build your own version."
+                    : financeTrackerCopyStatus === "error"
+                      ? "Copying was blocked by this browser. Check clipboard permissions and try again."
+                      : "Select Finance Tracker, then copy the complete development prompt."}
                 </p>
               </div>
             )}
