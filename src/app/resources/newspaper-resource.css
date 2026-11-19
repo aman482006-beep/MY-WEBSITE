@@ -187,3 +187,11 @@
 @media (prefers-reduced-motion: reduce) {
   .aj-ai-small-finance * { transition: none !important; }
 }
+
+
+.aj-resource-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+}
