@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { dailyNewspaperAutomationPrompt } from "./daily-newspaper-prompt";
 import { financialModelWithAiPrompt } from "./financial-model-with-ai-prompt";
 import { financeTrackerPrompt } from "./finance-tracker-prompt";
+import { indiaQuantLabPrompt } from "./india-quant-lab-prompt";
 import "./newspaper-resource.css";
 
 const resourceAreas = [
@@ -39,6 +40,7 @@ export function ResourcesContent() {
   const [selectedAiFinanceWorkflow, setSelectedAiFinanceWorkflow] = useState("");
   const [aiFinanceCopyStatus, setAiFinanceCopyStatus] = useState<"idle" | "success" | "error">("idle");
   const [financeTrackerCopyStatus, setFinanceTrackerCopyStatus] = useState<"idle" | "success" | "error">("idle");
+  const [indiaQuantLabCopyStatus, setIndiaQuantLabCopyStatus] = useState<"idle" | "success" | "error">("idle");
 
   function openNewspaperPreview() {
     const basePath = window.location.pathname.startsWith("/MY-WEBSITE") ? "/MY-WEBSITE" : "";
@@ -150,6 +152,42 @@ export function ResourcesContent() {
     setFinanceTrackerCopyStatus(copied ? "success" : "error");
   }
 
+  async function copyIndiaQuantLabPrompt() {
+    setIndiaQuantLabCopyStatus("idle");
+    let copied = false;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(indiaQuantLabPrompt);
+        copied = true;
+      }
+    } catch {
+      // Fall back for browsers or contexts that block the Clipboard API.
+    }
+
+    if (!copied) {
+      const textarea = document.createElement("textarea");
+      textarea.value = indiaQuantLabPrompt;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      textarea.style.pointerEvents = "none";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      try {
+        copied = document.execCommand("copy");
+      } catch {
+        copied = false;
+      } finally {
+        textarea.remove();
+      }
+    }
+
+    setIndiaQuantLabCopyStatus(copied ? "success" : "error");
+  }
+
   function handleRequest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const request = requestText.trim();
@@ -207,11 +245,13 @@ export function ResourcesContent() {
                 setSelectedAiFinanceWorkflow(event.target.value);
                 setAiFinanceCopyStatus("idle");
                 setFinanceTrackerCopyStatus("idle");
+                setIndiaQuantLabCopyStatus("idle");
               }}
             >
               <option value="">Select a finance workflow</option>
               <option value="three-statement-financial-model">Three-Statement Financial Model with AI</option>
               <option value="finance-tracker">Finance Tracker</option>
+              <option value="india-quant-lab">India Quant Lab</option>
             </select>
             {selectedAiFinanceWorkflow === "three-statement-financial-model" && (
               <div className="aj-ai-small-finance-selected">
@@ -231,6 +271,28 @@ export function ResourcesContent() {
                     : aiFinanceCopyStatus === "error"
                       ? "Clipboard access was blocked by this browser. Please allow clipboard access and try again."
                       : "Select this workflow, then copy the complete prompt to use it in ChatGPT."}
+                </p>
+              </div>
+            )}
+            {selectedAiFinanceWorkflow === "india-quant-lab" && (
+              <div className="aj-ai-small-finance-selected">
+                <h3>India Quant Lab</h3>
+                <p>Set up the India-focused quantitative research and backtesting project. Clone the repository, run the app, and verify its historical strategy simulations and research workflow.</p>
+                <p><a href="https://github.com/aman482006-beep/AI-Powered-Quantitative-Trading-System" target="_blank" rel="noopener noreferrer">View the India Quant Lab GitHub repository ↗</a></p>
+                <button type="button" className="aj-button aj-button-primary" onClick={copyIndiaQuantLabPrompt}>
+                  {indiaQuantLabCopyStatus === "success"
+                    ? "Copied!"
+                    : indiaQuantLabCopyStatus === "error"
+                      ? "Try copy again"
+                      : "Copy prompt"}
+                  <span aria-hidden="true">{indiaQuantLabCopyStatus === "success" ? "✓" : "↗"}</span>
+                </button>
+                <p className="aj-ai-small-finance-status" data-state={indiaQuantLabCopyStatus} aria-live="polite">
+                  {indiaQuantLabCopyStatus === "success"
+                    ? "Full India Quant Lab setup and backtesting prompt copied. Paste it into your AI coding assistant."
+                    : indiaQuantLabCopyStatus === "error"
+                      ? "Copying was blocked by this browser. Check clipboard permissions and try again."
+                      : "Select India Quant Lab, then copy the complete prompt to clone, run and test the project."}
                 </p>
               </div>
             )}
