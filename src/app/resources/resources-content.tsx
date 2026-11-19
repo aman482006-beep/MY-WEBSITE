@@ -10,20 +10,26 @@ const resourceAreas = [
   {
     title: "Finance toolkits",
     description: "Practical workbooks for financial statements, valuation assumptions and portfolio risk.",
-    link: { label: "Suggest a topic", href: "#resource-request" },
+    links: [{ label: "Suggest a topic", href: "#resource-request" }],
   },
   {
     title: "CFA study systems",
     description: "Revision trackers, formula references and a more organised study plan.",
-    link: {
-      label: "Open CFA resources",
-      href: "https://drive.google.com/drive/mobile/folders/1BWsJY1_X_vU9EwE9qf1B7m5UIudjbCRC?usp=sharing",
-    },
+    links: [
+      {
+        label: "CFA Level 1",
+        href: "https://drive.google.com/drive/mobile/folders/1BWsJY1_X_vU9EwE9qf1B7m5UIudjbCRC?usp=sharing",
+      },
+      {
+        label: "CFA Level 2",
+        href: "https://drive.google.com/drive/folders/1MaukMwT6DurEBa2H6sKPyT-SgUuQgGFJ?usp=sharing",
+      },
+    ],
   },
   {
     title: "Creator workflows",
     description: "Simple frameworks for turning a finance topic into a useful video or visual.",
-    link: { label: "Suggest a workflow", href: "#resource-request" },
+    links: [{ label: "Suggest a workflow", href: "#resource-request" }],
   },
 ];
 
@@ -257,9 +263,19 @@ export function ResourcesContent() {
             <article className="aj-resource-card" key={area.title}>
               <h2>{area.title}</h2>
               <p>{area.description}</p>
-              <a className="aj-resource-link" href={area.link.href}>
-                {area.link.label} <span aria-hidden="true">↗</span>
-              </a>
+              <div className="aj-resource-card-links">
+                {area.links.map((link) => (
+                  <a
+                    className="aj-resource-link"
+                    href={link.href}
+                    key={link.label}
+                    target={link.href.startsWith("http") ? "_blank" : undefined}
+                    rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  >
+                    {link.label} <span aria-hidden="true">↗</span>
+                  </a>
+                ))}
+              </div>
             </article>
           ))}
         </section>
